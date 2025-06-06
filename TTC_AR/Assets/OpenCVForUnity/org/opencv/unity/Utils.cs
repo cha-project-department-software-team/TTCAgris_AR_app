@@ -27,7 +27,7 @@ namespace OpenCVForUnity.UnityUtils
         /// </returns>
         public static string getVersion()
         {
-            return "2.6.5";
+            return "2.6.6";
         }
 
         #region metToTexture2D

@@ -37,10 +37,12 @@ public class NewQRCodeDetectorMulti : MonoBehaviour
     Mat grayMat;
     Texture2D texture;
     QRCodeDetector detector;
-    WeChatQRCode wechatDetector;
+    // WeChatQRCode wechatDetector;
     Mat points;
     List<string> decodedInfo;
+    // string decodedInfo;
     List<Mat> straightQrcode;
+    // Mat straightQrcode;
     MultiSource2MatHelper multiSource2MatHelper;
     Mat camMatrix;
     MatOfDouble distCoeffs;
@@ -93,16 +95,20 @@ public class NewQRCodeDetectorMulti : MonoBehaviour
         detector = new QRCodeDetector();
     }
 
-    [Conditional("WECHAT_DETECTION")]
-    private void InitWeChatDetector()
-    {
-        wechatDetector = new WeChatQRCode();
-    }
+    // [Conditional("WECHAT_DETECTION")]
+    // private void InitWeChatDetector()
+    // {
+    //     wechatDetector = new WeChatQRCode();
+    // }
 
-    IEnumerator DetectionCoroutine()
+    private IEnumerator DetectionCoroutine()
     {
         //Debug.Log("Coroutine started");
-        var task = Task.Run(() => { WeChatDetection(); StandardDetection(); });
+        var task = Task.Run(() =>
+        {
+            //WeChatDetection(); 
+            StandardDetection();
+        });
         yield return new WaitUntil(() => task.IsCompleted);
         coroutine = null;
     }
@@ -233,59 +239,45 @@ public class NewQRCodeDetectorMulti : MonoBehaviour
             return;
 
         rgbaMat = multiSource2MatHelper.GetMat();
-
         Imgproc.cvtColor(rgbaMat, grayMat, Imgproc.COLOR_RGBA2GRAY);
 
         if (Time.time - lastDetectionTime >= detectionInterval && detectionAck)
         {
             lastDetectionTime = Time.time;
             coroutine = StartCoroutine(DetectionCoroutine());
+            // DetectionCoroutine();
             detectionAck = false;
         }
 
         if (GlobalVariable.isCameraPaused)
-        {
             return;
-        }
 
         if (manager.isCanvasOpen)
         {
-            var keys = arHelper.markers.Keys.ToList();
-            foreach (var key in keys)
+            if (manager.isCanvasOpen)
             {
-                arHelper.markers[key].Dispose();
-                arHelper.markers.Remove(key);
+                foreach (var marker in arHelper.markers.Values)
+                {
+                    marker.Dispose();
+                }
+                arHelper.markers.Clear();
             }
             Finalize(rgbaMat);
             return;
         }
 
-        if (lastFrameTime == null)
-        {
-            deltaTime = Time.unscaledDeltaTime;
-            lastFrameTime = DateTime.Now;
-        }
-        else
-        {
-            var delta = DateTime.Now - lastFrameTime;
-            lastFrameTime = DateTime.Now;
-            deltaTime = (float)(delta.TotalMilliseconds / 1000);
-        }
+        deltaTime = lastFrameTime == null ? Time.unscaledDeltaTime : (float)(DateTime.Now - lastFrameTime).TotalSeconds;
+        lastFrameTime = DateTime.Now;
 
         if (coroutine == null && result)
         {
-            for (int i = 0; i < Math.Min(pointSetList.Count, decodedInfo.Count); i++)
+            int count = Math.Min(pointSetList.Count, decodedInfo.Count);
+            for (int i = 0; i < count; i++)
             {
-                if (string.IsNullOrEmpty(decodedInfo[i]))
-                {
+                if (string.IsNullOrEmpty(decodedInfo[i]) || pointSetList[i] == null)
                     continue;
-                }
-                if (pointSetList[i] == null)
-                {
-                    continue;
-                }
+
                 float[] points_arr = new float[8];
-                // var test = new Mat(2, 2, CvType.CV_32FC2);
                 pointSetList[i].get(0, 0, points_arr);
 
                 using MatOfPoint3f objectPoints = new MatOfPoint3f(
@@ -293,13 +285,15 @@ public class NewQRCodeDetectorMulti : MonoBehaviour
                     new Point3(markerLength / 2f, markerLength / 2f, 0),
                     new Point3(markerLength / 2f, -markerLength / 2f, 0),
                     new Point3(-markerLength / 2f, -markerLength / 2f, 0)
-                    );
+                );
+
                 var content = decodedInfo[i];
-                if (!arHelper.markers.ContainsKey(content))
+                if (!arHelper.markers.TryGetValue(content, out var marker))
                 {
-                    arHelper.markers.Add(content, new QrMarker());
+                    marker = new QrMarker();
+                    arHelper.markers[content] = marker;
                 }
-                var marker = arHelper.markers[decodedInfo[i]];
+
                 marker.ImagePoints = new Vector2[4]
                 {
                     new(points_arr[0], points_arr[1]),
@@ -311,33 +305,16 @@ public class NewQRCodeDetectorMulti : MonoBehaviour
                 marker.TimeFromLastUpdate = 0;
             }
         }
-        // else
-        // {
-        //     var delta = DateTime.Now - lastFrame;
-        //     if (delta.TotalMilliseconds > QrMarker.UpdateTimeLimit)
-        //     {
-        //         Imgproc.putText(rgbaMat, "Decoding failed.", new Point(5, rgbaMat.rows() - 10), Imgproc.FONT_HERSHEY_SIMPLEX, 0.7, new Scalar(255, 255, 255, 255), 2, Imgproc.LINE_AA, false);
-        //     }
-        // }
 
         if (coroutine == null)
         {
             detectionAck = true;
         }
 
-        var keysToRemove = new List<string>();
-        //remove oudated QrMarkers
-        foreach (var item in arHelper.markers)
-        {
-            var key = item.Key;
-            var marker = item.Value;
-            if (marker.TimeFromLastUpdate > QrMarker.UpdateTimeLimit)
-                if (marker.TimeFromLastUpdate > QrMarker.UpdateTimeLimit)
-                {
-                    marker.Dispose();
-                    keysToRemove.Add(key);
-                }
-        }
+        var keysToRemove = arHelper.markers
+            .Where(item => item.Value.TimeFromLastUpdate > QrMarker.UpdateTimeLimit)
+            .Select(item => item.Key)
+            .ToList();
 
         foreach (var key in keysToRemove)
         {
@@ -345,14 +322,12 @@ public class NewQRCodeDetectorMulti : MonoBehaviour
             arHelper.markers.Remove(key);
         }
 
-        foreach (var item in arHelper.markers)
+        foreach (var marker in arHelper.markers.Values)
         {
-            item.Value.AddTime(deltaTime: deltaTime);
+            marker.AddTime(deltaTime);
         }
 
         Finalize(rgbaMat);
-
-
     }
 
     void Finalize(Mat rgbaMat)
@@ -360,64 +335,70 @@ public class NewQRCodeDetectorMulti : MonoBehaviour
         Utils.matToTexture2D(rgbaMat, texture);
     }
 
-    [Conditional("WECHAT_DETECTION")]
-    private void WeChatDetection()
-    {
+    // [Conditional("WECHAT_DETECTION")]
+    // private void WeChatDetection()
+    // {
 
-        foreach (var pointSet in pointSetList)
-        {
-            pointSet.Dispose();
-        }
-        decodedInfo = wechatDetector.detectAndDecode(grayMat, pointSetList);
+    //     foreach (var pointSet in pointSetList)
+    //     {
+    //         pointSet.Dispose();
+    //     }
+    //     decodedInfo = wechatDetector.detectAndDecode(grayMat, pointSetList);
 
 
 
-        foreach (var pointSet in pointSetList)
-        {
-            float[] points_arr = new float[8];
-            try
-            {
-                pointSet.get(0, 0, points_arr);
-                var x1 = points_arr[0] - points_arr[4];
-                var y1 = points_arr[1] - points_arr[5];
-                var x2 = points_arr[2] - points_arr[6];
-                var y2 = points_arr[3] - points_arr[7];
-                if (x1 * y2 - x2 * y1 < 0)
-                {
-                    (points_arr[2], points_arr[6]) = (points_arr[6], points_arr[2]);
-                    (points_arr[3], points_arr[7]) = (points_arr[7], points_arr[3]);
-                }
-                pointSet.put(0, 0, points_arr);
-            }
-            catch (Exception e)
-            {
-                Debug.LogError(e);
-            }
-        }
-        result = (decodedInfo != null) && (decodedInfo.Count > 0);
-    }
+    //     foreach (var pointSet in pointSetList)
+    //     {
+    //         float[] points_arr = new float[8];
+    //         try
+    //         {
+    //             pointSet.get(0, 0, points_arr);
+    //             var x1 = points_arr[0] - points_arr[4];
+    //             var y1 = points_arr[1] - points_arr[5];
+    //             var x2 = points_arr[2] - points_arr[6];
+    //             var y2 = points_arr[3] - points_arr[7];
+    //             if (x1 * y2 - x2 * y1 < 0)
+    //             {
+    //                 (points_arr[2], points_arr[6]) = (points_arr[6], points_arr[2]);
+    //                 (points_arr[3], points_arr[7]) = (points_arr[7], points_arr[3]);
+    //             }
+    //             pointSet.put(0, 0, points_arr);
+    //         }
+    //         catch (Exception e)
+    //         {
+    //             Debug.LogError(e);
+    //         }
+    //     }
+    //     result = (decodedInfo != null) && (decodedInfo.Count > 0);
+    // }
 
     [Conditional("STANDARD_DETECTION")]
     private void StandardDetection()
     {
         result = detector.detectAndDecodeMulti(grayMat, decodedInfo, points, straightQrcode);
-        if (result)
+        if (!result) return;
+
+        for (int i = 0; i < points.rows(); i++)
         {
-            for (int i = 0; i < points.rows(); i++)
-            {          
-                float[] points_arr = new float[8];
-                points.get(i, 0, points_arr);
-                if (pointSetList.Count <= i)
-                {
-                    pointSetList.Add(new Mat((4, 1), CvType.CV_32FC2));
-                }
-                pointSetList[i].put(0, 0, points_arr);
-                if (decodedInfo.Count <= i)
-                {
-                    decodedInfo.Add("");
-                }
-            }
+            float[] points_arr = new float[8];
+            points.get(i, 0, points_arr);
+
+            if (pointSetList.Count <= i)
+                pointSetList.Add(new Mat(4, 1, CvType.CV_32FC2));
+            // else
+            //     pointSetList[i].setTo(new Scalar(0)); // Reset existing Mat to avoid stale data
+
+            pointSetList[i].put(0, 0, points_arr);
+
+            if (decodedInfo.Count <= i)
+                decodedInfo.Add("");
         }
+
+        if (pointSetList.Count > points.rows())
+            pointSetList.RemoveRange(points.rows(), pointSetList.Count - points.rows());
+
+        if (decodedInfo.Count > points.rows())
+            decodedInfo.RemoveRange(points.rows(), decodedInfo.Count - points.rows());
     }
 
     void OnDestroy()

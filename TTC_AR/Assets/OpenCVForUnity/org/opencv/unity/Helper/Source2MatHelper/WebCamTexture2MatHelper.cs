@@ -791,8 +791,8 @@ namespace OpenCVForUnity.UnityUtils.Helper
                 }
                 else if (webCamTexture.didUpdateThisFrame)
                 {
-                    // Debug.Log("WebCamTexture2MatHelper:: " + "devicename:" + webCamTexture.deviceName + " name:" + webCamTexture.name + " width:" + webCamTexture.width + " height:" + webCamTexture.height + " fps:" + webCamTexture.requestedFPS
-                    // + " videoRotationAngle:" + webCamTexture.videoRotationAngle + " videoVerticallyMirrored:" + webCamTexture.videoVerticallyMirrored + " isFrongFacing:" + webCamDevice.isFrontFacing);
+                    Debug.Log("WebCamTexture2MatHelper:: " + "devicename:" + webCamTexture.deviceName + " name:" + webCamTexture.name + " width:" + webCamTexture.width + " height:" + webCamTexture.height + " fps:" + webCamTexture.requestedFPS
+                    + " videoRotationAngle:" + webCamTexture.videoRotationAngle + " videoVerticallyMirrored:" + webCamTexture.videoVerticallyMirrored + " isFrongFacing:" + webCamDevice.isFrontFacing);
 
                     if (colors == null || colors.Length != webCamTexture.width * webCamTexture.height)
                         colors = new Color32[webCamTexture.width * webCamTexture.height];
@@ -1110,6 +1110,17 @@ namespace OpenCVForUnity.UnityUtils.Helper
             }
 
             return FlipAndRotateMat(frameMat, rotatedFrameMat, flipVertical, flipHorizontal, webCamDevice.isFrontFacing, webCamTexture.videoRotationAngle, screenOrientation, isScreenOrientationCorrect, isVideoRotationAngleCorrect);
+
+            //FlipMat(frameMat, flipVertical, flipHorizontal, false, webCamTexture.videoVerticallyMirrored);
+            //if (rotatedFrameMat != null)
+            //{
+            //    RotateMat(frameMat, rotatedFrameMat, webCamTexture.videoRotationAngle);
+            //    return rotatedFrameMat;
+            //}
+            //else
+            //{
+            //    return frameMat;
+            //}
         }
 
         protected virtual Mat FlipAndRotateMat(Mat frameMat, Mat rotatedFrameMat, bool flipVertical, bool flipHorizontal, bool isFrontFacing, int videoRotationAngle, ScreenOrientation screenOrientation, bool isScreenOrientationCorrect, bool isVidevideoRotationAngleCorrect)
