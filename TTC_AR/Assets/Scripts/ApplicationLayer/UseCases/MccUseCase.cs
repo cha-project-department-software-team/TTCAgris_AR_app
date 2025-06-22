@@ -20,73 +20,129 @@ namespace ApplicationLayer.UseCases
             _MccRepository = MccRepository;
         }
 
-        public async Task<IEnumerable<MccBasicDto>> GetListMccAsync(string grapperId)
+        public async Task<List<MccBasicDto>> GetListMccAsync(int grapperId)
         {
-            var entities = await _MccRepository.GetListMccAsync(grapperId)
-                           ?? throw new ApplicationException("Failed to load List MccBasicDtos");
+            try
+            {
 
-            return entities.Select(entity => MapToBasicDto(entity));
+                var entities = await _MccRepository.GetListMccAsync(grapperId)
+                               ?? throw new ApplicationException("Failed to load List MccBasicDtos");
+                return entities.Select(entity => MapToBasicDto(entity)).ToList();
+            }
+            catch (ArgumentException exception)
+            {
+                throw new ApplicationException("Failed to load List MccBasicDtos", exception); // Ném lại lỗi validation cho Unity xử lý
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Failed to load List MccBasicDtos", ex); // Bao bọc lỗi từ Repository
+            }
         }
 
 
 
-        public async Task<MccResponseDto> GetMccByIdAsync(string MccId)
+        public async Task<MccResponseDto> GetMccByIdAsync(int mccId)
         {
-            var entity = await _MccRepository.GetMccByIdAsync(MccId) ?? throw new ApplicationException("Failed to load MccResponseDto"); ;
-            return MapToResponseDto(entity);
+            try
+            {
+                var entity = await _MccRepository.GetMccByIdAsync(mccId) ?? throw new ApplicationException("Failed to load MccResponseDto"); ;
+                return MapToResponseDto(entity);
+            }
+            catch (ArgumentException exception)
+            {
+                throw new ApplicationException("Failed to load MccResponseDto", exception); // Ném lại lỗi validation cho Unity xử lý
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Failed to load MccResponseDto", ex); // Bao bọc lỗi từ Repository
+            }
         }
 
-        public async Task<bool> CreateNewMccAsync(string grapperId, MccRequestDto requestDto)
+        public async Task<bool> CreateNewMccAsync(int grapperId, MccRequestDto requestDto)
         {
-            //! Không truyền List<MccEntity> MccEntities vào MccEntity để cho giá trị bị null
-            //! Khi đó MccEntity chỉ có Id và CabinetCode
+            try
+            {
+                //! Không truyền List<MccEntity> MccEntities vào MccEntity để cho giá trị bị null
+                //! Khi đó MccEntity chỉ có Id và CabinetCode
 
-            var MccEntity = MapRequestToEntity(requestDto);
+                var MccEntity = MapRequestToEntity(requestDto);
 
-            var createdEntity = await _MccRepository.CreateNewMccAsync(grapperId, MccEntity);
+                var createdEntity = await _MccRepository.CreateNewMccAsync(grapperId, MccEntity);
 
-            return createdEntity;
-            // return new MccResponseDto(
-            //     createdEntity.Id,
-            //     createdEntity.Name,
-            //     new MccBasicDto(createdEntity.Mcc.Id, createdEntity.Mcc.CabinetCode),
-            //     createdEntity.RatedPower,
-            //     createdEntity.RatedCurrent,
-            //     createdEntity.ActiveCurrent,
-            //     createdEntity.ConnectionImages.Select(img => new ImageResponseDto(img.Id, img.Name, img.Url)).ToList(),
-            //     createdEntity.Note
-            // );
+                return createdEntity;
+                // return new MccResponseDto(
+                //     createdEntity.Id,
+                //     createdEntity.Name,
+                //     new MccBasicDto(createdEntity.Mcc.Id, createdEntity.Mcc.CabinetCode),
+                //     createdEntity.RatedPower,
+                //     createdEntity.RatedCurrent,
+                //     createdEntity.ActiveCurrent,
+                //     createdEntity.ConnectionImages.Select(img => new ImageBasicDto(img.Id, img.Name, img.Url)).ToList(),
+                //     createdEntity.Note
+                // );
+            }
+            catch (ArgumentException exception)
+            {
+                throw new ApplicationException("Failed to create Mcc", exception); // Ném lại lỗi validation cho Unity xử lý
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Failed to create Mcc", ex); // Bao bọc lỗi từ Repository
+
+            }
         }
 
-        public async Task<bool> UpdateMccAsync(string MccId, MccRequestDto requestDto)
+        public async Task<bool> UpdateMccAsync(int mccId, MccRequestDto requestDto)
         {
-            MccId = GlobalVariable.MccId;
+            try
+            {
 
-            var MccEntity = MapRequestToEntity(requestDto);
+                var MccEntity = MapRequestToEntity(requestDto);
 
-            var updatedEntity = await _MccRepository.UpdateMccAsync(MccId, MccEntity);
+                var updatedEntity = await _MccRepository.UpdateMccAsync(mccId, MccEntity);
 
-            return updatedEntity;
+                return updatedEntity;
 
-            // return new MccResponseDto(
-            //     updatedEntity.Id,
-            //     updatedEntity.Name,
-            //     new MccBasicDto(updatedEntity.Mcc.Id, updatedEntity.Mcc.CabinetCode),
-            //     updatedEntity.RatedPower,
-            //     updatedEntity.RatedCurrent,
-            //     updatedEntity.ActiveCurrent,
-            //     updatedEntity.ConnectionImages.Select(img => new ImageResponseDto(img.Id, img.Name, img.Url)).ToList(),
-            //     updatedEntity.Note
-            // );
+                // return new MccResponseDto(
+                //     updatedEntity.Id,
+                //     updatedEntity.Name,
+                //     new MccBasicDto(updatedEntity.Mcc.Id, updatedEntity.Mcc.CabinetCode),
+                //     updatedEntity.RatedPower,
+                //     updatedEntity.RatedCurrent,
+                //     updatedEntity.ActiveCurrent,
+                //     updatedEntity.ConnectionImages.Select(img => new ImageBasicDto(img.Id, img.Name, img.Url)).ToList(),
+                //     updatedEntity.Note
+                // );
+            }
+            catch (ArgumentException exception)
+            {
+                throw new ApplicationException("Failed to update Mcc", exception); // Ném lại lỗi validation cho Unity xử lý
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Failed to update Mcc", ex); // Bao bọc lỗi từ Repository
+            }
+
+
         }
 
-        public async Task<bool> DeleteMccAsync(string MccId)
+        public async Task<bool> DeleteMccAsync(int mccId)
         {
             // MccId = GlobalVariable.MccId;
+            try
+            {
+                var deletedEntity = await _MccRepository.DeleteMccAsync(mccId);
 
-            var deletedEntity = await _MccRepository.DeleteMccAsync(MccId);
-
-            return deletedEntity;
+                return deletedEntity;
+            }
+            catch (ArgumentException exception)
+            {
+                throw new ApplicationException("Failed to delete Mcc", exception); // Ném lại lỗi validation cho Unity xử lý
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Failed to delete Mcc", ex); // Bao bọc lỗi từ Repository
+            }
         }
 
         //! Dto => Entity
@@ -97,7 +153,7 @@ namespace ApplicationLayer.UseCases
 
             fieldDeviceEntities: (MccRequestDto.FieldDeviceBasicDtos == null || (MccRequestDto.FieldDeviceBasicDtos != null && MccRequestDto.FieldDeviceBasicDtos.Count <= 0)) ?
             new List<FieldDeviceEntity>()
-            : MccRequestDto.FieldDeviceBasicDtos.Select(fd => new FieldDeviceEntity(fd.Id.ToString(), fd.Name)).ToList(),
+            : MccRequestDto.FieldDeviceBasicDtos.Select(fd => new FieldDeviceEntity(fd.Id, fd.Name)).ToList(),
 
             brand: MccRequestDto.Brand,
 

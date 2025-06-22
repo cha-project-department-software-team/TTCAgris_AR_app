@@ -12,13 +12,13 @@ namespace ApplicationLayer.Dtos.Company
 
     public class CompanyResponseDto : CompanyBasicDto
     {
-        [JsonProperty("ListGrappers")] public List<GrapperBasicDto>? GrapperBasicDtos { get; set; }
-        [JsonProperty("ListModuleSpecifications")] public List<ModuleSpecificationBasicDto>? ModuleSpecificationBasicDtos { get; set; }
-        [JsonProperty("ListAdapterSpecifications")] public List<AdapterSpecificationBasicDto>? AdapterSpecificationBasicDtos { get; set; }
+        [JsonProperty("listGrappers")] public List<GrapperBasicDto>? GrapperBasicDtos { get; set; }
+        [JsonProperty("listModuleSpecifications")] public List<ModuleSpecificationBasicDto>? ModuleSpecificationBasicDtos { get; set; }
+        [JsonProperty("listAdapterSpecifications")] public List<AdapterSpecificationBasicDto>? AdapterSpecificationBasicDtos { get; set; }
 
         [Preserve]
 
-        public CompanyResponseDto(string id, string name, List<GrapperBasicDto>? grapperBasicDtos, List<ModuleSpecificationBasicDto>? moduleSpecificationBasicDtos, List<AdapterSpecificationBasicDto>? adapterSpecificationBasicDtos) : base(id, name)
+        public CompanyResponseDto(int id, string name, List<GrapperBasicDto>? grapperBasicDtos, List<ModuleSpecificationBasicDto>? moduleSpecificationBasicDtos, List<AdapterSpecificationBasicDto>? adapterSpecificationBasicDtos) : base(id, name)
         {
             GrapperBasicDtos = grapperBasicDtos;
             ModuleSpecificationBasicDtos = moduleSpecificationBasicDtos;

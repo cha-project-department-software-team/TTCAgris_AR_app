@@ -3,34 +3,37 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using OpenCVForUnity.UnityUtils.Helper;
+using UnityEngine.SceneManagement;
 
 public class Manager : MonoBehaviour
 {
-    // int i = 0;
-    // Color[] colors = { Color.red, Color.blue, Color.green };
-    [SerializeField] private Canvas canvas;
+    [SerializeField] private GameObject canvas;
     [SerializeField] private TMP_Text title;
     [SerializeField] private ARHelperMulti aRHelper;
     [SerializeField] private Button backBtn;
     [SerializeField] private EventPublisher eventPublisher;
+    [SerializeField] private Camera mainCamera;
 
-    public bool isCanvasOpen = false;
-    public bool isPaused = false;
-    private string activescene;
 
-    // Start is called before the first frame update
-    void Start()
+    private string activeScene;
+
+    public bool IsCanvasOpen => canvas.gameObject.activeSelf;
+    public bool enableQRCodeDetection = true;
+    private bool enableQRCodeDetectionByActiveCameraIcon = true;
+
+    private void Start()
     {
-        activescene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+        activeScene = SceneManager.GetActiveScene().name;
+        backBtn.onClick.RemoveAllListeners();
         backBtn.onClick.AddListener(CloseCanvas);
+        Screen.orientation = ScreenOrientation.LandscapeLeft;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
         DetectClickedObject();
-        isCanvasOpen = canvas.gameObject.activeSelf;
     }
+
 
     public void DetectClickedObject()
     {
@@ -40,7 +43,9 @@ public class Manager : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             // Create a ray from the camera to the mouse position
-            ray = Camera.allCameras[1].ScreenPointToRay(Input.mousePosition);
+            // Camera cam = Camera.main != null ? Camera.main : Camera.current;
+            // if (cam != null)
+            ray = mainCamera.ScreenPointToRay(Input.mousePosition);
         }
         else if (Input.touchCount > 0)
         {
@@ -50,12 +55,11 @@ public class Manager : MonoBehaviour
             if (touch.phase == TouchPhase.Began)
             {
                 // Create a ray from the camera to the touch position
-                ray = Camera.main.ScreenPointToRay(touch.position);
+                // Camera cam = Camera.main != null ? Camera.main : Camera.current;
+                // if (cam != null)
+                ray = mainCamera.ScreenPointToRay(touch.position);
+
             }
-        }
-        else
-        {
-            return;
         }
 
         // Perform the raycast
@@ -72,17 +76,36 @@ public class Manager : MonoBehaviour
                 var key = aRHelper.markers.FirstOrDefault(pair => pair.Value == qrMarker).Key;
                 if (key != null)
                 {
-                    if (activescene == "NewQRCodeDetectorMulti")
+                    string[] parts = key.Split('_');
+                    string result = parts[parts.Length - 1]; // Lấy phần tử cuối cùng
+                    GlobalVariable.objectName = result;
+
+                    if (activeScene == "NewQRCodeDetectorMulti")
                     {
-                        title.text = "Module " + key;
-                        eventPublisher.TriggerEvent_ButtonClicked();
-                        OpenCanvas();
+
+                        title.text = "Module " + result;
+                        // eventPublisher.TriggerEvent_ButtonClicked();
+                        if (
+                            GlobalVariable.temp_Dictionary_MCCInformationModel.TryGetValue(result, out var model1)
+                            || GlobalVariable.temp_Dictionary_ModuleInformationModel.TryGetValue(result, out var model2)
+
+                            )
+                        {
+                            OpenCanvas();
+                        }
                     }
                     else
                     {
-                        title.text = "Tủ " + key;
-                        eventPublisher.TriggerEvent_ButtonClicked();
-                        OpenCanvas();
+                        title.text = "Tủ " + result;
+                        // eventPublisher.TriggerEvent_ButtonClicked();
+                        if (
+                                                  GlobalVariable.temp_Dictionary_MCCInformationModel.TryGetValue(result, out var model1)
+                                                  || GlobalVariable.temp_Dictionary_ModuleInformationModel.TryGetValue(result, out var model2)
+
+                                                  )
+                        {
+                            OpenCanvas();
+                        }
                     }
                 }
             }
@@ -95,11 +118,28 @@ public class Manager : MonoBehaviour
 
     private void OpenCanvas()
     {
-        canvas.gameObject.SetActive(true);
+        if (enableQRCodeDetection)
+        {
+            enableQRCodeDetection = false;
+        }
+        canvas.SetActive(true);
     }
 
     public void CloseCanvas()
     {
-        canvas.gameObject.SetActive(false);
+        if (!enableQRCodeDetection)
+        {
+            if (enableQRCodeDetectionByActiveCameraIcon)
+            {
+                enableQRCodeDetection = true;
+            }
+        }
+        canvas.SetActive(false);
     }
+    public void setQRCodeDetection(bool enable)
+    {
+        enableQRCodeDetection = enable;
+        enableQRCodeDetectionByActiveCameraIcon = enable;
+    }
+
 }

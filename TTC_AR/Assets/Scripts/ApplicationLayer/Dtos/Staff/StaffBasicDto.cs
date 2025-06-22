@@ -6,9 +6,9 @@
 // {
 //   public class StaffResponseDto
 //   {
-//     [JsonProperty("Id")] public string UserId { get; set; } = string.Empty;
-//     [JsonProperty("Name")] public string UserName { get; set; } = string.Empty;
-//     [JsonProperty("Role")] public string Role { get; set; } = string.Empty;
+//     [JsonProperty("id")] public string UserId { get; set; }
+//     [JsonProperty("name")] public string UserName { get; set; } = string.Empty;
+//     [JsonProperty("role")] public string Role { get; set; } = string.Empty;
 
 //     [Preserve]
 //     
@@ -23,8 +23,8 @@
 //   [Preserve]
 //   public class StaffRequestDto
 //   {
-//     [JsonProperty("Name")] public string UserName { get; set; } = string.Empty;
-//     [JsonProperty("Password")] public string Password { get; set; } = string.Empty;
+//     [JsonProperty("name")] public string UserName { get; set; } = string.Empty;
+//     [JsonProperty("password")] public string Password { get; set; } = string.Empty;
 //     [Preserve]
 //     
 //     public StaffRequestDto(string userName, string password)

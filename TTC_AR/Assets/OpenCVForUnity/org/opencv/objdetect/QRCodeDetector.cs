@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
-namespace OpenCVForUnity.ObjdetectModule
+namespace OpenCVForUnity .ObjdetectModule
 {
 
     // C++: class QRCodeDetector
@@ -46,7 +46,7 @@ namespace OpenCVForUnity.ObjdetectModule
         //
 
         public QRCodeDetector() :
-            base(DisposableObject.ThrowIfNullIntPtr(objdetect_QRCodeDetector_QRCodeDetector_10()))
+            base(ThrowIfNullIntPtr(objdetect_QRCodeDetector_QRCodeDetector_10()))
         {
 
 

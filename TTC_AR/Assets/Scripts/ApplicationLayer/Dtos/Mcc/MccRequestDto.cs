@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using ApplicationLayer.Dtos.FieldDevice;
 using Newtonsoft.Json;
 using UnityEngine.Scripting;
@@ -9,16 +10,16 @@ namespace ApplicationLayer.Dtos.Mcc
     [Preserve]
     public class MccRequestDto
     {
-        [JsonProperty("CabinetCode")]
+        [JsonProperty("cabinetCode")]
         public string? CabinetCode { get; set; }
 
-        [JsonProperty("Brand")]
+        [JsonProperty("brand")]
         public string? Brand { get; set; }
 
-        [JsonProperty("ListFieldDevice")]
+        [JsonProperty("listFieldDevice")]
         public List<FieldDeviceBasicDto>? FieldDeviceBasicDtos { get; set; }
 
-        [JsonProperty("Note")]
+        [JsonProperty("note")]
         public string? Note { get; set; }
 
         [Preserve]
@@ -26,9 +27,9 @@ namespace ApplicationLayer.Dtos.Mcc
         public MccRequestDto(string cabinetCode, string? brand, List<FieldDeviceBasicDto>? fieldDeviceBasicDtos, string? note)
         {
             CabinetCode = string.IsNullOrEmpty(cabinetCode) ? throw new ArgumentNullException(nameof(cabinetCode)) : cabinetCode;
-            Brand = brand;
-            FieldDeviceBasicDtos = fieldDeviceBasicDtos;
-            Note = note;
+            Brand = string.IsNullOrEmpty(brand) ? "Chưa cập nhật" : brand;
+            FieldDeviceBasicDtos = fieldDeviceBasicDtos.Any() ? fieldDeviceBasicDtos : new List<FieldDeviceBasicDto>();
+            Note = string.IsNullOrEmpty(note) ? "Chưa cập nhật" : note;
         }
     }
 }

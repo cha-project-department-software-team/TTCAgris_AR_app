@@ -8,10 +8,10 @@ namespace ApplicationLayer.Interfaces
 {
     public interface IRackService
     {
-        Task<RackResponseDto> GetRackByIdAsync(string rackId);
-        Task<IEnumerable<RackBasicDto>> GetListRackAsync(string grapperId);
-        Task<bool> CreateNewRackAsync(string grapperId, RackRequestDto rackRequestDto);
-        Task<bool> UpdateRackAsync(string rackId, RackRequestDto rackRequestDto);
-        Task<bool> DeleteRackAsync(string rackId);
+        Task<RackResponseDto> GetRackByIdAsync(int rackId);
+        Task<IEnumerable<RackBasicDto>> GetListRackAsync(int grapperId);
+        Task<bool> CreateNewRackAsync(int grapperId, RackRequestDto rackRequestDto);
+        Task<bool> UpdateRackAsync(int rackId, RackRequestDto rackRequestDto);
+        Task<bool> DeleteRackAsync(int rackId);
     }
 }

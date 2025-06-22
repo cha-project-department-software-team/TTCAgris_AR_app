@@ -6,34 +6,39 @@ using UnityEngine.UI;
 
 public class JBInfor : MonoBehaviour
 {
-    public Button jbButton;
-    public TMP_Text Name;
-    [SerializeField] private TMP_Text Location;
+    public Button button;
+    public TMP_Text value;
+    public TMP_Text Location;
 
     private void OnEnable()
     {
-        Name.gameObject.SetActive(true);
+
     }
 
     public void SetJBInfor(JBInformationModel jb)
     {
-        jbButton.gameObject.SetActive(true);
-        Name.text = jb.Name;
-        if (jb.Location == null)
+        value.text = jb.Name;
+
+        if (string.IsNullOrEmpty(jb.Location))
         {
-            Location.text = "Chưa cập nhật JB/TSD kết nối";
+            Location.text = "Được ghi chú trong sơ đồ";
+            Location.fontWeight = FontWeight.Bold;
+            Location.color = Color.red;
         }
         else
         {
             Location.text = jb.Location;
+            Location.fontWeight = FontWeight.Bold;
+            Location.color = Color.black;
         }
-        // Location.alignment = TextAlignmentOptions.Left;
     }
 
-    public void NoDeviceMessage()
+    public void HandleEmptyList()
     {
-        jbButton.gameObject.SetActive(false);
-        Location.text = "Chưa cập nhật JB/TSD kết nối";
-        // Location.alignment = TextAlignmentOptions.Center;
+        button.gameObject.SetActive(false);
+        Location.text = "Không có JB kết nối";
+        Location.alignment = TextAlignmentOptions.Center;
+        Location.fontStyle = FontStyles.Bold;
+        Location.color = Color.red;
     }
 }

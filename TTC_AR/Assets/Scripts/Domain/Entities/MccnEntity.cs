@@ -10,22 +10,22 @@ namespace Domain.Entities
   [Preserve]
   public class MccEntity
   {
-    [JsonProperty("Id")]
-    public string Id { get; set; } = string.Empty;
+    [JsonProperty("id")]
+    public int Id { get; set; }
 
-    [JsonProperty("CabinetCode")]
+    [JsonProperty("cabinetCode")]
     public string CabinetCode { get; set; } = string.Empty;
 
-    // [JsonProperty("Brand", NullValueHandling = NullValueHandling.Ignore)]
-    [JsonProperty("Brand")]
+    // [JsonProperty("brand", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonProperty("brand")]
     public string? Brand { get; set; }
 
-    // [JsonProperty("FieldDevices", NullValueHandling = NullValueHandling.Ignore)]
-    [JsonProperty("ListFieldDevices")]
+    // [JsonProperty("fieldDevices", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonProperty("listFieldDevices")]
     public List<FieldDeviceEntity>? FieldDeviceEntities { get; set; }
 
-    // [JsonProperty("Note", NullValueHandling = NullValueHandling.Ignore)]
-    [JsonProperty("Note")]
+    // [JsonProperty("note", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonProperty("note")]
     public string? Note { get; set; }
 
 
@@ -39,6 +39,10 @@ namespace Domain.Entities
       };
       return !apiRequestType.Any(request => allowedRequests.Contains(request));
     }
+    public bool ShouldSerializeCabinetCode()
+    {
+      return true;
+    }
 
     public bool ShouldSerializeBrand()
     {
@@ -46,6 +50,7 @@ namespace Domain.Entities
       HashSet<string> allowedRequests = new HashSet<string>
       {
         HttpMethodTypeEnum.GETMcc.GetDescription(),
+        HttpMethodTypeEnum.GETListMcc.GetDescription(),
         HttpMethodTypeEnum.PUTMcc.GetDescription(),
         HttpMethodTypeEnum.POSTMcc.GetDescription(),
       };
@@ -99,7 +104,7 @@ namespace Domain.Entities
     }
 
     [Preserve]
-    public MccEntity(string id, string cabinetCode, List<FieldDeviceEntity>? fieldDeviceEntities, string? brand, string? note)
+    public MccEntity(int id, string cabinetCode, List<FieldDeviceEntity>? fieldDeviceEntities, string? brand, string? note)
     {
       Id = id;
       CabinetCode = string.IsNullOrEmpty(cabinetCode) ? throw new ArgumentNullException(nameof(cabinetCode)) : cabinetCode;

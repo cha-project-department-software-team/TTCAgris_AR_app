@@ -56,6 +56,8 @@ public class CreateFieldDeviceSettingView : MonoBehaviour, IFieldDeviceView
     {
         { "Connection_Image", 0 }
     };
+    private int grapperId;
+    private Sprite successConfirmButtonSprite;
 
     // void Awake()
     // {
@@ -71,7 +73,12 @@ public class CreateFieldDeviceSettingView : MonoBehaviour, IFieldDeviceView
 
     void OnEnable()
     {
-        ResetAllInputFields();
+        successConfirmButtonSprite = Resources.Load<Sprite>("images/UIimages/Success_Back_Button_Background");
+        Debug.Log(successConfirmButtonSprite);
+        grapperId = GlobalVariable.GrapperId;
+
+        RenewView();
+
         AddButtonListeners(initialize_FieldDevice_List_Option_Selection.Connection_Image_List_Selection_Option_Content_Transform, "Connection_Image");
 
         backButton.onClick.RemoveAllListeners();
@@ -82,8 +89,8 @@ public class CreateFieldDeviceSettingView : MonoBehaviour, IFieldDeviceView
         backButton.onClick.AddListener(CloseAddCanvas);
 
         submitButton.onClick.AddListener(OnSubmitButtonClick);
-        scrollRect.verticalNormalizedPosition = 1;
 
+        scrollRect.verticalNormalizedPosition = 1;
     }
 
     void OnDisable()
@@ -93,27 +100,26 @@ public class CreateFieldDeviceSettingView : MonoBehaviour, IFieldDeviceView
 
     private void OnSubmitButtonClick()
     {
-        fieldDeviceInformationModel = new FieldDeviceInformationModel(
-            name: Name_TextField.text,
-            ratedPower: RatedPower_TextField.text,
-            ratedCurrent: RatedCurrent_TextField.text,
-            activeCurrent: ActiveCurrent_TextField.text,
-            listConnectionImages: temp_Dictionary_ImageConnectionModel.Values.ToList(),
-            note: Note_TextField.text
-        );
-
-        if (string.IsNullOrEmpty(fieldDeviceInformationModel.Name))
+        if (string.IsNullOrEmpty(Name_TextField.text))
         {
             OpenErrorDialog("Vui lòng nhập tên thiết bị trường");
             return;
         }
-        if (GlobalVariable.temp_Dictionary_FieldDeviceInformationModel.ContainsKey(fieldDeviceInformationModel.Name))
+        if (GlobalVariable.temp_Dictionary_FieldDeviceInformationModel.ContainsKey(Name_TextField.text))
         {
-            OpenErrorDialog("Tên thiết bị trường đã tồn tại", "Vui lòng nhập tên thiết bị trường khác");
+            OpenErrorDialog("Thiết bị trường đã tồn tại", "Vui lòng nhập tên thiết bị trường khác");
             return;
         }
+        fieldDeviceInformationModel = new FieldDeviceInformationModel(
+            name: Name_TextField.text,
+            ratedPower: string.IsNullOrEmpty(RatedPower_TextField.text) ? "Chưa cập nhật" : RatedPower_TextField.text,
+            ratedCurrent: string.IsNullOrEmpty(RatedCurrent_TextField.text) ? "Chưa cập nhật" : RatedCurrent_TextField.text,
+            activeCurrent: string.IsNullOrEmpty(ActiveCurrent_TextField.text) ? "Chưa cập nhật" : ActiveCurrent_TextField.text,
+            listConnectionImages: temp_Dictionary_ImageConnectionModel.Any() ? temp_Dictionary_ImageConnectionModel.Values.ToList() : new List<ImageInformationModel>(),
+            note: string.IsNullOrEmpty(Note_TextField.text) ? "Chưa cập nhật" : Note_TextField.text
+        );
 
-        _presenter.CreateNewFieldDevice(GlobalVariable.GrapperId, fieldDeviceInformationModel);
+        _presenter.CreateNewFieldDevice(grapperId, fieldDeviceInformationModel);
     }
 
     private void RenewView()
@@ -123,6 +129,7 @@ public class CreateFieldDeviceSettingView : MonoBehaviour, IFieldDeviceView
         temp_Dictionary_ImageConnectionModel.Clear();
         selectedGameObjects["Connection_Image"].Clear();
         selectedCounts["Connection_Image"] = 0;
+
     }
 
     public void CloseAddCanvas()
@@ -205,6 +212,7 @@ public class CreateFieldDeviceSettingView : MonoBehaviour, IFieldDeviceView
             initialize_FieldDevice_List_Option_Selection.Selection_Option_Canvas.SetActive(true);
 
         var newItem = Instantiate(itemPrefab, parentGroup.transform);
+        newItem.SetActive(true);
         temp_Item_Transform = newItem.transform;
         temp_Item_Transform.gameObject.GetComponentInChildren<Button>().onClick.AddListener(() => DeselectItem(newItem.gameObject, field));
         GetSelectionPanel(field).SetActive(true);
@@ -294,30 +302,38 @@ public class CreateFieldDeviceSettingView : MonoBehaviour, IFieldDeviceView
         var horizontalGroupTransform = backgroundTransform.Find("Horizontal_Group");
 
         backgroundTransform.Find("Dialog_Status_Icon").GetComponent<Image>().sprite = Resources.Load<Sprite>("images/UIimages/Success_Icon_For_Dialog");
-        backgroundTransform.Find("Dialog_Content").GetComponent<TMP_Text>().text = $"Bạn đã thành công thêm thiết bị trường <b><color =#004C8A>{model.Name}</b></color> vào hệ thống";
+        backgroundTransform.Find("Dialog_Content").GetComponent<TMP_Text>().text = $"Bạn đã thành công thêm thiết bị trường <b><color=#004C8A>{model.Name}</b></color> vào hệ thống";
         backgroundTransform.Find("Dialog_Title").GetComponent<TMP_Text>().text = "Thêm thiết bị trường mới thành công";
 
         var confirmButton = horizontalGroupTransform.Find("Confirm_Button").GetComponent<Button>();
         var backButton = horizontalGroupTransform.Find("Back_Button").GetComponent<Button>();
 
-        confirmButton.GetComponent<Image>().sprite = Resources.Load<Sprite>("images/UIimages/Success_Back_Button_Background");
-        confirmButton.transform.Find("Text").GetComponent<TMP_Text>().text = "Tiếp tục thêm mới";
-        backButton.transform.Find("Text").GetComponent<TMP_Text>().text = "Trở lại danh sách";
+
+        var confirmButtonSprite = confirmButton.GetComponent<Image>();
+        confirmButtonSprite.sprite = successConfirmButtonSprite;
+
+        var confirmButtonText = confirmButton.GetComponentInChildren<TMP_Text>();
+        var backButtonText = backButton.GetComponentInChildren<TMP_Text>();
+
+        // var colors = confirmButton.colors;
+        // colors.normalColor = new Color32(92, 237, 115, 255); // #5CED73 in RGB
+        // confirmButton.colors = colors;
+
+        confirmButtonText.text = "Tiếp tục thêm mới";
+        backButtonText.text = "Trở lại danh sách";
 
         confirmButton.onClick.RemoveAllListeners();
         backButton.onClick.RemoveAllListeners();
 
         confirmButton.onClick.AddListener(() =>
         {
-            ResetAllInputFields();
             DialogTwoButton.SetActive(false);
-            scrollRect.verticalNormalizedPosition = 1;
             RenewView();
+            scrollRect.verticalNormalizedPosition = 1;
         });
 
         backButton.onClick.AddListener(() =>
         {
-            ResetAllInputFields();
             DialogTwoButton.SetActive(false);
             RenewView();
             CloseAddCanvas();
@@ -342,8 +358,8 @@ public class CreateFieldDeviceSettingView : MonoBehaviour, IFieldDeviceView
     {
         if (GlobalVariable.APIRequestType.Contains("POST_FieldDevice"))
         {
-            Show_Toast.Instance.Set_Instance_Status_True();
-            Show_Toast.Instance.ShowToast("error", "Thêm thiết bị trường mới thất bại");
+
+            Show_Toast.Instance.ShowToast("failure", "Thêm thiết bị trường mới thất bại");
             OpenErrorDialog();
         }
         StartCoroutine(Show_Toast.Instance.Set_Instance_Status_False(1f));
@@ -351,11 +367,8 @@ public class CreateFieldDeviceSettingView : MonoBehaviour, IFieldDeviceView
 
     public void ShowSuccess()
     {
-        Show_Toast.Instance.Set_Instance_Status_True();
-
         if (GlobalVariable.APIRequestType.Contains("POST_FieldDevice"))
         {
-
             Show_Toast.Instance.ShowToast("success", "Thêm thiết bị trường mới thành công");
             OpenSuccessDialog(fieldDeviceInformationModel);
         }

@@ -19,18 +19,12 @@ public class Scene_Manager : MonoBehaviour
         }
     }
 
-    public void SetScreenOrientation(bool isOrientation = false)
+    public void SetScreenOrientation()
     {
-        if (isOrientation)
-        {
-            Screen.orientation = ScreenOrientation.AutoRotation;
-        }
-        else
-        {
-            Screen.orientation = GlobalVariable.sceneNamesLandScape.Contains(GlobalVariable.recentScene)
-                ? ScreenOrientation.LandscapeLeft
-                : ScreenOrientation.Portrait;
-        }
+        Screen.orientation = GlobalVariable.sceneNamesLandScape.Contains(GlobalVariable.recentScene)
+            ? ScreenOrientation.LandscapeLeft
+            : ScreenOrientation.Portrait;
+
     }
 
     public void NavigateToScene(string recentSceneName, string previousSceneName)
@@ -40,19 +34,30 @@ public class Scene_Manager : MonoBehaviour
             GlobalVariable.recentScene = recentSceneName;
             GlobalVariable.previousScene = previousSceneName;
             SceneManager.LoadScene(recentSceneName, LoadSceneMode.Single);
-            //  PlayerPrefs.SetString(recentSceneName, SceneManager.GetActiveScene().name);
         }
     }
 
     public IEnumerator WaitAndNavigate(string recentSceneName, string previousSceneName)
     {
         yield return new WaitUntil(() => GlobalVariable.ready_To_Nav_New_Scene);
-
-        if (GlobalVariable.recentScene != recentSceneName)
+        try
         {
-            Show_Toast.Instance.Set_Instance_Status_True();
             Show_Toast.Instance.ShowToast("loading", "Đang chuyển trang...");
-            NavigateToScene(recentSceneName, previousSceneName);
+
+            if (GlobalVariable.recentScene != recentSceneName)
+            {
+                Show_Toast.Instance.ShowToast("loading", "Đang chuyển trang...");
+                NavigateToScene(recentSceneName, previousSceneName);
+            }
         }
+        catch
+        {
+            Debug.LogError("Error navigating to scene: " + recentSceneName);
+        }
+        finally
+        {
+            StartCoroutine(Show_Toast.Instance.Set_Instance_Status_False());
+        }
+
     }
 }

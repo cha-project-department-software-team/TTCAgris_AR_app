@@ -3,10 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ApplicationLayer.Dtos.Module;
 using ApplicationLayer.Interfaces;
-using ApplicationLayer.Dtos.Image;
-using Unity.VisualScripting;
 using ApplicationLayer.Dtos.JB;
-using System.Diagnostics;
 using ApplicationLayer.Dtos.Device;
 using ApplicationLayer.Dtos.AdapterSpecification;
 using ApplicationLayer.Dtos.Rack;
@@ -25,7 +22,7 @@ public class ModulePresenter
     }
 
     //! Get list Module chỉ có Id và Code
-    public async void LoadListModule(string grapperId)
+    public async void LoadListModule(int grapperId)
     {
         GlobalVariable.APIRequestType.Add("GET_Module_List");
         _view.ShowLoading("Đang tải dữ liệu...");
@@ -45,7 +42,7 @@ public class ModulePresenter
                     var models = new List<ModuleInformationModel>();
                     _view.DisplayList(models);
                 }
-                _view.ShowSuccess();
+                _view.ShowSuccess("Tải danh sách thành công");
             }
             else
             {
@@ -65,24 +62,20 @@ public class ModulePresenter
     }
 
     //! GET Module Detail với đầy đủ thông tin
-    public async void LoadDetailById(string ModuleId)
+    public async void LoadDetailById(int moduleId)
     {
         GlobalVariable.APIRequestType.Add("GET_Module");
         _view.ShowLoading("Đang tải dữ liệu...");
         try
         {
-            UnityEngine.Debug.Log("Run Presenter");
-            var ModuleResponseDto = await _service.GetModuleByIdAsync(ModuleId);
+
+            UnityEngine.Debug.Log(moduleId);
+            var ModuleResponseDto = await _service.GetModuleByIdAsync(moduleId);
             if (ModuleResponseDto != null)
             {
                 var model = ConvertFromResponseDto(ModuleResponseDto);
-                if (model != null)
-                {
-                    UnityEngine.Debug.Log("Get Module Detail Successfully");
-                }
-                UnityEngine.Debug.Log(model.Name + model.Id);
                 _view.DisplayDetail(model);
-                _view.ShowSuccess();
+                _view.ShowSuccess("Tải dữ liệu thành công");
             }
             else
             {
@@ -99,7 +92,7 @@ public class ModulePresenter
             GlobalVariable.APIRequestType.Remove("GET_Module");
         }
     }
-    public async void CreateNewModule(string grapperId, ModuleInformationModel model)
+    public async void CreateNewModule(int grapperId, ModuleInformationModel model)
     {
         GlobalVariable.APIRequestType.Add("POST_Module");
         _view.ShowLoading("Đang thực hiện...");
@@ -111,7 +104,7 @@ public class ModulePresenter
 
             if (result)
             {
-                _view.ShowSuccess(); // Chỉ hiển thị thành công nếu result == true
+                _view.ShowSuccess("");
             }
             else
             {
@@ -129,7 +122,7 @@ public class ModulePresenter
         }
     }
 
-    public async void UpdateModule(string ModuleId, ModuleInformationModel model)
+    public async void UpdateModule(int moduleId, ModuleInformationModel model)
     {
         GlobalVariable.APIRequestType.Add("PUT_Module");
         _view.ShowLoading("Đang thực hiện...");
@@ -138,12 +131,12 @@ public class ModulePresenter
             UnityEngine.Debug.Log("Run Presenter");
             var dto = ConvertToRequestDto(model);
             UnityEngine.Debug.Log("Convert to Request DTO Successfully");
-            var result = await _service.UpdateModuleAsync(ModuleId, dto);
+            var result = await _service.UpdateModuleAsync(moduleId, dto);
             UnityEngine.Debug.Log("Run Service Successfully");
 
             if (result)
             {
-                _view.ShowSuccess(); // Chỉ hiển thị thành công nếu result == true
+                _view.ShowSuccess(""); // Chỉ hiển thị thành công nếu result == true
             }
             else
             {
@@ -160,16 +153,16 @@ public class ModulePresenter
             GlobalVariable.APIRequestType.Remove("PUT_Module");
         }
     }
-    public async void DeleteModule(string ModuleId)
+    public async void DeleteModule(int moduleId)
     {
         GlobalVariable.APIRequestType.Add("DELETE_Module");
         _view.ShowLoading("Đang thực hiện...");
         try
         {
-            var result = await _service.DeleteModuleAsync(ModuleId);
+            var result = await _service.DeleteModuleAsync(moduleId);
             if (result)
             {
-                _view.ShowSuccess(); // Chỉ hiển thị thành công nếu result == true
+                _view.ShowSuccess(""); // Chỉ hiển thị thành công nếu result == true
             }
             else
             {
@@ -215,13 +208,13 @@ public class ModulePresenter
                     code: Device.Code
                 )
             ).ToList() : new List<DeviceInformationModel>(),
-            moduleSpecificationModel: dto.ModuleSpecificationResponseDto != null ? new ModuleSpecificationModel(
-                id: dto.ModuleSpecificationResponseDto.Id,
-                code: dto.ModuleSpecificationResponseDto.Code
+            moduleSpecificationModel: dto.ModuleSpecificationBasicDto != null ? new ModuleSpecificationModel(
+                id: dto.ModuleSpecificationBasicDto.Id,
+                code: dto.ModuleSpecificationBasicDto.Code
             ) : null,
-            adapterSpecificationModel: dto.AdapterSpecificationResponseDto != null ? new AdapterSpecificationModel(
-                id: dto.AdapterSpecificationResponseDto.Id,
-                code: dto.AdapterSpecificationResponseDto.Code
+            adapterSpecificationModel: dto.AdapterSpecificationBasicDto != null ? new AdapterSpecificationModel(
+                id: dto.AdapterSpecificationBasicDto.Id,
+                code: dto.AdapterSpecificationBasicDto.Code
             ) : null);
     }
     private ModuleInformationModel ConvertFromBasicDto(ModuleBasicDto dto)

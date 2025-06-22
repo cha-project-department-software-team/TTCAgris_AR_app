@@ -9,14 +9,14 @@ using UnityEngine.Scripting;
 public class MccInformationModel
 {
 
-  [JsonProperty("Id")]
-  public string Id { get; set; } = string.Empty;
-  [JsonProperty("CabinetCode")]
+  [JsonProperty("id")]
+  public int Id { get; set; }
+  [JsonProperty("cabinetCode")]
   public string CabinetCode { get; set; } = string.Empty;
 
   [JsonProperty("Brand")]
   public string? Brand { get; set; }
-  [JsonProperty("ListFieldDevices")]
+  [JsonProperty("listFieldDevices")]
   public List<FieldDeviceInformationModel>? ListFieldDeviceInformation { get; set; }
 
   [JsonProperty("Note")]
@@ -24,7 +24,7 @@ public class MccInformationModel
 
   [Preserve]
 
-  public MccInformationModel(string id, string cabinetCode, string? brand, List<FieldDeviceInformationModel>? listFieldDeviceInformation, string? note)
+  public MccInformationModel(int id, string cabinetCode, string? brand, List<FieldDeviceInformationModel>? listFieldDeviceInformation, string? note)
   {
     Id = id;
     CabinetCode = cabinetCode;
@@ -39,7 +39,7 @@ public class MccInformationModel
     ListFieldDeviceInformation = listFieldDeviceInformation;
     Note = note;
   }
-  public MccInformationModel(string id, string cabinetCode)
+  public MccInformationModel(int id, string cabinetCode)
   {
     Id = id;
     CabinetCode = cabinetCode;

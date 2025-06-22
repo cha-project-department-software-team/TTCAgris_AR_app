@@ -32,11 +32,11 @@ public class RackManager : MonoBehaviour
         //! Dependency Injection
         _IRackService = ServiceLocator.Instance.RackService;
     }
-    public async void GetRackList(string RackId)
+    public async void GetRackList(int rackId)
     {
         try
         {
-            var RackList = await _IRackService.GetListRackAsync(RackId); //! Gọi _IRackService từ Application Layer
+            var RackList = await _IRackService.GetListRackAsync(rackId); //! Gọi _IRackService từ Application Layer
             if (RackList != null && RackList.Any())
             {
                 foreach (var Rack in RackList)
@@ -67,11 +67,11 @@ public class RackManager : MonoBehaviour
         }
     }
 
-    public async void GetRackById(string RackId)
+    public async void GetRackById(int rackId)
     {
         try
         {
-            var RackResponseDto = await _IRackService.GetRackByIdAsync(RackId); // Gọi Service
+            var RackResponseDto = await _IRackService.GetRackByIdAsync(rackId); // Gọi Service
             if (RackResponseDto != null)
             {
                 Debug.Log($"Rack: {RackResponseDto.Name}");
@@ -103,11 +103,11 @@ public class RackManager : MonoBehaviour
         }
     }
 
-    public async void CreateNewRack(string RackId, RackRequestDto RackRequestDto)
+    public async void CreateNewRack(int rackId, RackRequestDto RackRequestDto)
     {
         try
         {
-            bool result = await _IRackService.CreateNewRackAsync(RackId, RackRequestDto);
+            bool result = await _IRackService.CreateNewRackAsync(rackId, RackRequestDto);
             Debug.Log(result ? "Rack created successfully" : "Failed to create Rack");
             //? hiển thị Dialog hoặc showToast tại đây
         }
@@ -132,12 +132,12 @@ public class RackManager : MonoBehaviour
 
         }
     }
-    public async void UpdateRack(string RackId, RackRequestDto RackRequestDto)
+    public async void UpdateRack(int rackId, RackRequestDto RackRequestDto)
     {
-        RackId = GlobalVariable.RackId;
+        rackId = GlobalVariable.rackId;
         try
         {
-            bool result = await _IRackService.UpdateRackAsync(RackId, RackRequestDto);
+            bool result = await _IRackService.UpdateRackAsync(rackId, RackRequestDto);
             Debug.Log(result ? "Rack updated successfully" : "Failed to update Rack");
         }
 
@@ -160,12 +160,12 @@ public class RackManager : MonoBehaviour
 
         }
     }
-    public async void DeleteRack(string RackId)
+    public async void DeleteRack(int rackId)
     {
-        RackId = GlobalVariable.RackId;
+        rackId = GlobalVariable.rackId;
         try
         {
-            bool result = await _IRackService.DeleteRackAsync(RackId);
+            bool result = await _IRackService.DeleteRackAsync(rackId);
             Debug.Log(result ? "Rack deleted successfully" : "Failed to delete Rack");
         }
 

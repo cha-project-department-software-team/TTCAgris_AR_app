@@ -7,10 +7,10 @@ namespace ApplicationLayer.Interfaces
 {
     public interface IFieldDeviceService
     {
-        Task<FieldDeviceResponseDto> GetFieldDeviceByIdAsync(string fieldDeviceId);
-        Task<List<FieldDeviceBasicDto>> GetListFieldDeviceAsync(string grapperId);
-        Task<bool> CreateNewFieldDeviceAsync(string grapperId, FieldDeviceRequestDto fieldDeviceRequestDto);
-        Task<bool> UpdateFieldDeviceAsync(string fieldDeviceId, FieldDeviceRequestDto fieldDeviceRequestDto);
-        Task<bool> DeleteFieldDeviceAsync(string fieldDeviceId);
+        Task<FieldDeviceResponseDto> GetFieldDeviceByIdAsync(int fieldDeviceId);
+        Task<List<FieldDeviceBasicDto>> GetListFieldDeviceAsync(int grapperId);
+        Task<bool> CreateNewFieldDeviceAsync(int grapperId, FieldDeviceRequestDto fieldDeviceRequestDto);
+        Task<bool> UpdateFieldDeviceAsync(int fieldDeviceId, FieldDeviceRequestDto fieldDeviceRequestDto);
+        Task<bool> DeleteFieldDeviceAsync(int fieldDeviceId);
     }
 }

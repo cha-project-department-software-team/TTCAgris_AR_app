@@ -5,6 +5,9 @@ using System.Net.Http;
 using ApplicationLayer.Dtos.Image;
 using ApplicationLayer.Interfaces;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Collections;
+using System.Collections.Generic;
 
 public class ImageManager : MonoBehaviour
 {
@@ -23,7 +26,7 @@ public class ImageManager : MonoBehaviour
         //! Dependency Injection
         _IImageService = ServiceLocator.Instance.ImageService;
     }
-    public async void GetImageList(string companyId)
+    public async void GetImageList(int companyId)
     {
         try
         {
@@ -58,7 +61,7 @@ public class ImageManager : MonoBehaviour
         }
     }
 
-    public async void GetImageById(string ImageId)
+    public async void GetImageById(int ImageId)
     {
         try
         {
@@ -93,7 +96,7 @@ public class ImageManager : MonoBehaviour
         }
     }
 
-    public async void CreateNewImage(string companyId, ImageRequestDto ImageRequestDto)
+    public async void CreateNewImage(int companyId, ImageRequestDto ImageRequestDto)
     {
         try
         {
@@ -123,7 +126,7 @@ public class ImageManager : MonoBehaviour
         }
     }
 
-    public async void DeleteImage(string ImageId)
+    public async void DeleteImage(int ImageId)
     {
         try
         {
@@ -148,6 +151,30 @@ public class ImageManager : MonoBehaviour
             Debug.LogError($"Unexpected error: {ex.Message}");
             //? hiển thị Dialog hoặc showToast tại đây
 
+        }
+    }
+
+    public async void UploadNewImageFromGallery(int grapperId, Texture2D texture, string filePath, string fileName)
+    {
+        try
+        {
+            await _IImageService.UploadNewImageFromGallery(grapperId, texture, filePath, fileName);
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"Upload error: {ex.Message}");
+        }
+    }
+    public async void UploadNewImageFromCamera(int grapperId, Texture2D texture, string fileName)
+    {
+        try
+        {
+            bool result = await _IImageService.UploadNewImageFromCamera(grapperId, texture, fileName);
+            Debug.Log(result ? "Image uploaded successfully" : "Failed to upload Image");
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"Upload error: {ex.Message}");
         }
     }
 }

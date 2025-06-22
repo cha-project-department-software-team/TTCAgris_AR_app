@@ -9,32 +9,33 @@ using UnityEngine.Scripting;
 public class FieldDeviceInformationModel
 {
 
-  [JsonProperty("Id")]
-  public string Id { get; set; } = string.Empty;
-  [JsonProperty("Name")]
+  [JsonProperty("id")]
+  public int Id { get; set; }
+  [JsonProperty("name")]
   public string Name { get; set; } = string.Empty;
   [JsonProperty("Mcc")]
   public MccInformationModel? Mcc { get; set; }
 
-  [JsonProperty("RatedPower")]
+  [JsonProperty("ratedPower")]
   public string? RatedPower { get; set; }
 
-  [JsonProperty("RatedCurrent")]
+  [JsonProperty("ratedCurrent")]
   public string? RatedCurrent { get; set; }
 
-  [JsonProperty("ActiveCurrent")]
+  [JsonProperty("activeCurrent")]
   public string? ActiveCurrent { get; set; }
 
-  [JsonProperty("ListConnectionImages")]
+  [JsonProperty("listConnectionImages")]
   public List<ImageInformationModel>? ListConnectionImages { get; set; }
 
-  [JsonProperty("Note")]
+  [JsonProperty("note")]
   public string? Note { get; set; }
   [Preserve]
 
-  public FieldDeviceInformationModel(string id, string name, string? ratedPower, string? ratedCurrent, string? activeCurrent, List<ImageInformationModel>? listConnectionImages, string? note)
+  public FieldDeviceInformationModel(int id, MccInformationModel mcc, string name, string? ratedPower, string? ratedCurrent, string? activeCurrent, List<ImageInformationModel>? listConnectionImages, string? note)
   {
     Id = id;
+    Mcc = mcc;
     Name = name;
     RatedPower = ratedPower;
     RatedCurrent = ratedCurrent;
@@ -52,7 +53,7 @@ public class FieldDeviceInformationModel
     ListConnectionImages = listConnectionImages;
     Note = note;
   }
-  public FieldDeviceInformationModel(string id, string name)
+  public FieldDeviceInformationModel(int id, string name)
   {
     Id = id;
     Name = name;
@@ -66,15 +67,15 @@ public class FieldDeviceInformationModel
 
   public class FieldDevice_Basic_Model
   {
-    [JsonProperty("Id")]
-    public string Id { get; set; }
-    [JsonProperty("Name")]
+    [JsonProperty("id")]
+    public int Id { get; set; }
+    [JsonProperty("name")]
     public string Name { get; set; }
 
-    [JsonProperty("CabinetCode")]
+    [JsonProperty("cabinetCode")]
     public string CabinetCode { get; set; }
 
-    public FieldDevice_Basic_Model(string id, string name, string cabinetCode)
+    public FieldDevice_Basic_Model(int id, string name, string cabinetCode)
     {
       Id = id;
       Name = name;

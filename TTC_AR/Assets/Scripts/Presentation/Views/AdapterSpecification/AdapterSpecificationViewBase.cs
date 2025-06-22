@@ -5,7 +5,7 @@ public interface IAdapterSpecificationView
     void ShowLoading(string title = "Đang tải dữ liệu");
     void HideLoading();
     void ShowError(string message);
-    void ShowSuccess();
+    void ShowSuccess(string message);
     void DisplayList(List<AdapterSpecificationModel> models);
     void DisplayDetail(AdapterSpecificationModel model);
     void DisplayCreateResult(bool success);

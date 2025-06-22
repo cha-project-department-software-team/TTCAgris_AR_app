@@ -10,28 +10,28 @@ namespace Domain.Entities
   [Preserve]
   public class GrapperEntity
   {
-    [JsonProperty("Id")]
-    public string Id { get; set; } = string.Empty;
+    [JsonProperty("id")]
+    public int Id { get; set; }
 
-    [JsonProperty("Name")]
+    [JsonProperty("name")]
     public string Name { get; set; } = string.Empty;
 
-    // [JsonProperty("Rack", NullValueHandling = NullValueHandling.Ignore)]
-    [JsonProperty("ListRacks")]
+    // [JsonProperty("rack", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonProperty("listRacks")]
     public List<RackEntity>? RackEntities { get; set; }
-    // [JsonProperty("Rack", NullValueHandling = NullValueHandling.Ignore)]
-    [JsonProperty("ListModules")]
+    // [JsonProperty("rack", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonProperty("listModules")]
     public List<ModuleEntity>? ModuleEntities { get; set; }
     // [JsonProperty("Devices", NullValueHandling = NullValueHandling.Ignore)]
-    [JsonProperty("ListDevices")]
+    [JsonProperty("listDevices")]
     public List<DeviceEntity>? DeviceEntities { get; set; }
-    // [JsonProperty("JBs", NullValueHandling = NullValueHandling.Ignore)]
-    [JsonProperty("ListJBs")]
+    // [JsonProperty("jBs", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonProperty("listJBs")]
     public List<JBEntity>? JBEntities { get; set; }
-    // [JsonProperty("Mccs", NullValueHandling = NullValueHandling.Ignore)]
-    [JsonProperty("ListMccs")]
+    // [JsonProperty("mccs", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonProperty("listMccs")]
     public List<MccEntity>? MccEntities { get; set; }
-    [JsonProperty("ListFieldDevices")]
+    [JsonProperty("listFieldDevices")]
     public List<FieldDeviceEntity>? FieldDeviceEntities { get; set; }
 
 
@@ -121,7 +121,7 @@ namespace Domain.Entities
 
 
     [Preserve]
-    public GrapperEntity(string id, string name)
+    public GrapperEntity(int id, string name)
     {
       Id = id;
       Name = string.IsNullOrEmpty(name) ? throw new ArgumentNullException(nameof(name)) : name;
@@ -136,7 +136,7 @@ namespace Domain.Entities
     }
 
     [Preserve]
-    public GrapperEntity(string id, string name, List<RackEntity>? rackEntities, List<ModuleEntity>? moduleEntities, List<DeviceEntity>? deviceEntities, List<JBEntity>? jbEntities, List<MccEntity>? mccEntities, List<FieldDeviceEntity>? fieldDeviceEntities)
+    public GrapperEntity(int id, string name, List<RackEntity>? rackEntities, List<ModuleEntity>? moduleEntities, List<DeviceEntity>? deviceEntities, List<JBEntity>? jbEntities, List<MccEntity>? mccEntities, List<FieldDeviceEntity>? fieldDeviceEntities)
     {
       Id = id;
       Name = string.IsNullOrEmpty(name) ? throw new ArgumentNullException(nameof(name)) : name;
@@ -167,9 +167,9 @@ namespace Domain.Entities
       FieldDeviceEntities = (fieldDeviceEntities == null || (fieldDeviceEntities != null && fieldDeviceEntities.Count <= 0))
       ? new List<FieldDeviceEntity>() : fieldDeviceEntities;
     }
-    // public GrapperEntity(string id, string name, List<RackEntity> rackEntities, List<DeviceEntity> deviceEntities, List<JBEntity> jbEntities, List<MccEntity> mccEntities, List<ModuleSpecificationEntity> moduleSpecificationEntities, List<AdapterSpecificationEntity> adapterSpecificationEntities)
+    // public GrapperEntity(int id, string name, List<RackEntity> rackEntities, List<DeviceEntity> deviceEntities, List<JBEntity> jbEntities, List<MccEntity> mccEntities, List<ModuleSpecificationEntity> moduleSpecificationEntities, List<AdapterSpecificationEntity> adapterSpecificationEntities)
     // {
-    //   if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Name is required.", nameof(name));
+    //   if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("name is required.", nameof(name));
     //   Id = id;
     //   Name = name == "" ? throw new ArgumentNullException(nameof(name)) : name;
     //   RackEntities = rackEntities;

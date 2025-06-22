@@ -55,21 +55,21 @@ public class CreateRackSettingView : MonoBehaviour, IRackView
 
     };
 
-    // void Awake()
-    // {
-    //     var RackManager = FindObjectOfType<RackManager>();
-    //     _presenter = new RackPresenter(this, RackManager._IRackService);
-    // }
+    private Sprite successConfirmButtonSprite;
+    private int grapperId;
+
     void Awake()
     {
-        // var DeviceManager = FindObjectOfType<DeviceManager>();
         _presenter = new RackPresenter(this, ManagerLocator.Instance.RackManager._IRackService);
-        // DeviceManager._IDeviceService
     }
 
     void OnEnable()
     {
-        ResetAllInputFields();
+        grapperId = GlobalVariable.GrapperId;
+        successConfirmButtonSprite = Resources.Load<Sprite>("images/UIimages/Success_Back_Button_Background");
+        Debug.Log(successConfirmButtonSprite);
+
+        RenewView();
 
         AddButtonListeners(initialize_Rack_List_Option_Selection.Module_List_Selection_Option_Content_Transform, "Modules");
 
@@ -93,31 +93,33 @@ public class CreateRackSettingView : MonoBehaviour, IRackView
 
     private void OnSubmitButtonClick()
     {
-        RackInformationModel = new RackInformationModel(
-            name: Name_TextField.text,
-            listModuleInformationModel: temp_Dictionary_ModuleModel.Values.Any() ? temp_Dictionary_ModuleModel.Values.ToList() : new List<ModuleInformationModel>()
-                );
         if (string.IsNullOrEmpty(Name_TextField.text))
         {
             OpenErrorDialog("Vui lòng nhập mã Rack");
             return;
         }
-        if (GlobalVariable.temp_List_RackInformationModel.Any(x => x.Name == Name_TextField.text))
+        if (GlobalVariable.temp_Dictionary_RackInformationModel.ContainsKey(Name_TextField.text))
         {
-            OpenErrorDialog("Mã Rack đã tồn tại", "Vui lòng nhập mã Rack khác");
+            OpenErrorDialog("Rack IO này đã tồn tại", "Vui lòng nhập mã Rack IO khác");
             return;
         }
-        else
+
+        RackInformationModel = new RackInformationModel(
+            name: Name_TextField.text,
+            listModuleInformationModel: temp_Dictionary_ModuleModel.Any() ? temp_Dictionary_ModuleModel.Values.ToList() : new List<ModuleInformationModel>()
+                );
+
+        if (RackInformationModel != null)
         {
-            _presenter.CreateNewRack(GlobalVariable.GrapperId, RackInformationModel);
+            _presenter.CreateNewRack(grapperId, RackInformationModel);
         }
     }
 
     private void RenewView()
     {
+        Module_Item_Prefab.SetActive(false);
 
         ClearActiveChildren(List_Modules_Parent_Grid_Layout_Group);
-
         ResetAllInputFields();
 
         temp_Dictionary_ModuleModel.Clear();
@@ -203,6 +205,7 @@ public class CreateRackSettingView : MonoBehaviour, IRackView
         // if (!initialize_Module_List_Option_Selection.Selection_Option_Canvas.activeSelf)
         //     initialize_Module_List_Option_Selection.Selection_Option_Canvas.SetActive(true);
         var newItem = Instantiate(itemPrefab, parentGroup.transform);
+        newItem.SetActive(true);
         temp_Item_Transform = newItem.transform;
         var button = newItem.GetComponentInChildren<Button>();
         button.onClick.AddListener(() => DeselectItem(newItem, field));
@@ -215,8 +218,6 @@ public class CreateRackSettingView : MonoBehaviour, IRackView
         selectedGameObjects[field].Remove(item);
         temp_Dictionary_ModuleModel.Remove(item.GetComponentInChildren<TMP_Text>().text);
         Destroy(item);
-
-
     }
 
     public void CloseListSelection(string field)
@@ -239,7 +240,6 @@ public class CreateRackSettingView : MonoBehaviour, IRackView
             case "Modules":
                 initialize_Rack_List_Option_Selection.selection_List_Module_Panel.SetActive(false);
                 break;
-
         }
         // initialize_Rack_List_Option_Selection.Selection_Option_Canvas.SetActive(false);
     }
@@ -301,9 +301,19 @@ public class CreateRackSettingView : MonoBehaviour, IRackView
         var confirmButton = horizontalGroupTransform.Find("Confirm_Button").GetComponent<Button>();
         var backButton = horizontalGroupTransform.Find("Back_Button").GetComponent<Button>();
 
-        confirmButton.GetComponent<Image>().sprite = Resources.Load<Sprite>("images/UIimages/Success_Back_Button_Background");
-        confirmButton.transform.Find("Text").GetComponent<TMP_Text>().text = "Tiếp tục thêm mới";
-        backButton.transform.Find("Text").GetComponent<TMP_Text>().text = "Trở lại danh sách";
+
+        var confirmButtonSprite = confirmButton.GetComponent<Image>();
+        confirmButtonSprite.sprite = successConfirmButtonSprite;
+
+        var confirmButtonText = confirmButton.GetComponentInChildren<TMP_Text>();
+        var backButtonText = backButton.GetComponentInChildren<TMP_Text>();
+
+        // var colors = confirmButton.colors;
+        // colors.normalColor = new Color32(92, 237, 115, 255); // #5CED73 in RGB
+        // confirmButton.colors = colors;
+
+        confirmButtonText.text = "Tiếp tục thêm mới";
+        backButtonText.text = "Trở lại danh sách";
 
         confirmButton.onClick.RemoveAllListeners();
         backButton.onClick.RemoveAllListeners();

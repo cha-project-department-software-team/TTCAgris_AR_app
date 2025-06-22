@@ -22,7 +22,7 @@ namespace ApplicationLayer.UseCases
         }
         //! Select(), ToList(), ToDictionary() đề phải duyệt qua toàn bộ danh sách, duyệt tới đâu lưu tới đó 
         //! => dùng Foreach để chỉ quét 1 lần, tối ưu được thời gian xử lý
-        public async Task<List<JBBasicDto>> GetListJBGeneralAsync(string grapperId)
+        public async Task<List<JBBasicDto>> GetListJBGeneralAsync(int grapperId)
         {
             try
             {
@@ -47,37 +47,48 @@ namespace ApplicationLayer.UseCases
                     dictJBInfo[dto.Name] = model;
                 }
 
-                GlobalVariable.temp_List_JBInformationModel = listJBInfo;
+                GlobalVariable.temp_ListJBInformationModel = listJBInfo;
                 GlobalVariable.temp_Dictionary_JBInformationModel = dictJBInfo;
 
                 return JBBasicDtos;
             }
-            catch (ArgumentException)
+            catch (ArgumentException exception)
             {
-                throw; // Ném lại lỗi validation cho Unity xử lý
+                throw new ApplicationException("Failed to get JB list", exception); // Ném lại lỗi validation cho Unity xử lý
             }
             catch (Exception ex)
             {
-                throw new ApplicationException("Failed to get JB list", ex);
+                throw new ApplicationException("Failed to get JB list", ex); // Bao bọc lỗi từ Repository
             }
         }
 
 
 
         //! Dùng IEnumerable<JBGeneralDto thay cho List<JBGeneralDto> vì không cần tạo ra List để sử dụng trong hàm ngay
-        public async Task<IEnumerable<JBGeneralDto>> GetListJBInforAsync(string grapperId)
+        public async Task<List<JBGeneralDto>> GetListJBInforAsync(int grapperId)
         {
-            var jBEntities = await _IJBRepository.GetListJBInformationAsync(grapperId);
-            if (jBEntities == null || !jBEntities.Any())
+            try
             {
-                UnityEngine.Debug.LogWarning("No jBEntities found.");
+                var jBEntities = await _IJBRepository.GetListJBInformationAsync(grapperId);
+                if (jBEntities == null || !jBEntities.Any())
+                {
+                    // UnityEngine.Debug.LogWarning("No jBEntities found.");
+                    throw new ApplicationException("Failed to get JB list");
+                }
+                return jBEntities.Select(jBEntity => MapToGeneralDto(jBEntity)).ToList();
             }
-
-            return jBEntities.Select(MapToGeneralDto);
+            catch (ArgumentException exception)
+            {
+                throw new ApplicationException("Failed to get JB list", exception); // Ném lại lỗi validation cho Unity xử lý
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Failed to get JB list", ex); // Bao bọc lỗi từ Repository
+            }
         }
 
 
-        public async Task<JBResponseDto> GetJBByIdAsync(string JBId)
+        public async Task<JBResponseDto> GetJBByIdAsync(int JBId)
         {
             try
             {
@@ -93,23 +104,23 @@ namespace ApplicationLayer.UseCases
                     return jbResponseDto;
                 }
             }
-            catch (ArgumentException)
+            catch (ArgumentException exception)
             {
-                throw; // Ném lại lỗi validation cho Unity xử lý
+                throw new ApplicationException("Failed to get JB", exception); // Ném lại lỗi validation cho Unity xử lý
             }
             catch (Exception ex)
             {
                 throw new ApplicationException("Failed to get JB", ex); // Bao bọc lỗi từ Repository
             }
         }
-        public async Task<bool> CreateNewJBAsync(string grapperId, JBRequestDto requestDto)
+        public async Task<bool> CreateNewJBAsync(int grapperId, JBRequestDto requestDto)
         {
             try
             {
                 // Validate
                 if (string.IsNullOrEmpty(requestDto.Name))
                 {
-                    throw new ArgumentException("Name cannot be empty");
+                    throw new ArgumentException("name cannot be empty");
                 }
                 // Ánh xạ từ JBRequestDto sang JBEntity để check các nghiệp vụ
                 var jbEntity = MapRequestToEntity(requestDto);
@@ -129,21 +140,21 @@ namespace ApplicationLayer.UseCases
             }
             catch (ArgumentException)
             {
-                throw; // Ném lại lỗi validation cho Unity xử lý
+                throw new ApplicationException("Failed to create JB cause name is empty"); // Ném lại lỗi validation cho Unity xử lý
             }
             catch (Exception ex)
             {
                 throw new ApplicationException("Failed to create JB", ex); // Bao bọc lỗi từ Repository
             }
         }
-        public async Task<bool> UpdateJBAsync(string JBId, JBRequestDto requestDto)
+        public async Task<bool> UpdateJBAsync(int JBId, JBRequestDto requestDto)
         {
             try
             {
                 // Validate
                 if (string.IsNullOrEmpty(requestDto.Name))
                 {
-                    throw new ArgumentException("Name cannot be empty");
+                    throw new ArgumentException("name cannot be empty");
                 }
                 // Ánh xạ từ JBRequestDto sang JBEntity để check các nghiệp vụ
                 var jbEntity = MapRequestToEntity(requestDto);
@@ -163,14 +174,14 @@ namespace ApplicationLayer.UseCases
             }
             catch (ArgumentException)
             {
-                throw; // Ném lại lỗi validation cho Unity xử lý
+                throw new ApplicationException("Failed to update JB cause name is empty"); // Ném lại lỗi validation cho Unity xử lý
             }
             catch (Exception ex)
             {
-                throw new ApplicationException("Failed to create JB", ex); // Bao bọc lỗi từ Repository
+                throw new ApplicationException("Failed to update JB", ex); // Bao bọc lỗi từ Repository
             }
         }
-        public async Task<bool> DeleteJBAsync(string JBId)
+        public async Task<bool> DeleteJBAsync(int JBId)
         {
             try
             {
@@ -179,12 +190,13 @@ namespace ApplicationLayer.UseCases
             }
             catch (ArgumentException)
             {
-                throw; // Ném lại lỗi validation cho Unity xử lý
+                throw new ApplicationException("Failed to delete JB cause name is empty"); // Ném lại lỗi validation cho Unity xử lý
             }
             catch (Exception ex)
             {
                 throw new ApplicationException("Failed to delete JB", ex); // Bao bọc lỗi từ Repository
             }
+
         }
 
 
@@ -192,12 +204,12 @@ namespace ApplicationLayer.UseCases
         private JBEntity MapRequestToEntity(JBRequestDto jBRequestDto)
         {
             return new JBEntity(
-                jBRequestDto.Name,
-                 string.IsNullOrEmpty(jBRequestDto.Location) ? "chưa cập nhật" : jBRequestDto.Location,
-                jBRequestDto.DeviceBasicDtos == null ? null : jBRequestDto.DeviceBasicDtos.Select(d => new DeviceEntity(d.Id, d.Code)).ToList(),
-                jBRequestDto.ModuleBasicDtos == null ? null : jBRequestDto.ModuleBasicDtos.Select(m => new ModuleEntity(m.Id, m.Name)).ToList(),
-                jBRequestDto.OutdoorImageBasicDto == null ? null : new ImageEntity(jBRequestDto.OutdoorImageBasicDto.Id, jBRequestDto.OutdoorImageBasicDto.Name),
-                jBRequestDto.ConnectionImageBasicDtos == null ? null : jBRequestDto.ConnectionImageBasicDtos.Select(i => new ImageEntity(i.Id, i.Name)).ToList()
+             name: jBRequestDto.Name,
+            location: string.IsNullOrEmpty(jBRequestDto.Location) ? "Được ghi chú trên sơ đồ" : jBRequestDto.Location,
+            devices: jBRequestDto.DeviceBasicDtos.Any() ? jBRequestDto.DeviceBasicDtos.Select(d => new DeviceEntity(d.Id, d.Code)).ToList() : new List<DeviceEntity>(),
+            modules: jBRequestDto.ModuleBasicDtos.Any() ? jBRequestDto.ModuleBasicDtos.Select(m => new ModuleEntity(m.Id, m.Name)).ToList() : new List<ModuleEntity>(),
+            outdoorImage: jBRequestDto.OutdoorImageBasicDto != null ? new ImageEntity(jBRequestDto.OutdoorImageBasicDto.Id, jBRequestDto.OutdoorImageBasicDto.Name) : null,
+            connectionImages: jBRequestDto.ConnectionImageBasicDtos.Any() ? jBRequestDto.ConnectionImageBasicDtos.Select(i => new ImageEntity(i.Id, i.Name)).ToList() : new List<ImageEntity>()
             );
         }
 
@@ -206,40 +218,32 @@ namespace ApplicationLayer.UseCases
         private JBResponseDto MapToResponseDto(JBEntity jBEntity)
         {
             return new JBResponseDto(
-                jBEntity.Id,
+               id: jBEntity.Id,
 
-                jBEntity.Name,
+              name: jBEntity.Name,
 
-                jBEntity.Location ?? "chưa cập nhật",
-
-               (jBEntity.DeviceEntities == null || (jBEntity.DeviceEntities != null && jBEntity.DeviceEntities.Count <= 0)) ?
-                 new List<DeviceBasicDto>() : jBEntity.DeviceEntities.Select(d => new DeviceBasicDto(d.Id, d.Code)).ToList(),
-
-                (jBEntity.ModuleEntities == null || (jBEntity.ModuleEntities != null && jBEntity.ModuleEntities.Count <= 0)) ?
-                 new List<ModuleBasicDto>() : jBEntity.ModuleEntities.Select(m => new ModuleBasicDto(m.Id, m.Name)).ToList(),
-
-                jBEntity.OutdoorImageEntity == null ?
-                 null : new ImageResponseDto(jBEntity.OutdoorImageEntity.Id, jBEntity.OutdoorImageEntity.Name, jBEntity.OutdoorImageEntity.Url),
-
-                (jBEntity.ConnectionImageEntities == null || (jBEntity.ConnectionImageEntities != null && jBEntity.ConnectionImageEntities.Count <= 0)) ?
-                 new List<ImageResponseDto>() : jBEntity.ConnectionImageEntities.Select(i => new ImageResponseDto(i.Id, i.Name, i.Url)).ToList()
+              location: string.IsNullOrEmpty(jBEntity.Location) ? "Được ghi chú trong sơ đồ" : jBEntity.Location,
+                deviceBasicDtos: jBEntity.DeviceEntities.Any() ?
+             jBEntity.DeviceEntities.Select(d => new DeviceBasicDto(d.Id, d.Code)).ToList() : new List<DeviceBasicDto>(),
+                moduleBasicDtos: jBEntity.ModuleEntities.Any() ?
+                    jBEntity.ModuleEntities.Select(m => new ModuleBasicDto(m.Id, m.Name)).ToList() : new List<ModuleBasicDto>(),
+                outdoorImageBasicDto: jBEntity.OutdoorImageEntity != null ?
+                        new ImageBasicDto(jBEntity.OutdoorImageEntity.Id, jBEntity.OutdoorImageEntity.Name) : null,
+                connectionImageBasicDtos: jBEntity.ConnectionImageEntities.Any() ?
+                     jBEntity.ConnectionImageEntities.Select(i => new ImageBasicDto(i.Id, i.Name)).ToList() : new List<ImageBasicDto>()
             );
         }
         private JBGeneralDto MapToGeneralDto(JBEntity jBEntity)
         {
             return new JBGeneralDto(
                 id: jBEntity.Id,
-
               name: jBEntity.Name,
-
-          location: jBEntity.Location ?? "chưa cập nhật",
-
-         outdoorImageResponseDto: jBEntity.OutdoorImageEntity == null ?
-                 null : new ImageResponseDto(jBEntity.OutdoorImageEntity.Id, jBEntity.OutdoorImageEntity.Name, jBEntity.OutdoorImageEntity.Url),
-
-            connectionImageResponseDtos: (jBEntity.ConnectionImageEntities == null || (jBEntity.ConnectionImageEntities != null && jBEntity.ConnectionImageEntities.Count <= 0)) ?
-                 new List<ImageResponseDto>() : jBEntity.ConnectionImageEntities.Select(i => new ImageResponseDto(i.Id, i.Name, i.Url)).ToList()
-             );
+          location: string.IsNullOrEmpty(jBEntity.Location) ? "Được ghi chú trong sơ đồ" : jBEntity.Location,
+           outdoorImageBasicDto: jBEntity.OutdoorImageEntity != null ?
+                        new ImageBasicDto(jBEntity.OutdoorImageEntity.Id, jBEntity.OutdoorImageEntity.Name) : null,
+           connectionImageBasicDtos: jBEntity.ConnectionImageEntities.Any() ?
+            jBEntity.ConnectionImageEntities.Select(i => new ImageBasicDto(i.Id, i.Name)).ToList() : new List<ImageBasicDto>()
+            );
         }
         private JBBasicDto MapToBasicDto(JBEntity jBEntity)
         {

@@ -22,7 +22,7 @@
 //     public Button confirmButton;
 //     public GameObject panelDialog;
 //     public List<TMP_InputField> inputFields = new List<TMP_InputField>();
-//     private string id_Of_Device_in_Globals;
+//     private int id_Of_Device_in_Globals;
 
 //     [Header("Set Interactive false To these objects")]
 

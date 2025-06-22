@@ -5,7 +5,7 @@ public interface IModuleView
     void ShowLoading(string title = "Loading...");
     void HideLoading();
     void ShowError(string message);
-    void ShowSuccess();
+    void ShowSuccess(string message);
     void DisplayList(List<ModuleInformationModel> models);
     void DisplayDetail(ModuleInformationModel model);
     void DisplayCreateResult(bool success);

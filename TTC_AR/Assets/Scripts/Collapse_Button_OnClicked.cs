@@ -14,48 +14,52 @@ public class Collapse_Button_OnClicked : MonoBehaviour
     void Start()
     {
         int count = optionGameObjects.Count;
+
+        // Initialize lists with capacity to avoid resizing
         collapsedStatus = new List<bool>(new bool[count]);
         arrowIcons = new List<RectTransform>(count);
         arrowInitialEulerAngles = new List<Vector3>(count);
 
         for (int i = 0; i < count; i++)
         {
+            // Cache arrow icon RectTransform
             RectTransform arrowIcon = collapseButtons[i].transform.Find("Arrow_Icon").GetComponent<RectTransform>();
             arrowIcons.Add(arrowIcon);
             arrowInitialEulerAngles.Add(arrowIcon.localEulerAngles);
 
-            int index = i;
-            collapseButtons[i].GetComponent<Button>().onClick.AddListener(() => CollapseBtnOnClicked(index));
-            functionButtons[i].GetComponent<Button>().onClick.AddListener(() => FunctionBtnOnClicked(index));
+            // Cache buttons and add listeners
+            Button collapseButton = collapseButtons[i].GetComponent<Button>();
+            Button functionButton = functionButtons[i].GetComponent<Button>();
+
+            int index = i; // Avoid closure issue
+            collapseButton.onClick.AddListener(() => CollapseBtnOnClicked(index));
+            functionButton.onClick.AddListener(() => FunctionBtnOnClicked(index));
         }
     }
+
     void OnDestroy()
     {
-        for (int i = 0; i < collapseButtons.Count; i++)
+        // Remove all listeners to avoid memory leaks
+        foreach (var collapseButton in collapseButtons)
         {
-            collapseButtons[i].GetComponent<Button>().onClick.RemoveAllListeners();
+            collapseButton.GetComponent<Button>().onClick.RemoveAllListeners();
         }
     }
+
     public void CollapseBtnOnClicked(int buttonIndex)
     {
         bool isCollapsed = !collapsedStatus[buttonIndex];
         collapsedStatus[buttonIndex] = isCollapsed;
+
+        // Update arrow rotation and function button visibility
         arrowIcons[buttonIndex].localEulerAngles = new Vector3(0, 0, isCollapsed ? 180 : 0);
         functionButtons[buttonIndex].SetActive(isCollapsed);
-        Debug.Log("Button is collapsed: " + buttonIndex + ":" + isCollapsed);
+
+        Debug.Log($"Button is collapsed: {buttonIndex} : {isCollapsed}");
     }
 
     public void FunctionBtnOnClicked(int buttonIndex)
     {
-        Debug.Log("Function button is clicked: " + buttonIndex);
+        Debug.Log($"Function button is clicked: {buttonIndex}");
     }
-    private void NavigateToSettingScene()
-    {
-        Debug.Log("Navigate to setting scene");
-
-    }
-    // private void NavigateToSettingScene()
-    // {
-
-    // }
 }

@@ -23,7 +23,7 @@ public class JBPresenter
 
 
     //! Get list JB nhưng chỉ có Id và Name
-    public async void LoadListJBGeneral(string grapperId)
+    public async void LoadListJBGeneral(int grapperId)
     {
         GlobalVariable.APIRequestType.Add("GET_JB_List_General");
 
@@ -48,13 +48,13 @@ public class JBPresenter
             }
             else
             {
-                _view.ShowError("No JBs found");
+                _view.ShowError("Đã có lỗi xảy ra khi tải danh sách. Vui lòng thử lại sau");
             }
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            _view.ShowError($"Error: {ex.Message}");
-            UnityEngine.Debug.Log("Error: " + ex.Message);
+            _view.ShowError("Đã có lỗi xảy ra khi tải danh sách. Vui lòng thử lại sau");
+            _view.HideLoading();
         }
         finally
         {
@@ -64,7 +64,7 @@ public class JBPresenter
     }
 
     //! Get list JB nhưng không có list Devices và List Modules
-    public async void LoadListJBInformation(string grapperId)
+    public async void LoadListJBInformation(int grapperId)
     {
         GlobalVariable.APIRequestType.Add("GET_JB_List_Information");
         _view.ShowLoading("Đang tải dữ liệu...");
@@ -76,9 +76,7 @@ public class JBPresenter
                 if (jbGeneralDtos.Any())
                 {
                     var models = jbGeneralDtos.Select(dto => ConvertFromGeneralDto(dto)).ToList();
-
                     _view.DisplayList(models);
-
                 }
                 else
                 {
@@ -90,13 +88,12 @@ public class JBPresenter
             }
             else
             {
-                _view.ShowError("No JBs found");
+                _view.ShowError("Đã có lỗi xảy ra khi tải danh sách. Vui lòng thử lại sau");
             }
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            _view.ShowError($"Error: {ex.Message}");
-            UnityEngine.Debug.Log("Error: " + ex.Message);
+            _view.ShowError("Đã có lỗi xảy ra khi tải danh sách. Vui lòng thử lại sau");
         }
         finally
         {
@@ -106,13 +103,13 @@ public class JBPresenter
     }
 
     //! GET JB Detail với đầy đủ thông tin
-    public async void LoadDetailById(string JBId)
+    public async void LoadDetailById(int JBId)
     {
         GlobalVariable.APIRequestType.Add("GET_JB");
         _view.ShowLoading("Đang tải dữ liệu...");
         try
         {
-            var jBResponseDto = await _service.GetJBByIdAsync(JBId.ToString());
+            var jBResponseDto = await _service.GetJBByIdAsync(JBId);
             if (jBResponseDto != null)
             {
                 var model = ConvertFromResponseDto(jBResponseDto);
@@ -121,12 +118,13 @@ public class JBPresenter
             }
             else
             {
-                _view.ShowError("JB not found");
+                _view.ShowError("Đã có lỗi xảy ra khi tải dữ liệu");
             }
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            _view.ShowError($"Error: {ex.Message}");
+            _view.ShowError("Đã có lỗi xảy ra khi tải dữ liệu");
+            _view.HideLoading();
         }
         finally
         {
@@ -134,7 +132,7 @@ public class JBPresenter
             GlobalVariable.APIRequestType.Remove("GET_JB");
         }
     }
-    public async void CreateNewJB(string grapperId, JBInformationModel model)
+    public async void CreateNewJB(int grapperId, JBInformationModel model)
     {
         GlobalVariable.APIRequestType.Add("POST_JB");
         _view.ShowLoading("Đang thực hiện...");
@@ -148,7 +146,7 @@ public class JBPresenter
             }
             else
             {
-                _view.ShowError("Create New JB failed");
+                _view.ShowError("Đã có lỗi xảy ra khi tạo tủ JB mới. Vui lòng thử lại sau.");
             }
         }
         catch (Exception ex)
@@ -162,7 +160,7 @@ public class JBPresenter
         }
     }
 
-    public async void UpdateJB(string JBId, JBInformationModel model)
+    public async void UpdateJB(int JBId, JBInformationModel model)
     {
         GlobalVariable.APIRequestType.Add("PUT_JB");
         _view.ShowLoading("Đang thực hiện...");
@@ -176,7 +174,7 @@ public class JBPresenter
             }
             else
             {
-                _view.ShowError("Update JB failed");
+                _view.ShowError("Đã có lỗi xảy ra khi Cập nhật tủ JB. Vui lòng thử lại sau.");
             }
         }
         catch (Exception ex)
@@ -189,7 +187,7 @@ public class JBPresenter
             GlobalVariable.APIRequestType.Remove("PUT_JB");
         }
     }
-    public async void DeleteJB(string JBId)
+    public async void DeleteJB(int JBId)
     {
         GlobalVariable.APIRequestType.Add("DELETE_JB");
         _view.ShowLoading("Đang thực hiện...");
@@ -202,7 +200,7 @@ public class JBPresenter
             }
             else
             {
-                _view.ShowError("Delete JB failed");
+                _view.ShowError("Đã có lỗi xảy ra khi xóa tủ JB. Vui lòng thử lại sau.");
             }
         }
         catch (Exception ex)
@@ -224,7 +222,7 @@ public class JBPresenter
         return new JBInformationModel(
             id: dto.Id,
             name: dto.Name,
-            location: dto.Location,
+            location: string.IsNullOrEmpty(dto.Location) ? "Được ghi chú trên sơ đồ" : dto.Location,
             listDeviceInformation: dto.DeviceBasicDtos?.Select(deviceDto => new DeviceInformationModel(
                 id: deviceDto.Id,
               code: deviceDto.Code
@@ -233,16 +231,18 @@ public class JBPresenter
             listModuleInformation: dto.ModuleBasicDtos?.Select(moduleDto => new ModuleInformationModel(
                 id: moduleDto.Id,
                 name: moduleDto.Name)).ToList(),
-            outdoorImage: dto.OutdoorImageResponseDto != null ? new ImageInformationModel(
-                 id: dto.OutdoorImageResponseDto.Id,
-               name: dto.OutdoorImageResponseDto.Name,
-                url: dto.OutdoorImageResponseDto.Url
+            outdoorImage: dto.OutdoorImageBasicDto != null ? new ImageInformationModel(
+                 id: dto.OutdoorImageBasicDto.Id,
+               name: dto.OutdoorImageBasicDto.Name
+            //    ,
+            //     url: dto.OutdoorImageBasicDto.Url
             ) : null,
 
-            listConnectionImages: dto.ConnectionImageResponseDtos?.Select(imageDto => new ImageInformationModel(
+            listConnectionImages: dto.ConnectionImageBasicDtos?.Select(imageDto => new ImageInformationModel(
                 id: imageDto.Id,
-               name: imageDto.Name,
-                url: imageDto.Url
+               name: imageDto.Name
+            //    ,
+            //     url: imageDto.Url
             )).ToList()
         );
     }
@@ -251,17 +251,19 @@ public class JBPresenter
         return new JBInformationModel(
             id: dto.Id,
             name: dto.Name,
-            location: dto.Location,
-            outdoorImage: dto.OutdoorImageResponseDto != null ? new ImageInformationModel(
-                 id: dto.OutdoorImageResponseDto.Id,
-               name: dto.OutdoorImageResponseDto.Name,
-                url: dto.OutdoorImageResponseDto.Url
+            location: string.IsNullOrEmpty(dto.Location) ? "Được ghi chú trên sơ đồ" : dto.Location,
+            outdoorImage: dto.OutdoorImageBasicDto != null ? new ImageInformationModel(
+                 id: dto.OutdoorImageBasicDto.Id,
+               name: dto.OutdoorImageBasicDto.Name
+            //    ,
+            //     url: dto.OutdoorImageBasicDto.Url
             ) : null,
 
-            listConnectionImages: dto.ConnectionImageResponseDtos?.Select(imageDto => new ImageInformationModel(
+            listConnectionImages: dto.ConnectionImageBasicDtos?.Select(imageDto => new ImageInformationModel(
                 id: imageDto.Id,
-               name: imageDto.Name,
-                url: imageDto.Url
+               name: imageDto.Name
+            //    ,
+            //     url: imageDto.Url
             )).ToList()
 
         );
@@ -280,7 +282,7 @@ public class JBPresenter
         return new JBRequestDto(
             name: model.Name,
 
-            location: model.Location,
+            location: string.IsNullOrEmpty(model.Location) ? "Được ghi chú trên sơ đồ" : model.Location,
 
             deviceBasicDtos: model.ListDeviceInformation?.Select(deviceModel => new DeviceBasicDto(
                 id: deviceModel.Id,

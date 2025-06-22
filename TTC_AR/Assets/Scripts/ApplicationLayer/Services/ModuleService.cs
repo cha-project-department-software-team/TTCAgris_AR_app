@@ -17,24 +17,24 @@ namespace ApplicationLayer.Services
         }
 
         //! Dữ liệu trả về là Dto
-        public async Task<ModuleResponseDto> GetModuleByIdAsync(string moduleId)
+        public async Task<ModuleResponseDto> GetModuleByIdAsync(int moduleId)
         {
             return await _moduleUseCase.GetModuleByIdAsync(moduleId);
         }
 
-        public async Task<List<ModuleBasicDto>> GetListModuleAsync(string grapperId)
+        public async Task<List<ModuleBasicDto>> GetListModuleAsync(int grapperId)
         {
             return await _moduleUseCase.GetListModuleAsync(grapperId);
         }
-        public async Task<bool> CreateNewModuleAsync(string grapperId, ModuleRequestDto moduleRequestDto)
+        public async Task<bool> CreateNewModuleAsync(int grapperId, ModuleRequestDto moduleRequestDto)
         {
             return await _moduleUseCase.CreateNewModuleAsync(grapperId, moduleRequestDto);
         }
-        public async Task<bool> UpdateModuleAsync(string ModuleId, ModuleRequestDto moduleRequestDto)
+        public async Task<bool> UpdateModuleAsync(int moduleId, ModuleRequestDto moduleRequestDto)
         {
-            return await _moduleUseCase.UpdateModuleAsync(ModuleId, moduleRequestDto);
+            return await _moduleUseCase.UpdateModuleAsync(moduleId, moduleRequestDto);
         }
-        public async Task<bool> DeleteModuleAsync(string moduleId)
+        public async Task<bool> DeleteModuleAsync(int moduleId)
         {
             return await _moduleUseCase.DeleteModuleAsync(moduleId);
         }

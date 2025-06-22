@@ -27,21 +27,24 @@ public class CreateGrapperSettingView : MonoBehaviour, IGrapperView
     //     var GrapperManager = FindObjectOfType<GrapperManager>();
     //     _presenter = new GrapperPresenter(this, GrapperManager._IGrapperService);
     // }
+    private Sprite successConfirmButtonSprite;
+    private int companyId;
+
     void Awake()
     {
-        // var DeviceManager = FindObjectOfType<DeviceManager>();
         _presenter = new GrapperPresenter(this, ManagerLocator.Instance.GrapperManager._IGrapperService);
-        // DeviceManager._IDeviceService
     }
 
     void OnEnable()
     {
-        ResetAllInputFields();
-        // 
+        companyId = GlobalVariable.companyId;
+        successConfirmButtonSprite = Resources.Load<Sprite>("images/UIimages/Success_Back_Button_Background");
+        Debug.Log(successConfirmButtonSprite);
+
+        RenewView();        // 
         // AddButtonListeners(initialize_Grapper_List_Option_Selection.Module_List_Selection_Option_Content_Transform, "Modules");
         backButton.onClick.RemoveAllListeners();
         submitButton.onClick.RemoveAllListeners();
-
         submitButton.onClick.AddListener(OnSubmitButtonClick);
     }
 
@@ -52,27 +55,29 @@ public class CreateGrapperSettingView : MonoBehaviour, IGrapperView
 
     private void OnSubmitButtonClick()
     {
-        GrapperInformationModel = new GrapperInformationModel(
-            name: Name_TextField.text
-                );
+
         if (string.IsNullOrEmpty(Name_TextField.text))
         {
             OpenErrorDialog("Vui lòng nhập mã Grapper");
             return;
         }
-        if (GlobalVariable.temp_List_GrapperInformationModel.Any(x => x.Name == Name_TextField.text))
+        if (GlobalVariable.temp_Dictionary_GrapperInformationModel.ContainsKey(Name_TextField.text))
         {
-            OpenErrorDialog("Mã Grapper đã tồn tại", "Vui lòng nhập mã Grapper khác");
+            OpenErrorDialog("Khu vực đã tồn tại", "Vui lòng nhập mã Khu vực khác");
             return;
         }
-        else
+        GrapperInformationModel = new GrapperInformationModel(
+         name: Name_TextField.text
+             );
+        if (GrapperInformationModel != null)
         {
-            _presenter.CreateNewGrapper(GlobalVariable.GrapperId, GrapperInformationModel);
+            _presenter.CreateNewGrapper(companyId, GrapperInformationModel);
         }
     }
 
     private void RenewView()
     {
+        // ClearActiveChildren(initialize_Grapper_List_Option_Selection.Module_List_Selection_Option_Content_Transform);
         ResetAllInputFields();
     }
 
@@ -132,23 +137,31 @@ public class CreateGrapperSettingView : MonoBehaviour, IGrapperView
         var confirmButton = horizontalGroupTransform.Find("Confirm_Button").GetComponent<Button>();
         var backButton = horizontalGroupTransform.Find("Back_Button").GetComponent<Button>();
 
-        confirmButton.GetComponent<Image>().sprite = Resources.Load<Sprite>("images/UIimages/Success_Back_Button_Background");
-        confirmButton.transform.Find("Text").GetComponent<TMP_Text>().text = "Tiếp tục thêm mới";
-        backButton.transform.Find("Text").GetComponent<TMP_Text>().text = "Trở lại danh sách";
+
+        var confirmButtonSprite = confirmButton.GetComponent<Image>();
+        confirmButtonSprite.sprite = successConfirmButtonSprite;
+
+        var confirmButtonText = confirmButton.GetComponentInChildren<TMP_Text>();
+        var backButtonText = backButton.GetComponentInChildren<TMP_Text>();
+
+        // var colors = confirmButton.colors;
+        // colors.normalColor = new Color32(92, 237, 115, 255); // #5CED73 in RGB
+        // confirmButton.colors = colors;
+
+        confirmButtonText.text = "Tiếp tục thêm mới";
+        backButtonText.text = "Trở lại danh sách";
 
         confirmButton.onClick.RemoveAllListeners();
         backButton.onClick.RemoveAllListeners();
 
         confirmButton.onClick.AddListener(() =>
         {
-            ResetAllInputFields();
             DialogTwoButton.SetActive(false);
             RenewView();
         });
 
         backButton.onClick.AddListener(() =>
         {
-            ResetAllInputFields();
             DialogTwoButton.SetActive(false);
             RenewView();
         });

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using ApplicationLayer.Dtos.Image;
 using ApplicationLayer.Dtos.Mcc;
 using Newtonsoft.Json;
@@ -10,22 +11,22 @@ namespace ApplicationLayer.Dtos.FieldDevice
     [Preserve]
     public class FieldDeviceRequestDto
     {
-        [JsonProperty("Name")]
+        [JsonProperty("name")]
         public string Name { get; set; }
 
-        [JsonProperty("RatedPower")]
+        [JsonProperty("ratedPower")]
         public string? RatedPower { get; set; }
 
-        [JsonProperty("RatedCurrent")]
+        [JsonProperty("ratedCurrent")]
         public string? RatedCurrent { get; set; }
 
-        [JsonProperty("ActiveCurrent")]
+        [JsonProperty("activeCurrent")]
         public string? ActiveCurrent { get; set; }
 
-        [JsonProperty("ListConnectionImages")]
+        [JsonProperty("listConnectionImages")]
         public List<ImageBasicDto>? ConnectionImageBasicDtos { get; set; }
 
-        [JsonProperty("Note")]
+        [JsonProperty("note")]
         public string? Note { get; set; }
 
         [Preserve]
@@ -33,11 +34,11 @@ namespace ApplicationLayer.Dtos.FieldDevice
         public FieldDeviceRequestDto(string? name, string? ratedPower, string? ratedCurrent, string? activeCurrent, List<ImageBasicDto>? connectionImageBasicDtos, string? note)
         {
             Name = string.IsNullOrEmpty(name) ? throw new ArgumentNullException(nameof(name)) : name;
-            RatedPower = ratedPower;
-            RatedCurrent = ratedCurrent;
-            ActiveCurrent = activeCurrent;
-            ConnectionImageBasicDtos = connectionImageBasicDtos;
-            Note = note;
+            RatedPower = string.IsNullOrEmpty(ratedPower) ? "Chưa cập nhật" : ratedPower;
+            RatedCurrent = string.IsNullOrEmpty(ratedCurrent) ? "Chưa cập nhật" : ratedCurrent;
+            ActiveCurrent = string.IsNullOrEmpty(activeCurrent) ? "Chưa cập nhật" : activeCurrent;
+            ConnectionImageBasicDtos = connectionImageBasicDtos.Any() ? connectionImageBasicDtos : new List<ImageBasicDto>();
+            Note = string.IsNullOrEmpty(note) ? "Chưa cập nhật" : note;
         }
     }
 }

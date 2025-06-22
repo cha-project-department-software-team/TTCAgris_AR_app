@@ -6,11 +6,12 @@ using UnityEngine.UI;
 
 public class FieldDeviceInfor : MonoBehaviour
 {
-    public TMP_Text fiedDeviceName;
-    public Button nav_Btn;
+    public TMP_Text fieldDeviceName;
+    public Button button;
 
-    public void SetFieldDeviceName(FieldDeviceInformationModel fieldDeviceInformationModel)
+    public void SetFieldDeviceName(string name)
     {
-        fiedDeviceName.text = fieldDeviceInformationModel.Name;
+        fieldDeviceName.text = name;
     }
+    
 }

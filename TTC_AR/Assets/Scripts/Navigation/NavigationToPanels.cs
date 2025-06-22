@@ -10,7 +10,7 @@ public class NavigationToPanels : MonoBehaviour
     [SerializeField] private TMP_Text generalModuleTitle;
     [SerializeField] private GameObject[] destinationScreens;
     [SerializeField] private List<Button> navButtons;
-    [SerializeField] private bool isFieldDevice = false;
+    // [SerializeField] private bool isFieldDevice = false;
 
     private Canvas parentCanvas;
 

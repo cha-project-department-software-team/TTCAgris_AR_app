@@ -14,8 +14,8 @@ namespace ApplicationLayer.Dtos.Grapper
     [Preserve]
     public class GrapperRequestDto
     {
-        [JsonProperty("Name")] public string Name { get; set; } 
-    
+        [JsonProperty("name")] public string Name { get; set; }
+
         [Preserve]
 
         public GrapperRequestDto(string name)

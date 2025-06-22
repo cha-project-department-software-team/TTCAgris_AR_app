@@ -8,10 +8,10 @@ namespace Domain.Interfaces
 {
     public interface IRackRepository
     {
-        Task<RackEntity> GetRackByIdAsync(string rackId);
-        Task<List<RackEntity>> GetListRackAsync(string grapperId);
-        Task<bool> CreateNewRackAsync(string grapperId, RackEntity rackEntity);
-        Task<bool> UpdateRackAsync(string rackId, RackEntity rackEntity);
-        Task<bool> DeleteRackAsync(string rackId);
+        Task<RackEntity> GetRackByIdAsync(int rackId);
+        Task<List<RackEntity>> GetListRackAsync(int grapperId);
+        Task<bool> CreateNewRackAsync(int grapperId, RackEntity rackEntity);
+        Task<bool> UpdateRackAsync(int rackId, RackEntity rackEntity);
+        Task<bool> DeleteRackAsync(int rackId);
     }
 }

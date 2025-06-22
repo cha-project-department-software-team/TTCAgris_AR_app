@@ -14,6 +14,7 @@ public class UpdateMccSettingView : MonoBehaviour, IMccView
 
     [SerializeField] private MccInformationModel MccInformationModel;
     [Header("Input Fields")]
+    [SerializeField] private List<TMP_InputField> mccTextFieldValues;
     [SerializeField] private TMP_InputField CabinetCode_TextField;
     [SerializeField] private TMP_InputField Brand_TextField;
     [SerializeField] private TMP_InputField Note_TextField;
@@ -45,38 +46,34 @@ public class UpdateMccSettingView : MonoBehaviour, IMccView
 
     private Dictionary<string, FieldDeviceInformationModel> temp_Dictionary_FieldDeviceConnectionModel = new Dictionary<string, FieldDeviceInformationModel>();
     private Dictionary<string, List<GameObject>> selectedGameObjects = new Dictionary<string, List<GameObject>>()
-    {
-        { "FieldDevices", new List<GameObject>() }
-    };
+        {
+            { "FieldDevices", new List<GameObject>() }
+        };
     private Dictionary<string, int> selectedCounts = new Dictionary<string, int>()
-    {
-        { "FieldDevices", 0 }
-    };
+        {
+            { "FieldDevices", 0 }
+        };
+    private int mccId;
 
     void Awake()
     {
-        // var DeviceManager = FindObjectOfType<DeviceManager>();
         _presenter = new MccPresenter(this, ManagerLocator.Instance.MccManager._IMccService);
-        // DeviceManager._IDeviceService
     }
 
     void OnEnable()
     {
-        //! Clear all listeners
+        CabinetCode_TextField.interactable = false;
+        mccId = GlobalVariable.mccId;
+
         backButton.onClick.RemoveAllListeners();
         submitButton.onClick.RemoveAllListeners();
         backButtonListSelection.onClick.RemoveAllListeners();
 
-        //! Add listeners
         backButtonListSelection.onClick.AddListener(CloseListSelectionFromBackButton);
         backButton.onClick.AddListener(CloseUpdateCanvas);
         submitButton.onClick.AddListener(OnSubmitButtonClick);
 
-        //! Load detail by id
-        _presenter.LoadDetailById(GlobalVariable.MccId);
-
-        //! Reset scroll position
-        scrollRect.verticalNormalizedPosition = 1;
+        ReloadDetailById();
     }
 
     void OnDisable()
@@ -86,30 +83,29 @@ public class UpdateMccSettingView : MonoBehaviour, IMccView
 
     private void OnSubmitButtonClick()
     {
-        MccInformationModel = new MccInformationModel(
-         cabinetCode: CabinetCode_TextField.text,
-            brand: Brand_TextField.text,
-            listFieldDeviceInformation: temp_Dictionary_FieldDeviceConnectionModel.Values.ToList(),
-            note: Note_TextField.text
-        );
-
         if (string.IsNullOrEmpty(CabinetCode_TextField.text))
         {
             OpenErrorDialog(title: "Cập nhật tủ Mcc thất bại", message: "Vui lòng nhập mã tủ Mcc");
             return;
         }
 
-        _presenter.UpdateMcc(GlobalVariable.MccId, MccInformationModel);
+        MccInformationModel = new MccInformationModel(
+            cabinetCode: CabinetCode_TextField.text,
+            brand: string.IsNullOrEmpty(Brand_TextField.text) ? "Chưa cập nhật" : Brand_TextField.text,
+            listFieldDeviceInformation: temp_Dictionary_FieldDeviceConnectionModel.Any() ? temp_Dictionary_FieldDeviceConnectionModel.Values.ToList() : new List<FieldDeviceInformationModel>(),
+            note: string.IsNullOrEmpty(Note_TextField.text) ? "Chưa cập nhật" : Note_TextField.text
+        );
+        if (MccInformationModel != null)
+        {
+            _presenter.UpdateMcc(mccId, MccInformationModel);
+        }
     }
 
     private void RenewView()
     {
         ClearAllVerticalGroupChildren(FieldDevice_Parent_GridLayout_Group);
-
         temp_Dictionary_FieldDeviceConnectionModel.Clear();
-
         selectedGameObjects["FieldDevices"].Clear();
-
         selectedCounts["FieldDevices"] = 0;
     }
 
@@ -163,24 +159,45 @@ public class UpdateMccSettingView : MonoBehaviour, IMccView
         {
             itemText.text = textValue;
 
-            if (field == "FieldDevices" && GlobalVariable.temp_Dictionary_FieldDeviceInformationModel.TryGetValue(textValue, out var FieldDeviceInformationModel))
+            if (GlobalVariable.temp_Dictionary_FieldDeviceInformationModel.TryGetValue(textValue, out var listFieldDevice))
             {
-                var FieldDeviceInfoModel = new FieldDeviceInformationModel(FieldDeviceInformationModel.Id, FieldDeviceInformationModel.Name);
-                if (!temp_Dictionary_FieldDeviceConnectionModel.ContainsKey(textValue))
+                if (listFieldDevice.Count == 1)
                 {
-                    temp_Dictionary_FieldDeviceConnectionModel[textValue] = FieldDeviceInfoModel;
+                    var FieldDeviceInfoModel = new FieldDeviceInformationModel(listFieldDevice[0].Id, listFieldDevice[0].Name);
+                    if (!temp_Dictionary_FieldDeviceConnectionModel.ContainsKey(textValue))
+                    {
+                        temp_Dictionary_FieldDeviceConnectionModel[textValue] = FieldDeviceInfoModel;
+                    }
+                    else
+                    {
+                        Destroy(temp_Item_Transform.gameObject);
+                    }
                 }
                 else
                 {
-                    Destroy(temp_Item_Transform.gameObject);
+                    // var FieldDeviceInfoModel = new FieldDeviceInformationModel(listFieldDevice[0].Id, listFieldDevice[0].Name);
+                    // if (!temp_Dictionary_FieldDeviceModel.ContainsKey(textValue))
+                    // {
+                    //     temp_Dictionary_FieldDeviceModel[textValue] = FieldDeviceInfoModel;
+                    // }
+                    // else
+                    // {
+                    //     Destroy(temp_Item_Transform.gameObject);
+                    // }
+                    Debug.Log("Multiple FieldDeviceInformationModels found for the same name. Please check your data.");
+
                 }
             }
         }
-        Debug.Log("Temp Dictionary Count: " + temp_Dictionary_FieldDeviceConnectionModel.Count);
-        Debug.Log("Text Value: " + textValue);
+        // Debug.Log("Temp Dictionary Count: " + temp_Dictionary_FieldDeviceConnectionModel.Count);
+        // Debug.Log("Text Value: " + textValue);
     }
 
-    public void OpenListFieldDeviceConnectionSelection() => OpenListSelection("FieldDevices", FieldDevice_Item_Prefab, FieldDevice_Parent_GridLayout_Group);
+    public void OpenListFieldDeviceConnectionSelection()
+    => OpenListSelection(
+       field: "FieldDevices",
+     itemPrefab: FieldDevice_Item_Prefab,
+     parentGroup: FieldDevice_Parent_GridLayout_Group);
 
     public void OpenListSelection(string field, GameObject itemPrefab, GameObject parentGroup)
     {
@@ -188,6 +205,7 @@ public class UpdateMccSettingView : MonoBehaviour, IMccView
             initialize_Mcc_List_Option_Selection.Selection_Option_Canvas.SetActive(true);
 
         var newItem = Instantiate(itemPrefab, parentGroup.transform);
+        newItem.SetActive(true);
         temp_Item_Transform = newItem.transform;
         temp_Item_Transform.gameObject.GetComponentInChildren<Button>().onClick.AddListener(() => DeselectItem(newItem.gameObject, field));
         GetSelectionPanel(field).SetActive(true);
@@ -199,7 +217,7 @@ public class UpdateMccSettingView : MonoBehaviour, IMccView
         selectedGameObjects[field].Remove(item);
         temp_Dictionary_FieldDeviceConnectionModel.Remove(item.GetComponentInChildren<TMP_Text>().text);
         Destroy(item);
-        Debug.Log("Temp Dictionary Count: " + temp_Dictionary_FieldDeviceConnectionModel.Count);
+        // Debug.Log("Temp Dictionary Count: " + temp_Dictionary_FieldDeviceConnectionModel.Count);
 
     }
 
@@ -275,8 +293,7 @@ public class UpdateMccSettingView : MonoBehaviour, IMccView
 
         DialogOneButton.transform.Find("Background/Dialog_Status_Icon").GetComponent<Image>().sprite = Resources.Load<Sprite>("images/UIimages/Success_Icon_For_Dialog");
 
-        DialogOneButton.transform.Find("Background/Dialog_Content").GetComponent<TMP_Text>().text = message + $"<b><color =#004C8A>{MccInformationModel.CabinetCode}</b></color>";
-
+        DialogOneButton.transform.Find("Background/Dialog_Content").GetComponent<TMP_Text>().text = $"{message}: <color=#004C8A><b>{MccInformationModel.CabinetCode}</b></color>";
         DialogOneButton.transform.Find("Background/Dialog_Title").GetComponent<TMP_Text>().text = title;
 
         backButton.onClick.RemoveAllListeners();
@@ -284,10 +301,9 @@ public class UpdateMccSettingView : MonoBehaviour, IMccView
         backButton.onClick.AddListener(() =>
         {
             DialogOneButton.SetActive(false);
-            _presenter.LoadDetailById(GlobalVariable.MccId);
-            scrollRect.verticalNormalizedPosition = 1;
+            _presenter.LoadDetailById(mccId);
         }
-       );
+    );
     }
 
 
@@ -305,8 +321,22 @@ public class UpdateMccSettingView : MonoBehaviour, IMccView
     private void SetInitialInputFields(MccInformationModel model)
     {
         CabinetCode_TextField.text = model.CabinetCode;
-        Brand_TextField.text = model.Brand;
-        Note_TextField.text = model.Note;
+        Brand_TextField.text = string.IsNullOrEmpty(model.Brand) ? "Chưa cập nhật" : model.Brand;
+        Note_TextField.text = string.IsNullOrEmpty(model.Note) ? "Chưa cập nhật" : model.Note;
+
+        foreach (var textField in mccTextFieldValues)
+        {
+            if (textField.text == "Chưa cập nhật" || string.IsNullOrEmpty(textField.text))
+            {
+                textField.textComponent.color = Color.red;
+                textField.textComponent.fontStyle = FontStyles.Bold;
+            }
+            else
+            {
+                textField.textComponent.color = Color.black;
+                textField.textComponent.fontStyle = FontStyles.Normal;
+            }
+        }
     }
 
     public void ShowLoading(string title) => ShowProgressBar(title, "Đang tải dữ liệu...");
@@ -330,11 +360,11 @@ public class UpdateMccSettingView : MonoBehaviour, IMccView
     public void ReloadDetailById()
     {
         RenewView();
-        _presenter.LoadDetailById(GlobalVariable.MccId);
+        _presenter.LoadDetailById(mccId);
     }
     public void ShowSuccess()
     {
-        Show_Toast.Instance.Set_Instance_Status_True();
+
         if (GlobalVariable.APIRequestType.Contains("PUT_Mcc"))
         {
             Show_Toast.Instance.ShowToast("success", "Cập nhật tủ Mcc mới thành công");
@@ -353,13 +383,23 @@ public class UpdateMccSettingView : MonoBehaviour, IMccView
 
     public void DisplayDetail(MccInformationModel model)
     {
-        SetInitialInputFields(model);
-        if (model.ListFieldDeviceInformation != null && model.ListFieldDeviceInformation.Any())
+        if (model != null)
         {
-            var temp_List_FieldDeviceNames = model.ListFieldDeviceInformation.Select(item => item.Name).ToList();
-            PopulateItems(temp_List_FieldDeviceNames, FieldDevice_Item_Prefab, FieldDevice_Parent_GridLayout_Group, "FieldDevices");
+            SetInitialInputFields(model);
+            if (model.ListFieldDeviceInformation.Any())
+            {
+                var temp_List_FieldDeviceNames = model.ListFieldDeviceInformation.Select(item => item.Name).ToList();
+                PopulateItems(
+                   listItems: temp_List_FieldDeviceNames,
+                  itemPrefab: FieldDevice_Item_Prefab,
+                   parentLayoutGroup: FieldDevice_Parent_GridLayout_Group,
+                field: "FieldDevices");
+            }
         }
+
         AddButtonListeners(initialize_Mcc_List_Option_Selection.FieldDevices_List_Selection_Option_Content_Transform, "FieldDevices");
+        scrollRect.verticalNormalizedPosition = 1;
+
     }
 
     private void PopulateItems<T>(List<T> listItems, GameObject itemPrefab, GameObject parentLayoutGroup, string field)
@@ -368,11 +408,17 @@ public class UpdateMccSettingView : MonoBehaviour, IMccView
         foreach (var item in listItems)
         {
             var newItem = Instantiate(itemPrefab, parentTransform);
+            newItem.SetActive(true);
             SetItemTextValue(newItem.transform, item.ToString(), field);
             AddButtonListener(newItem.transform.Find("Deselect_Button"), () => DeselectItem(newItem, field));
             selectedGameObjects[field].Add(newItem);
         }
+        itemPrefab.SetActive(false);
     }
 
     public void DisplayCreateResult(bool success) { }
+
+    public void DisplayFieldDeviceList(List<FieldDeviceInformationModel> models)
+    {
+    }
 }

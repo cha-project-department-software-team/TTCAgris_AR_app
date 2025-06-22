@@ -785,7 +785,7 @@ namespace OpenCVForUnity.UnityUtils.Helper
                     //Changes in pos / rot below these thresholds are ignored.
                     if (useLowPassFilter)
                     {
-                        ARUtils.LowpassPoseData(ref oldPoseData, ref poseData, positionLowPassParam, rotationLowPassParam);
+                        ARUtils.LowPassPoseData(ref oldPoseData, ref poseData, positionLowPassParam, rotationLowPassParam);
                     }
                     oldPoseData = poseData;
 

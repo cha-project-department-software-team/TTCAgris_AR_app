@@ -17,7 +17,7 @@ namespace EasyUI.Helpers
     [CreateAssetMenu(fileName = "Theme", menuName = "Easy UI/Progress UI/Theme")]
     public class Theme : ScriptableObject
     {
-        [Header("Name (key) :")]
+        [Header("name (key) :")]
         public string Name;
 
         [Space]

@@ -9,40 +9,40 @@ using UnityEngine.Scripting;
 public class AdapterSpecificationModel
 {
 
-  [JsonProperty("Id")]
-  public string Id { get; set; } = string.Empty;
+  [JsonProperty("id")]
+  public int Id { get; set; }
 
-  [JsonProperty("Code")]
+  [JsonProperty("code")]
   public string Code { get; set; } = string.Empty;
 
-  [JsonProperty("Type")]
+  [JsonProperty("type")]
   public string? Type { get; set; }
 
-  [JsonProperty("Communication")]
+  [JsonProperty("communication")]
   public string? Communication { get; set; }
 
-  [JsonProperty("NumOfModulesAllowed")]
+  [JsonProperty("numOfModulesAllowed")]
   public string? NumOfModulesAllowed { get; set; }
 
-  [JsonProperty("CommSpeed")]
+  [JsonProperty("commSpeed")]
   public string? CommSpeed { get; set; }
 
-  [JsonProperty("InputSupply")]
+  [JsonProperty("inputSupply")]
   public string? InputSupply { get; set; }
-  [JsonProperty("OutputSupply")]
+  [JsonProperty("outputSupply")]
   public string? OutputSupply { get; set; }
 
-  [JsonProperty("InrushCurrent")]
+  [JsonProperty("inrushCurrent")]
   public string? InrushCurrent { get; set; }
-  [JsonProperty("Alarm")]
+  [JsonProperty("alarm")]
   public string? Alarm { get; set; }
-  [JsonProperty("Note")]
+  [JsonProperty("note")]
   public string? Note { get; set; }
-  [JsonProperty("PdfManual")]
+  [JsonProperty("pdfManual")]
   public string? PdfManual { get; set; }
   [Preserve]
 
-  public AdapterSpecificationModel(string id, string code, string? type, string? communication, string? numOfModulesAllowed, string? commSpeed, string? inputSupply, string? outputSupply, string? inrushCurrent, string? alarm, string? note, string? pdfManual)
+  public AdapterSpecificationModel(int id, string code, string? type, string? communication, string? numOfModulesAllowed, string? commSpeed, string? inputSupply, string? outputSupply, string? inrushCurrent, string? alarm, string? note, string? pdfManual)
   {
     Id = id;
     Code = code;
@@ -57,7 +57,7 @@ public class AdapterSpecificationModel
     Note = note;
     PdfManual = pdfManual;
   }
-  public AdapterSpecificationModel(string id, string code)
+  public AdapterSpecificationModel(int id, string code)
   {
     Id = id;
     Code = code;
@@ -83,13 +83,13 @@ public class AdapterSpecificationModel
 }
 public class AdapterSpecificationBasicModel
 {
-  [JsonProperty("Id")]
-  public string Id { get; set; }
-  [JsonProperty("Code")]
+  [JsonProperty("id")]
+  public int Id { get; set; }
+  [JsonProperty("code")]
   public string Code { get; set; }
   [Preserve]
 
-  public AdapterSpecificationBasicModel(string id, string code)
+  public AdapterSpecificationBasicModel(int id, string code)
   {
     Id = id;
     Code = code;

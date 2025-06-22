@@ -10,10 +10,10 @@ namespace ApplicationLayer.Interfaces
 {
     public interface IModuleService
     {
-        Task<ModuleResponseDto> GetModuleByIdAsync(string moduleId);
-        Task<List<ModuleBasicDto>> GetListModuleAsync(string grapperId);
-        Task<bool> CreateNewModuleAsync(string grapperId, ModuleRequestDto moduleRequestDto);
-        Task<bool> UpdateModuleAsync(string moduleId, ModuleRequestDto moduleRequestDto);
-        Task<bool> DeleteModuleAsync(string moduleId);
+        Task<ModuleResponseDto> GetModuleByIdAsync(int moduleId);
+        Task<List<ModuleBasicDto>> GetListModuleAsync(int grapperId);
+        Task<bool> CreateNewModuleAsync(int grapperId, ModuleRequestDto moduleRequestDto);
+        Task<bool> UpdateModuleAsync(int moduleId, ModuleRequestDto moduleRequestDto);
+        Task<bool> DeleteModuleAsync(int moduleId);
     }
 }

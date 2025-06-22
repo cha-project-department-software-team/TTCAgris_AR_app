@@ -60,22 +60,20 @@ public class UpdateRackSettingView : MonoBehaviour, IRackView
         { "Modules", 0 },
 
     };
+    private int rackId;
 
-    // void Awake()
-    // {
-    //     var RackManager = FindObjectOfType<RackManager>();
-    //     _presenter = new RackPresenter(this, RackManager._IRackService);
-    // }
+
     void Awake()
     {
-        // var ModuleManager = FindObjectOfType<ModuleManager>();
         _presenter = new RackPresenter(this, ManagerLocator.Instance.RackManager._IRackService);
-        // ModuleManager._IModuleService
     }
 
     void OnEnable()
     {
-        ResetAllInputFields();
+        rackId = GlobalVariable.rackId;
+        Name_TextField.interactable = false;
+
+
 
         AddButtonListeners(initialize_Rack_List_Option_Selection.Module_List_Selection_Option_Content_Transform, "Modules");
 
@@ -88,9 +86,8 @@ public class UpdateRackSettingView : MonoBehaviour, IRackView
         backButton.onClick.AddListener(CloseAddCanvas);
         submitButton.onClick.AddListener(OnSubmitButtonClick);
 
-        scrollRect.verticalNormalizedPosition = 1;
 
-        _presenter.LoadDetailById(GlobalVariable.RackId);
+        loadDetailById();
 
     }
 
@@ -101,46 +98,37 @@ public class UpdateRackSettingView : MonoBehaviour, IRackView
 
     private void OnSubmitButtonClick()
     {
-        RackInformationModel = new RackInformationModel(
-            name: Name_TextField.text,
-            listModuleInformationModel: temp_Dictionary_ModuleModel.Values.Any() ? temp_Dictionary_ModuleModel.Values.ToList() : new List<ModuleInformationModel>()
-            );
-
         if (string.IsNullOrEmpty(Name_TextField.text))
         {
-            OpenErrorDialog("Vui lòng nhập mã Rack");
+            OpenErrorDialog("Vui lòng nhập mã Rack IO");
             return;
         }
-        else
-        {
-            // Debug.Log("Rack Name: " + RackInformationModel.Name);
-            // Debug.Log("Rack Name: " + RackInformationModel.Rack.Name);
-            // Debug.Log("Module Count: " + RackInformationModel.ListModuleInformationModel.Count);
-            // Debug.Log("JB Count: " + RackInformationModel.ListJBInformationModel.Count);
-            // Debug.Log("RackSpecification Code: " + RackInformationModel.RackSpecificationModel.Code);
-            // Debug.Log("AdapterSpecification Code: " + RackInformationModel.AdapterSpecificationModel.Code);
+        RackInformationModel = new RackInformationModel(
+            name: Name_TextField.text,
+            listModuleInformationModel: temp_Dictionary_ModuleModel.Any() ? temp_Dictionary_ModuleModel.Values.ToList() : new List<ModuleInformationModel>()
+            );
 
-            _presenter.UpdateRack(GlobalVariable.RackId, RackInformationModel);
+        if (RackInformationModel != null)
+        {
+            _presenter.UpdateRack(rackId, RackInformationModel);
         }
     }
     public void loadDetailById()
     {
         RenewView();
-
-        _presenter.LoadDetailById(GlobalVariable.RackId);
+        _presenter.LoadDetailById(rackId);
     }
     private void RenewView()
     {
-
-
-        ClearActiveChildren(List_Modules_Parent_Grid_Layout_Group);
+        Module_Item_Prefab.SetActive(true);
 
         ResetAllInputFields();
-
-
+        ClearActiveChildren(List_Modules_Parent_Grid_Layout_Group);
         temp_Dictionary_ModuleModel.Clear();
         selectedGameObjects["Modules"].Clear();
         selectedCounts["Modules"] = 0;
+
+        scrollRect.verticalNormalizedPosition = 1f; // Scroll to the top
 
     }
 
@@ -224,6 +212,7 @@ public class UpdateRackSettingView : MonoBehaviour, IRackView
         //     initialize_Rack_List_Option_Selection.Selection_Option_Canvas.SetActive(true);
 
         var newItem = Instantiate(itemPrefab, parentGroup.transform);
+        newItem.SetActive(true);
         temp_Item_Transform = newItem.transform;
         var button = newItem.GetComponentInChildren<Button>();
         button.onClick.AddListener(() => DeselectItem(newItem, field));
@@ -236,8 +225,6 @@ public class UpdateRackSettingView : MonoBehaviour, IRackView
         selectedGameObjects[field].Remove(item);
         temp_Dictionary_ModuleModel.Remove(item.GetComponentInChildren<TMP_Text>().text);
         Destroy(item);
-
-
     }
 
     public void CloseListSelection(string field)
@@ -320,7 +307,7 @@ public class UpdateRackSettingView : MonoBehaviour, IRackView
 
         DialogOneButton.transform.Find("Background/Dialog_Status_Icon").GetComponent<Image>().sprite = Resources.Load<Sprite>("images/UIimages/Success_Icon_For_Dialog");
 
-        DialogOneButton.transform.Find("Background/Dialog_Content").GetComponent<TMP_Text>().text = message + $"<b><color=#004C8A>{RackInformationModel.Name}</b></color>";
+        DialogOneButton.transform.Find("Background/Dialog_Content").GetComponent<TMP_Text>().text = message + $"<color=#004C8A><b>{RackInformationModel.Name}</b></color>";
 
         DialogOneButton.transform.Find("Background/Dialog_Title").GetComponent<TMP_Text>().text = title;
 
@@ -329,7 +316,7 @@ public class UpdateRackSettingView : MonoBehaviour, IRackView
         backButton.onClick.AddListener(() =>
         {
             DialogOneButton.SetActive(false);
-            _presenter.LoadDetailById(GlobalVariable.RackId);
+            _presenter.LoadDetailById(GlobalVariable.rackId);
             scrollRect.verticalNormalizedPosition = 1;
         }
        );
@@ -379,10 +366,16 @@ public class UpdateRackSettingView : MonoBehaviour, IRackView
     }
     public void DisplayDetail(RackInformationModel model)
     {
-        SetInitialInputFields(model);
+        if (model != null)
+        {
+            SetInitialInputFields(model);
+            if (model.ListModuleInformationModel.Any())
+            {
+                PopulateItems(model.ListModuleInformationModel?.Select(item => item.Name).ToList(), Module_Item_Prefab, List_Modules_Parent_Grid_Layout_Group, "Modules");
+                AddButtonListeners(initialize_Rack_List_Option_Selection.Module_List_Selection_Option_Content_Transform, "Modules");
+            }
 
-        PopulateItems(model.ListModuleInformationModel?.Select(item => item.Name).ToList(), Module_Item_Prefab, List_Modules_Parent_Grid_Layout_Group, "Modules");
-        AddButtonListeners(initialize_Rack_List_Option_Selection.Module_List_Selection_Option_Content_Transform, "Modules");
+        }
     }
 
     private void PopulateItems(List<string> listItems, GameObject itemPrefab, GameObject parentLayoutGroup, string field)
@@ -393,6 +386,7 @@ public class UpdateRackSettingView : MonoBehaviour, IRackView
         foreach (var item in listItems)
         {
             var newItem = Instantiate(itemPrefab, parentTransform);
+            newItem.SetActive(true);
             SetItemTextValue(newItem.transform, item, field);
             AddButtonListener(newItem.transform.Find("Deselect_Button"), () => DeselectItem(newItem, field));
             selectedGameObjects[field].Add(newItem);

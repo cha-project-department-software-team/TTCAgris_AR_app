@@ -3,8 +3,10 @@ using OpenCVForUnity.CoreModule;
 
 // #if UNITY_EDITOR
 using OpenCVForUnity.UnityUtils.Helper.Editor;
+
+
+
 // #endif
-// using OpenCVForUnityExample;
 using UnityEngine;
 using UnityEngine.Serialization;
 using System.Collections.Generic;
@@ -12,12 +14,54 @@ using TMPro;
 
 namespace OpenCVForUnity.UnityUtils.Helper
 {
+    /// <summary>
+    /// A helper component for managing AR (Augmented Reality) functionalities.
+    /// </summary>
+    /// <remarks>
+    /// The <see cref="ARHelper"/> class simplifies AR-related calculations such as 
+    /// object pose estimation and Transform updates by specifying the objectPoints, imagePoints, 
+    /// camMatrix, and distCoeff for OpenCV's solvePnP() method.
+    /// This class provides the following features:
+    /// <list type="bullet">
+    ///     <item><description>Configuring and updating Transforms for AR GameObject and AR Camera</description></item>
+    ///     <item><description>Calculating and applying AR matrices</description></item>
+    ///     <item><description>Low-pass filtering for pose stabilization</description></item>
+    ///     <item><description>Calculating and managing camera parameters</description></item>
+    /// </list>
+    /// </remarks>
+    /// <example>
+    /// Attach this component to a GameObject to enable AR functionality:
+    /// <code>
+    /// // Example usage of the ARHelper component
+    /// ARHelper arHelper = gameObject.AddComponent&lt;ARHelper&gt;();
+    /// arHelper.Initialize(1920, 1080, 640, 480);
+    ///
+    /// arHelper.imagePoints = imagePointsMatOfPoint2f.toVector2Array();
+    /// arHelper.objectPoints = objectPointsMatOfPoint3f.toVector3Array();
+    ///
+    /// arHelper.CalculateARMatrix();
+    /// arHelper.UpdateTransform();
+    /// </code>
+    /// </example>
     public class ARHelperMulti : MonoBehaviour
     {
+
+        /// <summary>
+        /// Target AR GameObject
+        /// </summary>
         [TooltipAttribute("Target AR GameObject")]
         public GameObject arGameObjectOrigin;
+        public Manager manager;
+
+        /// <summary>
+        /// Target AR Camera
+        /// </summary>
         [TooltipAttribute("Target AR Camera")]
         public Camera arCamera;
+
+        /// <summary>
+        /// UpdateTarget Type
+        /// </summary>
         public enum UpdateTarget
         {
             ARGameObject,
@@ -26,14 +70,23 @@ namespace OpenCVForUnity.UnityUtils.Helper
 
         [Space(10)]
 
+        /// <summary>
+        /// Update Target
+        /// </summary>
         [TooltipAttribute("Specifies the GameObject whose Transform is to be updated.")]
         public UpdateTarget updateTarget;
 
         [Space(10)]
 
+        /// <summary>
+        /// If true, the CalculateARMatrix() method is automatically called in the LateUpdate() method; if false, you must call it yourself.
+        /// </summary>
         [TooltipAttribute("If true, the CalculateARMatrix() method is automatically called in the LateUpdate() method; if false, you must call it yourself.")]
         public bool calculateARMatrixInLateUpdate = true;
 
+        /// <summary>
+        /// If true, the UpdateTransform() method is automatically called in the LateUpdate() method; if false, you must call it yourself.
+        /// </summary>
         [TooltipAttribute("If true, the UpdateTransform() method is automatically called in the LateUpdate() method; if false, you must call it yourself.")]
         public bool updateTransformInLateUpdate = true;
 
@@ -42,8 +95,11 @@ namespace OpenCVForUnity.UnityUtils.Helper
 
 
         [SerializeField, FormerlySerializedAs("screenWidth"), TooltipAttribute("Set the width of screen.")]
-        // protected int _screenWidth = 640;
-        protected int _screenWidth = 770;
+        protected int _screenWidth = 640;
+
+        /// <summary>
+        /// Set the width of screen.
+        /// </summary>
         public virtual int screenWidth
         {
             get { return _screenWidth; }
@@ -60,8 +116,11 @@ namespace OpenCVForUnity.UnityUtils.Helper
 
 
         [SerializeField, FormerlySerializedAs("screenHeight"), TooltipAttribute("Set the height of screen.")]
-        // protected int _screenHeight = 480;
         protected int _screenHeight = 480;
+
+        /// <summary>
+        /// Set the height of screen.
+        /// </summary>
         public virtual int screenHeight
         {
             get { return _screenHeight; }
@@ -78,7 +137,11 @@ namespace OpenCVForUnity.UnityUtils.Helper
 
 
         [SerializeField, FormerlySerializedAs("imageWidth"), TooltipAttribute("Set the width of image.")]
-        protected int _imageWidth = 770;
+        protected int _imageWidth = 640;
+
+        /// <summary>
+        /// Set the width of image.
+        /// </summary>
         public virtual int imageWidth
         {
             get { return _imageWidth; }
@@ -216,7 +279,7 @@ namespace OpenCVForUnity.UnityUtils.Helper
         {
             // Deactivate the arGameObjectOrigin
             arGameObjectOrigin.SetActive(false);
-            // Debug.Log("arGameObjectOrigin deactivated");
+            Debug.Log("arGameObjectOrigin deactivated");
         }
 
         protected virtual void OnValidate()
@@ -238,7 +301,7 @@ namespace OpenCVForUnity.UnityUtils.Helper
         {
             if (array != null && array.Length > maxSize)
             {
-                // Debug.LogWarning($"The size of the array exceeds the limit of {maxSize}. It will be truncated.");
+                Debug.LogWarning($"The size of the array exceeds the limit of {maxSize}. It will be truncated.");
                 System.Array.Resize(ref array, maxSize);
             }
             return array;
@@ -269,26 +332,51 @@ namespace OpenCVForUnity.UnityUtils.Helper
                     break;
                 }
                 var arGameObject = arGameObjects[index];
-                arGameObject.SetActive(true);
+
+                if (!manager.enableQRCodeDetection)
+                {
+                    //Debug.Log("Disable all objects");
+                    arGameObject.SetActive(false);
+                }
+                else
+                {
+                    arGameObject.SetActive(true);
+
+                }
+
                 var textMeshList = arGameObject.GetComponentsInChildren<TextMeshPro>(includeInactive: true);
                 foreach (var mesh in textMeshList)
                 {
-                    mesh.text = $"{key}";
+                    string[] parts = key.Split('_');
+                    string result = parts[parts.Length - 1]; // Lấy phần tử cuối cùng
+                    mesh.text = result;
                 }
                 CalculateARMatrix(ref marker);
                 UpdateTransform(arGameObject);
-                marker.GameObject = arGameObject;
+                marker.arButton = arGameObject;
+
+                if (arMatrix.isIdentity || !arMatrix.ValidTRS())
+                {
+                    continue;
+                }
                 marker.UpdateArMatrix(arMatrix);
+
                 index++;
             }
         }
 
+        /// <summary>
+        /// Raises the destroy event.
+        /// </summary>
         protected virtual void OnDestroy()
         {
             if (hasInitDone)
                 Dispose();
         }
 
+        /// <summary>
+        /// Initializes the <see cref="ARHelper"/>.
+        /// </summary>
         public virtual void Initialize()
         {
             //Debug.Log("Initialize");
@@ -296,6 +384,9 @@ namespace OpenCVForUnity.UnityUtils.Helper
             _Initialize();
         }
 
+        /// <summary>
+        /// Initializes the <see cref="ARHelper"/>.
+        /// </summary>
         public virtual void Initialize(int screenWidth, int screenHeight, int imageWidth, int imageHeight, double[] camMatrixValues = null, double[] distCoeffsValues = null, Vector2[] imagePoints = null, Vector3[] objectPoints = null)
         {
             //Debug.Log("Initialize");
@@ -359,8 +450,20 @@ namespace OpenCVForUnity.UnityUtils.Helper
                 }
                 markers.Clear();
             }
+
+            if (arGameObjects != null)
+            {
+                foreach (var arGameObject in arGameObjects)
+                {
+                    Destroy(arGameObject);
+                }
+            }
         }
 
+        /// <summary>
+        /// Indicates whether this instance has been initialized.
+        /// </summary>
+        /// <returns><c>true</c>, if this instance has been initialized, <c>false</c> otherwise.</returns>
         public virtual bool IsInitialized()
         {
             return hasInitDone;
@@ -391,23 +494,23 @@ namespace OpenCVForUnity.UnityUtils.Helper
             arCameraDefaultLocalScale = arCamera.transform.localScale;
             arCameraDefaultFieldOfView = arCamera.fieldOfView;
 
-            var canvas = GameObject.FindGameObjectWithTag("3D Canvas");
+            // var canvas = GameObject.FindGameObjectWithTag("3D Canvas");
             // Initialize the array of gameObjects;
             arGameObjects = new GameObject[4];
             for (int i = 0; i < arGameObjects.Length; i++)
             {
-                arGameObjects[i] = GameObject.Instantiate(arGameObjectOrigin);
+                arGameObjects[i] = Instantiate(arGameObjectOrigin);
                 arGameObjects[i].SetActive(false);
-                // Debug.LogWarning(arGameObjects[i].layer);
+                Debug.LogWarning(arGameObjects[i].layer);
                 //arGameObjects[i].layer = 5; //UI
-                if (canvas != null)
-                {
-                    //arGameObjects[i].transform.SetParent(canvas.transform);
-                }
-                else
-                {
-                    Debug.LogWarning("Cannot find 3D Canvas");
-                }
+                // if (canvas != null)
+                // {
+                //     //arGameObjects[i].transform.SetParent(canvas.transform);
+                // }
+                // else
+                // {
+                //     Debug.LogWarning("Cannot find 3D Canvas");
+                // }
             }
             float width = _imageWidth;
             float height = _imageHeight;
@@ -442,11 +545,19 @@ namespace OpenCVForUnity.UnityUtils.Helper
             }
             camMatrix = new Mat(3, 3, CvType.CV_64FC1);
             MatUtils.copyToMat<double>(_camMatrixValues, camMatrix);
+            Debug.Log("camMatrix " + camMatrix.dump());
+
+
+            // Initialise distCoeff.
+            //Debug.Log("distCoeffsValues.Length " + _distCoeffsValues.Length);
             if (_distCoeffsValues.Length < DISTCOEFFSVALUES_MIN_SIZE)
             {
                 _distCoeffsValues = new double[DISTCOEFFSVALUES_MIN_SIZE];
             }
             distCoeffs = new MatOfDouble(_distCoeffsValues);
+            Debug.Log("distCoeffs " + distCoeffs.dump());
+
+
 
             //calibration camera
             Size imageSize = new Size(width * imageSizeScale, height * imageSizeScale);
@@ -460,12 +571,26 @@ namespace OpenCVForUnity.UnityUtils.Helper
 
             Calib3d.calibrationMatrixValues(camMatrix, imageSize, apertureWidth, apertureHeight, fovx, fovy, focalLength, principalPoint, aspectratio);
 
+            Debug.Log("imageSize " + imageSize.ToString());
+            Debug.Log("apertureWidth " + apertureWidth);
+            Debug.Log("apertureHeight " + apertureHeight);
+            Debug.Log("fovx " + fovx[0]);
+            Debug.Log("fovy " + fovy[0]);
+            Debug.Log("focalLength " + focalLength[0]);
+            Debug.Log("principalPoint " + principalPoint.ToString());
+            Debug.Log("aspectratio " + aspectratio[0]);
+
+
+            //To convert the difference of the FOV value of the OpenCV and Unity. 
             double fx = _camMatrixValues[0];
             double fy = _camMatrixValues[4];
             double cx = _camMatrixValues[2];
             double cy = _camMatrixValues[5];
             double fovXScale = (2.0 * Mathf.Atan((float)(imageSize.width / (2.0 * fx)))) / (Mathf.Atan2((float)cx, (float)fx) + Mathf.Atan2((float)(imageSize.width - cx), (float)fx));
             double fovYScale = (2.0 * Mathf.Atan((float)(imageSize.height / (2.0 * fy)))) / (Mathf.Atan2((float)cy, (float)fy) + Mathf.Atan2((float)(imageSize.height - cy), (float)fy));
+
+            Debug.Log("fovXScale " + fovXScale);
+            Debug.Log("fovYScale " + fovYScale);
 
             if (arCamera != null)
             {
@@ -592,6 +717,9 @@ namespace OpenCVForUnity.UnityUtils.Helper
             if (applyZaxisInversionToARMatrix) arMatrix = arMatrix * invertZMatrix;
         }
 
+        /// <summary>
+        /// Update the Transform of UpdateTarget using ARMatrix.
+        /// </summary>
         public virtual void UpdateTransform(GameObject gameObject)
         {
             if (!hasInitDone) return;
@@ -604,10 +732,13 @@ namespace OpenCVForUnity.UnityUtils.Helper
             else
             {
                 arMatrix = arCamera.transform.localToWorldMatrix * arMatrix;
-                //ARUtils.SetTransformFromMatrix(gameObject.transform, ref arMatrix);
+                ARUtils.SetTransformFromMatrix(gameObject.transform, ref arMatrix);
             }
         }
 
+        /// <summary>
+        /// Resets the Transform of updateTarget to its initial value at the time the Initialize() method is called.
+        /// </summary>
         public virtual void ResetUpdateTargetTransform()
         {
             if (!hasInitDone) return;
@@ -630,6 +761,64 @@ namespace OpenCVForUnity.UnityUtils.Helper
             return obj == null;
         }
 
+        /// <summary>
+        /// Get camMatrix.
+        /// </summary>
+        /// <returns></returns>
+        public Mat GetCamMatrix()
+        {
+            return camMatrix;
+        }
+
+        /// <summary>
+        /// Get distCoeffs.
+        /// </summary>
+        /// <returns></returns>
+        public virtual MatOfDouble GetDistCoeffs()
+        {
+            return distCoeffs;
+        }
+
+        /// <summary>
+        /// Get rvec.
+        /// </summary>
+        /// <returns></returns>
+        public virtual Mat GetRvec()
+        {
+            return rvec;
+        }
+
+        /// <summary>
+        /// Get tvec.
+        /// </summary>
+        /// <returns></returns>
+        public virtual Mat GetTvec()
+        {
+            return tvec;
+        }
+
+        /// <summary>
+        /// Get ARMatrix.
+        /// </summary>
+        /// <returns>AR Matrix</returns>
+        public virtual Matrix4x4 GetARMatrix()
+        {
+            return arMatrix;
+        }
+
+        /// <summary>
+        /// Is the ARGameObject in the ARCameraViewport? This flag is updated when CalculateARMatrix() is called.
+        /// </summary>
+        /// <returns></returns>
+        public virtual bool IsARGameObjectInARCameraViewport()
+        {
+            return isARGameObjectInARCameraViewport;
+        }
+
+        /// <summary>
+        /// Set camMatrix.
+        /// </summary>
+        /// <param name="camMatrix"></param>
         public virtual void SetCamMatrix(Mat camMatrix)
         {
             if (camMatrix != null && !camMatrix.empty())
@@ -643,6 +832,10 @@ namespace OpenCVForUnity.UnityUtils.Helper
 
         }
 
+        /// <summary>
+        /// Set distCoeffs.
+        /// </summary>
+        /// <param name="distCoeffs"></param>
         public virtual void SetDistCoeffs(MatOfDouble distCoeffs)
         {
             if (distCoeffs != null && !distCoeffs.empty())

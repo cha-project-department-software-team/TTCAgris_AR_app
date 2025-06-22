@@ -8,10 +8,10 @@ namespace ApplicationLayer.Interfaces
 {
     public interface IGrapperService
     {
-        Task<GrapperResponseDto> GetGrapperByIdAsync(string grapperId);
-        Task<List<GrapperBasicDto>> GetListGrapperAsync(string companyId);
-        Task<bool> CreateNewGrapperAsync(string companyId, GrapperRequestDto grapperRequestDto);
-        Task<bool> UpdateGrapperAsync(string grapperId, GrapperRequestDto grapperRequestDto);
-        Task<bool> DeleteGrapperAsync(string grapperId);
+        Task<GrapperResponseDto> GetGrapperByIdAsync(int grapperId);
+        Task<List<GrapperBasicDto>> GetListGrapperAsync(int companyId);
+        Task<bool> CreateNewGrapperAsync(int companyId, GrapperRequestDto grapperRequestDto);
+        Task<bool> UpdateGrapperAsync(int grapperId, GrapperRequestDto grapperRequestDto);
+        Task<bool> DeleteGrapperAsync(int grapperId);
     }
 }

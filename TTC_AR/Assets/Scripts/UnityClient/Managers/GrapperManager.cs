@@ -32,7 +32,7 @@ public class GrapperManager : MonoBehaviour
         //! Dependency Injection
         _IGrapperService = ServiceLocator.Instance.GrapperService;
     }
-    public async void GetGrapperList(string grapperId)
+    public async void GetGrapperList(int grapperId)
     {
         try
         {
@@ -67,7 +67,7 @@ public class GrapperManager : MonoBehaviour
         }
     }
 
-    public async void GetGrapperById(string GrapperId)
+    public async void GetGrapperById(int GrapperId)
     {
         try
         {
@@ -102,7 +102,7 @@ public class GrapperManager : MonoBehaviour
         }
     }
 
-    public async void CreateNewGrapper(string grapperId, GrapperRequestDto GrapperRequestDto)
+    public async void CreateNewGrapper(int grapperId, GrapperRequestDto GrapperRequestDto)
     {
         try
         {
@@ -131,9 +131,8 @@ public class GrapperManager : MonoBehaviour
 
         }
     }
-    public async void UpdateGrapper(string GrapperId, GrapperRequestDto GrapperRequestDto)
+    public async void UpdateGrapper(int GrapperId, GrapperRequestDto GrapperRequestDto)
     {
-        GrapperId = GlobalVariable.GrapperId;
         try
         {
             bool result = await _IGrapperService.UpdateGrapperAsync(GrapperId, GrapperRequestDto);
@@ -159,9 +158,8 @@ public class GrapperManager : MonoBehaviour
 
         }
     }
-    public async void DeleteGrapper(string GrapperId)
+    public async void DeleteGrapper(int GrapperId)
     {
-        GrapperId = GlobalVariable.GrapperId;
         try
         {
             bool result = await _IGrapperService.DeleteGrapperAsync(GrapperId);

@@ -14,23 +14,23 @@ namespace ApplicationLayer.Dtos.JB
     [Preserve]
     public class JBRequestDto
     {
-        [JsonProperty("Name")] public string Name { get; set; }
-        [JsonProperty("Location")] public string? Location { get; set; }
-        [JsonProperty("ListDevices")] public List<DeviceBasicDto>? DeviceBasicDtos { get; set; }
-        [JsonProperty("ListModules")] public List<ModuleBasicDto>? ModuleBasicDtos { get; set; }
-        [JsonProperty("OutdoorImage")] public ImageBasicDto? OutdoorImageBasicDto { get; set; }
-        [JsonProperty("ListConnectionImages")] public List<ImageBasicDto>? ConnectionImageBasicDtos { get; set; }
+        [JsonProperty("name")] public string Name { get; set; }
+        [JsonProperty("location")] public string? Location { get; set; }
+        [JsonProperty("listDevices")] public List<DeviceBasicDto>? DeviceBasicDtos { get; set; }
+        [JsonProperty("listModules")] public List<ModuleBasicDto>? ModuleBasicDtos { get; set; }
+        [JsonProperty("outdoorImage")] public ImageBasicDto? OutdoorImageBasicDto { get; set; }
+        [JsonProperty("listConnectionImages")] public List<ImageBasicDto>? ConnectionImageBasicDtos { get; set; }
 
         [Preserve]
 
         public JBRequestDto(string name, string? location, List<DeviceBasicDto>? deviceBasicDtos, List<ModuleBasicDto>? moduleBasicDtos, ImageBasicDto? outdoorImageBasicDto, List<ImageBasicDto>? connectionImageBasicDtos)
         {
             Name = string.IsNullOrEmpty(name) ? throw new ArgumentNullException(nameof(name)) : name;
-            Location = location;
-            DeviceBasicDtos = deviceBasicDtos;
-            ModuleBasicDtos = moduleBasicDtos;
-            OutdoorImageBasicDto = outdoorImageBasicDto;
-            ConnectionImageBasicDtos = connectionImageBasicDtos;
+            Location = string.IsNullOrEmpty(location) ? "Được ghi chú trên sơ đồ" : location;
+            DeviceBasicDtos = deviceBasicDtos.Any() ? deviceBasicDtos : new List<DeviceBasicDto>();
+            ModuleBasicDtos = moduleBasicDtos.Any() ? moduleBasicDtos : new List<ModuleBasicDto>();
+            OutdoorImageBasicDto = outdoorImageBasicDto != null ? outdoorImageBasicDto : null;
+            ConnectionImageBasicDtos = connectionImageBasicDtos.Any() ? connectionImageBasicDtos : new List<ImageBasicDto>();
         }
 
         // [Preserve]

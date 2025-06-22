@@ -20,16 +20,22 @@ public class ListRackSettingView : MonoBehaviour, IRackView
     public GameObject DialogOneButton;
     public GameObject DialogTwoButton;
     private RackPresenter _presenter;
+    private Sprite warningConfirmButtonSprite;
+    private int grapperId;
+    private GameObject _rackItem;
 
     void Awake()
     {
-        // var RackManager = FindObjectOfType<RackManager>();
         _presenter = new RackPresenter(this,
         ManagerLocator.Instance.RackManager._IRackService);
-        // RackManager._IRackService
+
     }
     void OnEnable()
     {
+
+        warningConfirmButtonSprite = Resources.Load<Sprite>("images/UIimages/Warning_Back_Button_Background");
+        Debug.Log(warningConfirmButtonSprite);
+        grapperId = GlobalVariable.GrapperId;
         LoadListRack();
     }
     void OnDisable()
@@ -50,7 +56,7 @@ public class ListRackSettingView : MonoBehaviour, IRackView
     public void LoadListRack()
     {
         RefreshList();
-        _presenter.LoadListRack(GlobalVariable.GrapperId);
+        _presenter.LoadListRack(grapperId);
     }
     public void DisplayList(List<RackInformationModel> models)
     {
@@ -58,9 +64,10 @@ public class ListRackSettingView : MonoBehaviour, IRackView
         {
             foreach (var model in models)
             {
-                int RackIndex = models.IndexOf(model);
-                Debug.Log(RackIndex);
+                // int RackIndex = models.IndexOf(model);
+                // Debug.Log(RackIndex);
                 var newRackItem = Instantiate(Rack_Item_Prefab, Parent_Vertical_Layout_Group.transform);
+                newRackItem.SetActive(true);
                 Transform newRackItemTransform = newRackItem.transform;
                 Transform newRackItemPreviewInforGroup = newRackItemTransform.GetChild(0);
                 newRackItemPreviewInforGroup.Find("Preview_Rack_Name").GetComponent<TMP_Text>().text = model.Name;
@@ -75,11 +82,12 @@ public class ListRackSettingView : MonoBehaviour, IRackView
             Debug.Log("No Racks found");
         }
         Rack_Item_Prefab.SetActive(false);
+        scrollView.verticalNormalizedPosition = 1f; // Scroll to the top
     }
 
-    private void EditRackItem(string id)
+    private void EditRackItem(int id)
     {
-        GlobalVariable.RackId = id;
+        GlobalVariable.rackId = id;
         OpenUpdateCanvas();
     }
     private void DeleRackItem(GameObject RackItem, RackInformationModel model)
@@ -108,29 +116,38 @@ public class ListRackSettingView : MonoBehaviour, IRackView
 
         var Horizontal_Group = DialogTwoButton.transform.Find("Background/Horizontal_Group").gameObject.transform;
 
-        var dialog_Content = DialogTwoButton.transform.Find("Background/Dialog_Content").GetComponent<TMP_Text>().text = $"Bạn có chắc chắn muốn xóa thông tin Rack IO <b><color =#004C8A>{model.Name}</b></color> khỏi hệ thống? Hãy kiểm tra kĩ trước khi nhấn nút xác nhận phía dưới";
+        var dialog_Content = DialogTwoButton.transform.Find("Background/Dialog_Content").GetComponent<TMP_Text>().text = $"Bạn có chắc chắn muốn xóa thông tin Rack IO <color=#ED1C24><b>{model.Name}</b></color> khỏi hệ thống? Hãy kiểm tra kĩ trước khi nhấn nút xác nhận phía dưới";
 
         var dialog_Title = DialogTwoButton.transform.Find("Background/Dialog_Title").GetComponent<TMP_Text>().text = "Xóa Rack IO khỏi hệ thống?";
 
         backgroundTransform.Find("Dialog_Status_Icon").GetComponent<Image>().sprite = Resources.Load<Sprite>("images/UIimages/Warning_Icon_For_Dialog");
 
-        var confirmButton = Horizontal_Group.transform.Find("Confirm_Button").GetComponent<Button>();
+        var confirmButton = Horizontal_Group.Find("Confirm_Button").GetComponent<Button>();
+        var backButton = Horizontal_Group.Find("Back_Button").GetComponent<Button>();
 
-        confirmButton.GetComponent<Image>().sprite = Resources.Load<Sprite>("images/UIimages/Warning_Back_Button_Background");
+        var confirmButtonSprite = confirmButton.GetComponent<Image>();
 
-        var backButton = Horizontal_Group.transform.Find("Back_Button").GetComponent<Button>();
+        confirmButtonSprite.sprite = warningConfirmButtonSprite;
 
+        var confirmButtonText = confirmButton.GetComponentInChildren<TMP_Text>();
+        var backButtonText = backButton.GetComponentInChildren<TMP_Text>();
+
+        // var colors = confirmButton.colors;
+        // colors.normalColor = new Color32(92, 237, 115, 255); // #5CED73 in RGB
+        // confirmButton.colors = colors;
+
+        confirmButtonText.text = "Xác nhận";
+        backButtonText.text = "Trở lại";
         confirmButton.onClick.RemoveAllListeners();
 
         backButton.onClick.RemoveAllListeners();
 
         confirmButton.onClick.AddListener(() =>
         {
-            listRackItems.Remove(RackItem);
             Debug.Log(model.Id);
+            _rackItem = RackItem;
             _presenter.DeleteRack(model.Id);
             DialogTwoButton.SetActive(false);
-            Destroy(RackItem);
         });
         backButton.onClick.AddListener(() =>
         {
@@ -177,9 +194,9 @@ public class ListRackSettingView : MonoBehaviour, IRackView
         {
             OpenErrorDialog(title: "Tải danh sách thất bại", message: "Đã có lỗi xảy ra khi tải danh sách. Vui lòng thử lại sau");
         }
-        else if (GlobalVariable.APIRequestType.Contains("DELETE_Rack"))
+        if (GlobalVariable.APIRequestType.Contains("DELETE_Rack"))
         {
-            OpenErrorDialog();
+            OpenErrorDialog(title: "Xóa Rack IO thất bại", message: "Đã có lỗi xảy ra khi xóa Rack IO khỏi hệ thống. Vui lòng thử lại sau");
         }
     }
     public void ShowSuccess()
@@ -188,8 +205,10 @@ public class ListRackSettingView : MonoBehaviour, IRackView
         {
             Show_Toast.Instance.ShowToast("success", "Tải danh sách thành công");
         }
-        else if (GlobalVariable.APIRequestType.Contains("DELETE_Rack"))
+        if (GlobalVariable.APIRequestType.Contains("DELETE_Rack"))
         {
+            listRackItems.Remove(_rackItem);
+            Destroy(_rackItem);
             Show_Toast.Instance.ShowToast("success", "Xóa Rack IO thành công");
         }
 

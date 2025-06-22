@@ -9,41 +9,41 @@ namespace Domain.Entities
   [Preserve]
   public class AdapterSpecificationEntity
   {
-    [JsonProperty("Id")]
-    public string Id { get; set; } = string.Empty;
-    [JsonProperty("Code")]
+    [JsonProperty("id")]
+    public int Id { get; set; }
+    [JsonProperty("code")]
     public string Code { get; set; } = string.Empty;
 
-    // [JsonProperty("Type", NullValueHandling = NullValueHandling.Ignore)]
-    [JsonProperty("Type")]
+    // [JsonProperty("type", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonProperty("type")]
     public string? Type { get; set; }
-    // [JsonProperty("Communication", NullValueHandling = NullValueHandling.Ignore)]
-    [JsonProperty("Communication")]
+    // [JsonProperty("communication", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonProperty("communication")]
     public string? Communication { get; set; }
-    // [JsonProperty("NumOfModulesAllowed", NullValueHandling = NullValueHandling.Ignore)]
-    [JsonProperty("NumOfModulesAllowed")]
+    // [JsonProperty("numOfModulesAllowed", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonProperty("numOfModulesAllowed")]
     public string? NumOfModulesAllowed { get; set; }
-    // [JsonProperty("CommSpeed", NullValueHandling = NullValueHandling.Ignore)]
-    [JsonProperty("CommSpeed")]
+    // [JsonProperty("commSpeed", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonProperty("commSpeed")]
     public string? CommSpeed { get; set; }
-    // [JsonProperty("InputSupply", NullValueHandling = NullValueHandling.Ignore)]
-    [JsonProperty("InputSupply")]
+    // [JsonProperty("inputSupply", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonProperty("inputSupply")]
     public string? InputSupply { get; set; }
-    // [JsonProperty("OutputSupply", NullValueHandling = NullValueHandling.Ignore)]
-    [JsonProperty("OutputSupply")]
+    // [JsonProperty("outputSupply", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonProperty("outputSupply")]
     public string? OutputSupply { get; set; }
-    // [JsonProperty("InrushCurrent", NullValueHandling = NullValueHandling.Ignore)]
-    [JsonProperty("InrushCurrent")]
+    // [JsonProperty("inrushCurrent", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonProperty("inrushCurrent")]
     public string? InrushCurrent { get; set; }
-    // [JsonProperty("Alarm", NullValueHandling = NullValueHandling.Ignore)]
-    [JsonProperty("Alarm")]
+    // [JsonProperty("alarm", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonProperty("alarm")]
     public string? Alarm { get; set; }
-    // [JsonProperty("Note", NullValueHandling = NullValueHandling.Ignore)]
-    [JsonProperty("Note")]
+    // [JsonProperty("note", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonProperty("note")]
     public string? Note { get; set; }
 
-    // [JsonProperty("PdfManual", NullValueHandling = NullValueHandling.Ignore)]
-    [JsonProperty("PdfManual")]
+    // [JsonProperty("pdfManual", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonProperty("pdfManual")]
     public string? PdfManual { get; set; }
 
 
@@ -68,7 +68,7 @@ namespace Domain.Entities
       HashSet<string> allowedRequests = new HashSet<string>
       {
         HttpMethodTypeEnum.GETAdapterSpecification.GetDescription(),
-        HttpMethodTypeEnum.GETModule.GetDescription(),
+
         HttpMethodTypeEnum.POSTAdapterSpecification.GetDescription(),
         HttpMethodTypeEnum.PUTAdapterSpecification.GetDescription()
       };
@@ -80,7 +80,7 @@ namespace Domain.Entities
       HashSet<string> allowedRequests = new HashSet<string>
       {
         HttpMethodTypeEnum.GETAdapterSpecification.GetDescription(),
-        HttpMethodTypeEnum.GETModule.GetDescription(),
+
         HttpMethodTypeEnum.POSTAdapterSpecification.GetDescription(),
         HttpMethodTypeEnum.PUTAdapterSpecification.GetDescription()
       };
@@ -92,7 +92,7 @@ namespace Domain.Entities
       HashSet<string> allowedRequests = new HashSet<string>
       {
         HttpMethodTypeEnum.GETAdapterSpecification.GetDescription(),
-        HttpMethodTypeEnum.GETModule.GetDescription(),
+
         HttpMethodTypeEnum.POSTAdapterSpecification.GetDescription(),
         HttpMethodTypeEnum.PUTAdapterSpecification.GetDescription()
       };
@@ -104,7 +104,7 @@ namespace Domain.Entities
       HashSet<string> allowedRequests = new HashSet<string>
       {
         HttpMethodTypeEnum.GETAdapterSpecification.GetDescription(),
-        HttpMethodTypeEnum.GETModule.GetDescription(),
+
         HttpMethodTypeEnum.POSTAdapterSpecification.GetDescription(),
         HttpMethodTypeEnum.PUTAdapterSpecification.GetDescription()
       };
@@ -116,7 +116,7 @@ namespace Domain.Entities
       HashSet<string> allowedRequests = new HashSet<string>
       {
         HttpMethodTypeEnum.GETAdapterSpecification.GetDescription(),
-        HttpMethodTypeEnum.GETModule.GetDescription(),
+
         HttpMethodTypeEnum.POSTAdapterSpecification.GetDescription(),
         HttpMethodTypeEnum.PUTAdapterSpecification.GetDescription()
       };
@@ -128,7 +128,7 @@ namespace Domain.Entities
       HashSet<string> allowedRequests = new HashSet<string>
       {
         HttpMethodTypeEnum.GETAdapterSpecification.GetDescription(),
-        HttpMethodTypeEnum.GETModule.GetDescription(),
+
         HttpMethodTypeEnum.POSTAdapterSpecification.GetDescription(),
         HttpMethodTypeEnum.PUTAdapterSpecification.GetDescription()
       };
@@ -140,7 +140,7 @@ namespace Domain.Entities
       HashSet<string> allowedRequests = new HashSet<string>
       {
         HttpMethodTypeEnum.GETAdapterSpecification.GetDescription(),
-        HttpMethodTypeEnum.GETModule.GetDescription(),
+
         HttpMethodTypeEnum.POSTAdapterSpecification.GetDescription(),
         HttpMethodTypeEnum.PUTAdapterSpecification.GetDescription()
       };
@@ -152,7 +152,7 @@ namespace Domain.Entities
       HashSet<string> allowedRequests = new HashSet<string>
       {
         HttpMethodTypeEnum.GETAdapterSpecification.GetDescription(),
-        HttpMethodTypeEnum.GETModule.GetDescription(),
+
         HttpMethodTypeEnum.POSTAdapterSpecification.GetDescription(),
         HttpMethodTypeEnum.PUTAdapterSpecification.GetDescription()
       };
@@ -164,7 +164,7 @@ namespace Domain.Entities
       HashSet<string> allowedRequests = new HashSet<string>
       {
         HttpMethodTypeEnum.GETAdapterSpecification.GetDescription(),
-        HttpMethodTypeEnum.GETModule.GetDescription(),
+
         HttpMethodTypeEnum.POSTAdapterSpecification.GetDescription(),
         HttpMethodTypeEnum.PUTAdapterSpecification.GetDescription()
       };
@@ -176,7 +176,7 @@ namespace Domain.Entities
       HashSet<string> allowedRequests = new HashSet<string>
       {
         HttpMethodTypeEnum.GETAdapterSpecification.GetDescription(),
-        HttpMethodTypeEnum.GETModule.GetDescription(),
+
         HttpMethodTypeEnum.POSTAdapterSpecification.GetDescription(),
         HttpMethodTypeEnum.PUTAdapterSpecification.GetDescription()
       };
@@ -197,7 +197,7 @@ namespace Domain.Entities
     }
 
     [Preserve]
-    public AdapterSpecificationEntity(string id, string code)
+    public AdapterSpecificationEntity(int id, string code)
     {
       Id = id;
       Code = string.IsNullOrEmpty(code) ? throw new ArgumentNullException(nameof(code)) : code;
@@ -205,7 +205,7 @@ namespace Domain.Entities
     }
 
     [Preserve]
-    public AdapterSpecificationEntity(string id, string code, string? type, string? communication, string? numOfModulesAllowed, string? commSpeed, string? inputSupply, string? outputSupply, string? inrushCurrent, string? alarm, string? note, string? pdfManual)
+    public AdapterSpecificationEntity(int id, string code, string? type, string? communication, string? numOfModulesAllowed, string? commSpeed, string? inputSupply, string? outputSupply, string? inrushCurrent, string? alarm, string? note, string? pdfManual)
     {
       Id = id;
       Code = string.IsNullOrEmpty(code) ? throw new ArgumentNullException(nameof(code)) : code;

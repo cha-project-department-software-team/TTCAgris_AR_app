@@ -7,10 +7,10 @@ namespace ApplicationLayer.Dtos.Image
     [Preserve]
     public class ImageRequestDto
     {
-        [JsonProperty("Name")]
+        [JsonProperty("name")]
         public string Name { get; set; } = string.Empty;
 
-        [JsonProperty("ByteString")]
+        [JsonProperty("byteString")]
         public byte[] ByteString { get; set; } = new byte[0];
 
         [Preserve]

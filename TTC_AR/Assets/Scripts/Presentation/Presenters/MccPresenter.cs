@@ -18,7 +18,7 @@ public class MccPresenter
         _service = service;
     }
 
-    public async void LoadListMcc(string grapperId)
+    public async void LoadListMcc(int grapperId)
     {
         GlobalVariable.APIRequestType.Add("GET_Mcc_List");
         _view.ShowLoading("Đang tải dữ liệu...");
@@ -30,7 +30,6 @@ public class MccPresenter
                 if (MccBasicDto.Any())
                 {
                     var models = MccBasicDto.Select(dto => ConvertFromBasicDto(dto)).ToList();
-
                     _view.DisplayList(models);
 
                 }
@@ -59,13 +58,13 @@ public class MccPresenter
         }
     }
 
-    public async void LoadDetailById(string MccId)
+    public async void LoadDetailById(int mccId)
     {
         GlobalVariable.APIRequestType.Add("GET_Mcc");
         _view.ShowLoading("Đang tải dữ liệu...");
         try
         {
-            var dto = await _service.GetMccByIdAsync(MccId.ToString());
+            var dto = await _service.GetMccByIdAsync(mccId);
             if (dto != null)
             {
                 var model = ConvertFromResponseDto(dto);
@@ -87,7 +86,7 @@ public class MccPresenter
             GlobalVariable.APIRequestType.Remove("GET_Mcc");
         }
     }
-    public async void CreateNewMcc(string grapperId, MccInformationModel model)
+    public async void CreateNewMcc(int grapperId, MccInformationModel model)
     {
         GlobalVariable.APIRequestType.Add("POST_Mcc");
         _view.ShowLoading("Đang thực hiện...");
@@ -116,7 +115,7 @@ public class MccPresenter
     }
 
 
-    public async void UpdateMcc(string MccId, MccInformationModel model)
+    public async void UpdateMcc(int mccId, MccInformationModel model)
     {
         GlobalVariable.APIRequestType.Add("PUT_Mcc");
         _view.ShowLoading("Đang thực hiện...");
@@ -124,7 +123,7 @@ public class MccPresenter
         try
         {
             var dto = ConvertToRequestDto(model);
-            var result = await _service.UpdateMccAsync(MccId, dto);
+            var result = await _service.UpdateMccAsync(mccId, dto);
             if (result)
             {
                 _view.ShowSuccess(); // Chỉ hiển thị thành công nếu result == true
@@ -136,6 +135,7 @@ public class MccPresenter
         }
         catch (Exception ex)
         {
+            UnityEngine.Debug.Log("Error: " + ex.Message);
             _view.ShowError($"Error: {ex.Message}");
         }
         finally
@@ -144,14 +144,14 @@ public class MccPresenter
             GlobalVariable.APIRequestType.Remove("PUT_Mcc");
         }
     }
-    public async void DeleteMcc(string MccId)
+    public async void DeleteMcc(int mccId)
     {
         GlobalVariable.APIRequestType.Add("DELETE_Mcc");
         _view.ShowLoading("Đang thực hiện...");
 
         try
         {
-            var result = await _service.DeleteMccAsync(MccId);
+            var result = await _service.DeleteMccAsync(mccId);
             if (result)
             {
                 _view.ShowSuccess(); // Chỉ hiển thị thành công nếu result == true

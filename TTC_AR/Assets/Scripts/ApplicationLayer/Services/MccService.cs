@@ -23,25 +23,25 @@ namespace ApplicationLayer.Services
         }
 
         //! Tham số là Dto, Dữ liệu trả về là Dto
-        public async Task<MccResponseDto> GetMccByIdAsync(string id)
+        public async Task<MccResponseDto> GetMccByIdAsync(int id)
         {
             return await _MccUseCase.GetMccByIdAsync(id);
         }
-        public async Task<IEnumerable<MccBasicDto>> GetListMccAsync(string grapperId)
+        public async Task<List<MccBasicDto>> GetListMccAsync(int grapperId)
         {
             return await _MccUseCase.GetListMccAsync(grapperId);
         }
-        public async Task<bool> CreateNewMccAsync(string grapperId, MccRequestDto MccRequestDto)
+        public async Task<bool> CreateNewMccAsync(int grapperId, MccRequestDto MccRequestDto)
         {
             return await _MccUseCase.CreateNewMccAsync(grapperId, MccRequestDto);
         }
-        public async Task<bool> UpdateMccAsync(string MccId, MccRequestDto MccRequestDto)
+        public async Task<bool> UpdateMccAsync(int mccId, MccRequestDto MccRequestDto)
         {
-            return await _MccUseCase.UpdateMccAsync(MccId, MccRequestDto);
+            return await _MccUseCase.UpdateMccAsync(mccId, MccRequestDto);
         }
-        public async Task<bool> DeleteMccAsync(string MccId)
+        public async Task<bool> DeleteMccAsync(int mccId)
         {
-            return await _MccUseCase.DeleteMccAsync(MccId);
+            return await _MccUseCase.DeleteMccAsync(mccId);
         }
     }
 

@@ -15,31 +15,31 @@ namespace ApplicationLayer.Dtos.JB
     [Preserve]
     public class JBResponseDto : JBBasicDto //!Get ListJB & GetJBById
     {
-        [JsonProperty("Location")] public string? Location { get; set; }
-        [JsonProperty("ListDevices")] public List<DeviceBasicDto>? DeviceBasicDtos { get; set; }
-        [JsonProperty("ListModules")] public List<ModuleBasicDto>? ModuleBasicDtos { get; set; }
-        [JsonProperty("OutdoorImage")] public ImageResponseDto? OutdoorImageResponseDto { get; set; }
-        [JsonProperty("ListConnectionImages")] public List<ImageResponseDto>? ConnectionImageResponseDtos { get; set; }
+        [JsonProperty("location")] public string? Location { get; set; }
+        [JsonProperty("listDevices")] public List<DeviceBasicDto>? DeviceBasicDtos { get; set; }
+        [JsonProperty("listModules")] public List<ModuleBasicDto>? ModuleBasicDtos { get; set; }
+        [JsonProperty("outdoorImage")] public ImageBasicDto? OutdoorImageBasicDto { get; set; }
+        [JsonProperty("listConnectionImages")] public List<ImageBasicDto>? ConnectionImageBasicDtos { get; set; }
 
         [Preserve]
 
-        public JBResponseDto(string id, string name, string location, List<DeviceBasicDto>? deviceBasicDtos, List<ModuleBasicDto>? moduleBasicDtos, ImageResponseDto outdoorImageResponseDto, List<ImageResponseDto>? connectionImageResponseDtos) : base(id, name)
+        public JBResponseDto(int id, string name, string location, List<DeviceBasicDto>? deviceBasicDtos, List<ModuleBasicDto>? moduleBasicDtos, ImageBasicDto outdoorImageBasicDto, List<ImageBasicDto>? connectionImageBasicDtos) : base(id, name)
         {
-            Location = location;
-            DeviceBasicDtos = deviceBasicDtos;
-            ModuleBasicDtos = moduleBasicDtos;
-            OutdoorImageResponseDto = outdoorImageResponseDto;
-            ConnectionImageResponseDtos = connectionImageResponseDtos;
+            Location = string.IsNullOrEmpty(location) ? "Được ghi chú trên sơ đồ" : location;
+            DeviceBasicDtos = deviceBasicDtos.Any() ? deviceBasicDtos : new List<DeviceBasicDto>();
+            ModuleBasicDtos = moduleBasicDtos.Any() ? moduleBasicDtos : new List<ModuleBasicDto>();
+            OutdoorImageBasicDto = outdoorImageBasicDto != null ? outdoorImageBasicDto : null;
+            ConnectionImageBasicDtos = connectionImageBasicDtos.Any() ? connectionImageBasicDtos : new List<ImageBasicDto>();
         }
         // [Preserve]
         // 
-        // public JBResponseDto(string id, string name, string location, List<DeviceBasicDto>?? deviceBasicDtos, List<ModuleBasicDto>? moduleBasicDtos, ImageResponseDto outdoorImageResponseDto, List<ImageResponseDto>? connectionImageResponseDtos) : base(id, name)
+        // public JBResponseDto(int id, string name, string location, List<DeviceBasicDto>?? deviceBasicDtos, List<ModuleBasicDto>? moduleBasicDtos, ImageBasicDto outdoorImageBasicDto, List<ImageBasicDto>? connectionImageBasicDtos) : base(id, name)
         // {
         //     Location = location == "" ? string.Empty : location;
         //     DeviceBasicDtos = deviceBasicDtos.Any() ? deviceBasicDtos : new List<DeviceBasicDto>??();
         //     ModuleBasicDtos = moduleBasicDtos.Any() ? moduleBasicDtos : new List<ModuleBasicDto>?();
-        //     OutdoorImageResponseDto = outdoorImageResponseDto;
-        //     ConnectionImageResponseDtos = connectionImageResponseDtos.Any() ? connectionImageResponseDtos : new List<ImageResponseDto>?();
+        //     OutdoorImageBasicDto = outdoorImageBasicDto;
+        //     ConnectionImageBasicDtos = connectionImageBasicDtos.Any() ? connectionImageBasicDtos : new List<ImageBasicDto>?();
         // }
 
 

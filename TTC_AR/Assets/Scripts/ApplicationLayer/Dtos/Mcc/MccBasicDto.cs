@@ -7,17 +7,17 @@ namespace ApplicationLayer.Dtos.Mcc
     [Preserve]
     public class MccBasicDto
     {
-        [JsonProperty("Id")]
-        public string Id { get; set; }
+        [JsonProperty("id")]
+        public int Id { get; set; }
 
-        [JsonProperty("CabinetCode")]
+        [JsonProperty("cabinetCode")]
         public string CabinetCode { get; set; }
 
         [Preserve]
 
-        public MccBasicDto(string id, string cabinetCode)
+        public MccBasicDto(int id, string cabinetCode)
         {
-            Id = string.IsNullOrEmpty(id) ? throw new ArgumentNullException(nameof(id)) : id;
+            Id = id;
             CabinetCode = string.IsNullOrEmpty(cabinetCode) ? throw new ArgumentNullException(nameof(cabinetCode)) : cabinetCode;
         }
     }

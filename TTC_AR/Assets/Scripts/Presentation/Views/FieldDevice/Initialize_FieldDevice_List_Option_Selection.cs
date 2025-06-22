@@ -15,11 +15,11 @@ public class Initialize_FieldDevice_List_Option_Selection : MonoBehaviour
     public GameObject Selection_Option_Canvas;
 
 
-    [Header("List Selection Panels")]
+    [Header("list Selection Panels")]
     public GameObject selection_List_Connection_Image_Panel;
 
 
-    [Header("List Selection Option Contents")]
+    [Header("list Selection Option Contents")]
     public Transform Connection_Image_List_Selection_Option_Content_Transform;
 
     public Dictionary<string, GameObject> initialSelectionOptions = new Dictionary<string, GameObject>();
@@ -40,12 +40,12 @@ public class Initialize_FieldDevice_List_Option_Selection : MonoBehaviour
 
     IEnumerator PopulateListSelection()
     {
-        while (GlobalVariable.temp_List_ImageInformationModel == null)
+        while (GlobalVariable.temp_ListImageInformationModel == null)
         {
             Debug.Log("Waiting for GlobalVariable.temp_ModuleSpecificationModel to be assigned...");
             yield return null;
         }
-        PopulateSelectionPanel("Connection_Image", GlobalVariable.temp_List_ImageInformationModel, selection_List_Connection_Image_Panel, Connection_Image_List_Selection_Option_Content_Transform);
+        PopulateSelectionPanel("Connection_Image", GlobalVariable.temp_ListImageInformationModel, selection_List_Connection_Image_Panel, Connection_Image_List_Selection_Option_Content_Transform);
     }
     private void PopulateSelectionPanel(string field, List<ImageInformationModel> imageInformationModels, GameObject list_Option_Panel, Transform list_Option_Content_Transform)
     {

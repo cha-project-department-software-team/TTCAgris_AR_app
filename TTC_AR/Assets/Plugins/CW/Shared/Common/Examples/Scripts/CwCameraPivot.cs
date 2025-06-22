@@ -8,16 +8,20 @@ namespace CW.Common
 	public class CwCameraPivot : MonoBehaviour
 	{
 		/// <summary>Is this component currently listening for inputs?</summary>
-		public bool Listen { set { listen = value; } get { return listen; } } [SerializeField] private bool listen = true;
+		public bool Listen { set { listen = value; } get { return listen; } }
+		[SerializeField] private bool listen = true;
 
 		/// <summary>How quickly the position transitions from the current to the target value (-1 = instant).</summary>
-		public float Damping { set { damping = value; } get { return damping; } } [SerializeField] private float damping = 10.0f;
+		public float Damping { set { damping = value; } get { return damping; } }
+		[SerializeField] private float damping = 10.0f;
 
 		/// <summary>The keys/fingers required to pitch down/up.</summary>
-		public CwInputManager.Axis PitchControls { set { pitchControls = value; } get { return pitchControls; } } [SerializeField] private CwInputManager.Axis pitchControls = new CwInputManager.Axis(1, true, CwInputManager.AxisGesture.VerticalDrag, -0.1f, KeyCode.None, KeyCode.None, KeyCode.None, KeyCode.None, 45.0f);
+		public CwInputManager.Axis PitchControls { set { pitchControls = value; } get { return pitchControls; } }
+		[SerializeField] private CwInputManager.Axis pitchControls = new CwInputManager.Axis(1, true, CwInputManager.AxisGesture.VerticalDrag, -0.1f, KeyCode.None, KeyCode.None, KeyCode.None, KeyCode.None, 45.0f);
 
 		/// <summary>The keys/fingers required to yaw left/right.</summary>
-		public CwInputManager.Axis YawControls { set { yawControls = value; } get { return yawControls; } } [SerializeField] private CwInputManager.Axis yawControls = new CwInputManager.Axis(1, true, CwInputManager.AxisGesture.HorizontalDrag, 0.1f, KeyCode.None, KeyCode.None, KeyCode.None, KeyCode.None, 45.0f);
+		public CwInputManager.Axis YawControls { set { yawControls = value; } get { return yawControls; } }
+		[SerializeField] private CwInputManager.Axis yawControls = new CwInputManager.Axis(1, true, CwInputManager.AxisGesture.HorizontalDrag, 0.1f, KeyCode.None, KeyCode.None, KeyCode.None, KeyCode.None, 45.0f);
 
 		[System.NonSerialized]
 		private Vector3 remainingDelta;
@@ -40,13 +44,13 @@ namespace CW.Common
 		private void AddToDelta()
 		{
 			remainingDelta.x += pitchControls.GetValue(Time.deltaTime);
-			remainingDelta.y += yawControls  .GetValue(Time.deltaTime);
+			remainingDelta.y += yawControls.GetValue(Time.deltaTime);
 		}
 
 		private void DampenDelta()
 		{
 			// Dampen remaining delta
-			var factor   = CwHelper.DampenFactor(damping, Time.deltaTime);
+			var factor = CwHelper.DampenFactor(damping, Time.deltaTime);
 			var newDelta = Vector3.Lerp(remainingDelta, Vector3.zero, factor);
 
 			// Rotate by difference

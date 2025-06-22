@@ -8,25 +8,25 @@ namespace ApplicationLayer.Dtos.AdapterSpecification
 
     public class AdapterSpecificationResponseDto : AdapterSpecificationBasicDto
     {
-        [JsonProperty("Type")] public string? Type { get; set; }
+        [JsonProperty("type")] public string? Type { get; set; }
 
-        [JsonProperty("Communication")] public string? Communication { get; set; }
+        [JsonProperty("communication")] public string? Communication { get; set; }
 
-        [JsonProperty("NumOfModulesAllowed")] public string? NumOfModulesAllowed { get; set; }
+        [JsonProperty("numOfModulesAllowed")] public string? NumOfModulesAllowed { get; set; }
 
-        [JsonProperty("CommSpeed")] public string? CommSpeed { get; set; }
+        [JsonProperty("commSpeed")] public string? CommSpeed { get; set; }
 
-        [JsonProperty("InputSupply")] public string? InputSupply { get; set; }
-        [JsonProperty("OutputSupply")] public string? OutputSupply { get; set; }
+        [JsonProperty("inputSupply")] public string? InputSupply { get; set; }
+        [JsonProperty("outputSupply")] public string? OutputSupply { get; set; }
 
-        [JsonProperty("InrushCurrent")] public string? InrushCurrent { get; set; }
-        [JsonProperty("Alarm")] public string? Alarm { get; set; }
-        [JsonProperty("Note")] public string? Note { get; set; }
-        [JsonProperty("PdfManual")] public string? PdfManual { get; set; }
+        [JsonProperty("inrushCurrent")] public string? InrushCurrent { get; set; }
+        [JsonProperty("alarm")] public string? Alarm { get; set; }
+        [JsonProperty("note")] public string? Note { get; set; }
+        [JsonProperty("pdfManual")] public string? PdfManual { get; set; }
 
         [Preserve]
 
-        public AdapterSpecificationResponseDto(string id, string code, string? type, string? communication, string? numOfModulesAllowed, string? commSpeed, string? inputSupply, string? outputSupply, string? inrushCurrent, string? alarm, string? note, string? pdfManual) : base(id, code)
+        public AdapterSpecificationResponseDto(int id, string code, string? type, string? communication, string? numOfModulesAllowed, string? commSpeed, string? inputSupply, string? outputSupply, string? inrushCurrent, string? alarm, string? note, string? pdfManual) : base(id, code)
         {
             Type = type;
             Communication = communication;

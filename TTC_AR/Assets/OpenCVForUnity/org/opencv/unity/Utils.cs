@@ -123,6 +123,8 @@ namespace OpenCVForUnity.UnityUtils
         /// </exception>
         /// <exception cref="ArgumentException">
         /// </exception>
+
+        //chuyển đổi Texture2D sang Mat, vì OpenCV không thể xử lý trực tiếp ảnh kiểu Texture2D
         public static void matToTexture2D(Mat mat, Texture2D texture2D, Color32[] pixels32Buffer, byte[] rawTextureDataBuffer = null, bool flip = true, int flipCode = 0, bool updateMipmaps = false, bool makeNoLongerReadable = false)
         {
             if (mat == null)
@@ -820,13 +822,20 @@ namespace OpenCVForUnity.UnityUtils
         /// </exception>
         /// <exception cref="ArgumentException">
         /// </exception>
+
+        //!chuyển đổi Texture2D sang Mat, vì OpenCV không thể xử lý trực tiếp ảnh kiểu Texture2D
+        //! Vì OpenCV không thể xử lý trực tiếp ảnh kiểu Texture2D
         public static void texture2DToMat(Texture2D texture2D, Mat mat, bool flip = true, int flipCode = 0)
         {
+            //?Đọc các pixel từ Texture2D (dạng Color32[]) 
+            //? và nạp vào Mat (dạng CV_8UC4 – 4 kênh: RGBA).
+
             if (texture2D == null)
                 throw new ArgumentNullException(nameof(texture2D));
 
             if (mat == null)
                 throw new ArgumentNullException(nameof(mat));
+
             if (mat != null)
                 mat.ThrowIfDisposed();
 
@@ -834,7 +843,9 @@ namespace OpenCVForUnity.UnityUtils
                 throw new ArgumentException("The Mat must have the same size.");
 
             int type = mat.type();
+
             TextureFormat format = texture2D.format;
+
             if (!(type == CvType.CV_8UC1 || type == CvType.CV_8UC3 || type == CvType.CV_8UC4))
                 throw new ArgumentException("The Mat must have the types 'CV_8UC4' (RGBA) , 'CV_8UC3' (RGB) or 'CV_8UC1' (GRAY).");
 
@@ -853,9 +864,9 @@ namespace OpenCVForUnity.UnityUtils
 
                 return;
             }
-
+            
+            //? Đọc các pixel từ Texture2D (dạng Color32[]) và nạp vào Mat (dạng CV_8UC4 – 4 kênh: RGBA).
             Color32[] pixels32 = texture2D.GetPixels32();
-
             convertToRGBAIfFormatMatches(pixels32, texture2D.format);
 
 #if !OPENCV_DONT_USE_UNSAFE_CODE

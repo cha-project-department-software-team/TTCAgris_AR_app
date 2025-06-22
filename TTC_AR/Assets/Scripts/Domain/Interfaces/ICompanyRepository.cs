@@ -8,7 +8,7 @@ namespace Domain.Interfaces
 {
     public interface ICompanyRepository
     {
-        Task<CompanyEntity> GetCompanyByIdAsync(string CompanyId);
+        Task<CompanyEntity> GetCompanyByIdAsync(int CompanyId);
         Task<List<CompanyEntity>> GetListCompanyAsync();
     }
 }

@@ -31,7 +31,7 @@ public class DeviceManager : MonoBehaviour
         //! Dependency Injection
         _IDeviceService = ServiceLocator.Instance.DeviceService;
     }
-    public async void GetListDeviceGeneral(string grapperId)
+    public async void GetListDeviceGeneral(int grapperId)
     {
         try
         {
@@ -65,7 +65,7 @@ public class DeviceManager : MonoBehaviour
 
         }
     }
-    public async void GetDeviceInformationFromGrapperList(string grapperId)
+    public async void GetDeviceInformationFromGrapperList(int grapperId)
     {
         try
         {
@@ -100,7 +100,7 @@ public class DeviceManager : MonoBehaviour
         }
     }
 
-    public async void GetDeviceInformationFromModuleList(string moduleId)
+    public async void GetDeviceInformationFromModuleList(int moduleId)
     {
         try
         {
@@ -136,11 +136,11 @@ public class DeviceManager : MonoBehaviour
     }
 
 
-    public async void GetDeviceById(string DeviceId)
+    public async void GetDeviceById(int deviceId)
     {
         try
         {
-            var Device = await _IDeviceService.GetDeviceByIdAsync(DeviceId.ToString()); // Gọi Service
+            var Device = await _IDeviceService.GetDeviceByIdAsync(deviceId); // Gọi Service
             if (Device != null)
             {
                 Debug.Log($"Device: {Device.Code}");
@@ -171,7 +171,7 @@ public class DeviceManager : MonoBehaviour
         }
     }
 
-    public async void CreateNewDevice(string grapperId, DeviceRequestDto DeviceRequestDto)
+    public async void CreateNewDevice(int grapperId, DeviceRequestDto DeviceRequestDto)
     {
         try
         {
@@ -200,9 +200,9 @@ public class DeviceManager : MonoBehaviour
 
         }
     }
-    public async void UpdateDevice(string deviceId, DeviceRequestDto DeviceRequestDto)
+    public async void UpdateDevice(int deviceId, DeviceRequestDto DeviceRequestDto)
     {
-        deviceId = GlobalVariable.DeviceId;
+        deviceId = GlobalVariable.deviceId;
         try
         {
             bool result = await _IDeviceService.UpdateDeviceAsync(deviceId, DeviceRequestDto);
@@ -228,9 +228,9 @@ public class DeviceManager : MonoBehaviour
 
         }
     }
-    public async void DeleteDevice(string deviceId)
+    public async void DeleteDevice(int deviceId)
     {
-        deviceId = GlobalVariable.DeviceId;
+        deviceId = GlobalVariable.deviceId;
         try
         {
             bool result = await _IDeviceService.DeleteDeviceAsync(deviceId);

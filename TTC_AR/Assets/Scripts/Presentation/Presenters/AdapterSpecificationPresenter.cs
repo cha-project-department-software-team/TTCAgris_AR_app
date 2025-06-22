@@ -17,7 +17,7 @@ public class AdapterSpecificationPresenter
         _service = service;
     }
 
-    public async void LoadListAdapterSpecification(string companyId)
+    public async void LoadListAdapterSpecification(int companyId)
     {
         GlobalVariable.APIRequestType.Add("GET_AdapterSpecification_List");
         _view.ShowLoading("Đang tải dữ liệu...");
@@ -39,7 +39,7 @@ public class AdapterSpecificationPresenter
                     var models = new List<AdapterSpecificationModel>();
                     _view.DisplayList(models);
                 }
-                _view.ShowSuccess();
+                _view.ShowSuccess(message: "Tải danh sách thành công");
 
             }
             else
@@ -58,19 +58,19 @@ public class AdapterSpecificationPresenter
         }
     }
 
-    public async void LoadDetailById(string adapterId)
+    public async void LoadDetailById(int adapterId)
     {
         GlobalVariable.APIRequestType.Add("GET_AdapterSpecification");
         _view.ShowLoading("Đang tải dữ liệu...");
 
         try
         {
-            var dto = await _service.GetAdapterSpecificationByIdAsync(adapterId.ToString());
+            var dto = await _service.GetAdapterSpecificationByIdAsync(adapterId);
             if (dto != null)
             {
                 var model = ConvertFromResponseDto(dto);
                 _view.DisplayDetail(model);
-                _view.ShowSuccess();
+                _view.ShowSuccess(message: "Tải dữ liệu thành công");
             }
             else
             {
@@ -87,7 +87,7 @@ public class AdapterSpecificationPresenter
             GlobalVariable.APIRequestType.Remove("GET_AdapterSpecification");
         }
     }
-    public async void CreateNewAdapterSpecification(string companyId, AdapterSpecificationModel model)
+    public async void CreateNewAdapterSpecification(int companyId, AdapterSpecificationModel model)
     {
         GlobalVariable.APIRequestType.Add("POST_AdapterSpecification");
         _view.ShowLoading("Đang thực hiện...");
@@ -99,7 +99,7 @@ public class AdapterSpecificationPresenter
 
             if (result)
             {
-                _view.ShowSuccess(); // Chỉ hiển thị thành công nếu result == true
+                _view.ShowSuccess(message: "Tạo loại Adapter mới thành công"); // Chỉ hiển thị thành công nếu result == true
             }
             else
             {
@@ -118,7 +118,7 @@ public class AdapterSpecificationPresenter
     }
 
 
-    public async void UpdateAdapterSpecification(string adapterSpecificationId, AdapterSpecificationModel model)
+    public async void UpdateAdapterSpecification(int adapterSpecificationId, AdapterSpecificationModel model)
     {
         GlobalVariable.APIRequestType.Add("PUT_AdapterSpecification");
         _view.ShowLoading("Đang thực hiện...");
@@ -129,7 +129,7 @@ public class AdapterSpecificationPresenter
             var result = await _service.UpdateAdapterSpecificationAsync(adapterSpecificationId, dto);
             if (result)
             {
-                _view.ShowSuccess(); // Chỉ hiển thị thành công nếu result == true
+                _view.ShowSuccess(message: "Cập nhật loại Adapter thành công"); // Chỉ hiển thị thành công nếu result == true
             }
             else
             {
@@ -146,7 +146,7 @@ public class AdapterSpecificationPresenter
             GlobalVariable.APIRequestType.Remove("PUT_AdapterSpecification");
         }
     }
-    public async void DeleteAdapterSpecification(string adapterSpecificationId)
+    public async void DeleteAdapterSpecification(int adapterSpecificationId)
     {
         GlobalVariable.APIRequestType.Add("DELETE_AdapterSpecification");
         _view.ShowLoading("Đang thực hiện...");
@@ -156,7 +156,7 @@ public class AdapterSpecificationPresenter
             var result = await _service.DeleteAdapterSpecificationAsync(adapterSpecificationId);
             if (result)
             {
-                _view.ShowSuccess(); // Chỉ hiển thị thành công nếu result == true
+                _view.ShowSuccess(message: "Xóa loại Adapter thành công"); // Chỉ hiển thị thành công nếu result == true
             }
             else
             {

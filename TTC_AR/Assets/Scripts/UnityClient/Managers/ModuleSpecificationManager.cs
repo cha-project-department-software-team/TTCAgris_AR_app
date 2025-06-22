@@ -22,7 +22,7 @@ public class ModuleSpecificationManager : MonoBehaviour
         //! Dependency Injection
         _IModuleSpecificationService = ServiceLocator.Instance.ModuleSpecificationService;
     }
-    public async void GetModuleSpecificationList(string companyId)
+    public async void GetModuleSpecificationList(int companyId)
     {
         try
         {
@@ -58,11 +58,11 @@ public class ModuleSpecificationManager : MonoBehaviour
         }
     }
 
-    public async void GetModuleSpecificationById(string ModuleSpecificationId)
+    public async void GetModuleSpecificationById(int moduleSpecificationId)
     {
         try
         {
-            var ModuleSpecification = await _IModuleSpecificationService.GetModuleSpecificationByIdAsync(ModuleSpecificationId.ToString()); // Gọi Service
+            var ModuleSpecification = await _IModuleSpecificationService.GetModuleSpecificationByIdAsync(moduleSpecificationId); // Gọi Service
             if (ModuleSpecification != null)
             {
                 Debug.Log($"ModuleSpecification: {ModuleSpecification.Code}");
@@ -93,7 +93,7 @@ public class ModuleSpecificationManager : MonoBehaviour
         }
     }
 
-    public async void CreateNewModuleSpecification(string companyId, ModuleSpecificationRequestDto ModuleSpecificationRequestDto)
+    public async void CreateNewModuleSpecification(int companyId, ModuleSpecificationRequestDto ModuleSpecificationRequestDto)
     {
         try
         {
@@ -126,7 +126,7 @@ public class ModuleSpecificationManager : MonoBehaviour
     {
         try
         {
-            bool result = await _IModuleSpecificationService.UpdateModuleSpecificationAsync(GlobalVariable.ModuleSpecificationId, ModuleSpecificationRequestDto);
+            bool result = await _IModuleSpecificationService.UpdateModuleSpecificationAsync(GlobalVariable.moduleSpecificationId, ModuleSpecificationRequestDto);
             Debug.Log(result ? "ModuleSpecification updated successfully" : "Failed to update ModuleSpecification");
         }
 
@@ -149,11 +149,11 @@ public class ModuleSpecificationManager : MonoBehaviour
 
         }
     }
-    public async void DeleteModuleSpecification(string ModuleSpecificationId)
+    public async void DeleteModuleSpecification(int moduleSpecificationId)
     {
         try
         {
-            bool result = await _IModuleSpecificationService.DeleteModuleSpecificationAsync(ModuleSpecificationId);
+            bool result = await _IModuleSpecificationService.DeleteModuleSpecificationAsync(moduleSpecificationId);
             Debug.Log(result ? "ModuleSpecification deleted successfully" : "Failed to delete ModuleSpecification");
         }
 

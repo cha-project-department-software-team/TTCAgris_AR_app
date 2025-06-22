@@ -23,7 +23,7 @@ public class ModuleManager : MonoBehaviour
         //! Dependency Injection
         _IModuleService = ServiceLocator.Instance.ModuleService;
     }
-    public async void GetModuleList(string grapperId)
+    public async void GetModuleList(int grapperId)
     {
         try
         {
@@ -58,11 +58,11 @@ public class ModuleManager : MonoBehaviour
         }
     }
 
-    public async void GetModuleById(string ModuleId)
+    public async void GetModuleById(int moduleId)
     {
         try
         {
-            var Module = await _IModuleService.GetModuleByIdAsync(ModuleId); // Gọi Service
+            var Module = await _IModuleService.GetModuleByIdAsync(moduleId); // Gọi Service
             if (Module != null)
             {
                 Debug.Log($"Module: {Module.Name}");
@@ -93,7 +93,7 @@ public class ModuleManager : MonoBehaviour
         }
     }
 
-    public async void CreateNewModule(string grapperId, ModuleRequestDto ModuleRequestDto)
+    public async void CreateNewModule(int grapperId, ModuleRequestDto ModuleRequestDto)
     {
         try
         {
@@ -122,11 +122,11 @@ public class ModuleManager : MonoBehaviour
 
         }
     }
-    public async void UpdateModule(ModuleRequestDto ModuleRequestDto)
+    public async void UpdateModule(int moduleId, ModuleRequestDto ModuleRequestDto)
     {
         try
         {
-            bool result = await _IModuleService.UpdateModuleAsync(GlobalVariable.GrapperId, ModuleRequestDto);
+            bool result = await _IModuleService.UpdateModuleAsync(moduleId, ModuleRequestDto);
             Debug.Log(result ? "Module updated successfully" : "Failed to update Module");
         }
 
@@ -149,11 +149,11 @@ public class ModuleManager : MonoBehaviour
 
         }
     }
-    public async void DeleteModule(string ModuleId)
+    public async void DeleteModule(int moduleId)
     {
         try
         {
-            bool result = await _IModuleService.DeleteModuleAsync(ModuleId);
+            bool result = await _IModuleService.DeleteModuleAsync(moduleId);
             Debug.Log(result ? "Module deleted successfully" : "Failed to delete Module");
         }
 

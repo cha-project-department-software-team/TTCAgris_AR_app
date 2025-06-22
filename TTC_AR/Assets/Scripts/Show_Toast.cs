@@ -127,7 +127,7 @@ public class Show_Toast : MonoBehaviour
         {
             if (existingToast == null)
             {
-                Debug.LogError("existingToast is null. Make sure it is assigned properly.");
+                // Debug.LogError("existingToast is null. Make sure it is assigned properly.");
                 return;
             }
             existingToast.gameObject.SetActive(status);

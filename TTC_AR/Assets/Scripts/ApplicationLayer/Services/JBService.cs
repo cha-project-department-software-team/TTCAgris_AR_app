@@ -18,29 +18,29 @@ namespace ApplicationLayer.Services
 
 
         //! Dữ liệu trả về là Dto
-        public async Task<JBResponseDto> GetJBByIdAsync(string JBid)
+        public async Task<JBResponseDto> GetJBByIdAsync(int JBid)
         {
             return await _JBUseCase.GetJBByIdAsync(JBid);
         }
 
-        public async Task<IEnumerable<JBGeneralDto>> GetListJBInformationAsync(string grapperId)
+        public async Task<List<JBGeneralDto>> GetListJBInformationAsync(int grapperId)
         {
             return await _JBUseCase.GetListJBInforAsync(grapperId);
         }
-        public async Task<List<JBBasicDto>> GetListJBGeneralAsync(string grapperId)
+        public async Task<List<JBBasicDto>> GetListJBGeneralAsync(int grapperId)
         {
             return await _JBUseCase.GetListJBGeneralAsync(grapperId);
         }
 
-        public async Task<bool> CreateNewJBAsync(string grapperId, JBRequestDto JBRequestDto)
+        public async Task<bool> CreateNewJBAsync(int grapperId, JBRequestDto JBRequestDto)
         {
             return await _JBUseCase.CreateNewJBAsync(grapperId, JBRequestDto);
         }
-        public async Task<bool> UpdateJBAsync(string JBId, JBRequestDto JBRequestDto)
+        public async Task<bool> UpdateJBAsync(int JBId, JBRequestDto JBRequestDto)
         {
             return await _JBUseCase.UpdateJBAsync(JBId, JBRequestDto);
         }
-        public async Task<bool> DeleteJBAsync(string JBId)
+        public async Task<bool> DeleteJBAsync(int JBId)
         {
             return await _JBUseCase.DeleteJBAsync(JBId);
         }

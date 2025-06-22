@@ -7,12 +7,12 @@ namespace ApplicationLayer.Dtos.ModuleSpecification
 {
   public class ModuleSpecificationBasicDto
   {
-    [JsonProperty("Id")] public string Id { get; set; }
-    [JsonProperty("Code")] public string Code { get; set; }
+    [JsonProperty("id")] public int Id { get; set; }
+    [JsonProperty("code")] public string Code { get; set; }
 
     [Preserve]
 
-    public ModuleSpecificationBasicDto(string id, string code)
+    public ModuleSpecificationBasicDto(int id, string code)
     {
       Id = id;
       Code = string.IsNullOrEmpty(code) ? throw new System.ArgumentException(nameof(code)) : code;

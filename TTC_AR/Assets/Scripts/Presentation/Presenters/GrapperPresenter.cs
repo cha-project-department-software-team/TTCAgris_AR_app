@@ -24,7 +24,7 @@ public class GrapperPresenter
     }
 
     //! Get list Grapper chỉ có Id và Code
-    public async void LoadListGrapper(string grapperId)
+    public async void LoadListGrapper(int grapperId)
     {
         GlobalVariable.APIRequestType.Add("GET_Grapper_List");
         _view.ShowLoading("Đang tải dữ liệu...");
@@ -64,7 +64,7 @@ public class GrapperPresenter
     }
 
     //! GET Grapper Detail với đầy đủ thông tin
-    public async void LoadDetailById(string GrapperId)
+    public async void LoadDetailById(int GrapperId)
     {
         GlobalVariable.APIRequestType.Add("GET_Grapper");
         _view.ShowLoading("Đang tải dữ liệu...");
@@ -98,7 +98,7 @@ public class GrapperPresenter
             GlobalVariable.APIRequestType.Remove("GET_Grapper");
         }
     }
-    public async void CreateNewGrapper(string grapperId, GrapperInformationModel model)
+    public async void CreateNewGrapper(int grapperId, GrapperInformationModel model)
     {
         GlobalVariable.APIRequestType.Add("POST_Grapper");
         _view.ShowLoading("Đang thực hiện...");
@@ -128,7 +128,7 @@ public class GrapperPresenter
         }
     }
 
-    public async void UpdateGrapper(string GrapperId, GrapperInformationModel model)
+    public async void UpdateGrapper(int GrapperId, GrapperInformationModel model)
     {
         GlobalVariable.APIRequestType.Add("PUT_Grapper");
         _view.ShowLoading("Đang thực hiện...");
@@ -159,7 +159,7 @@ public class GrapperPresenter
             GlobalVariable.APIRequestType.Remove("PUT_Grapper");
         }
     }
-    public async void DeleteGrapper(string GrapperId)
+    public async void DeleteGrapper(int GrapperId)
     {
         GlobalVariable.APIRequestType.Add("DELETE_Grapper");
         _view.ShowLoading("Đang thực hiện...");

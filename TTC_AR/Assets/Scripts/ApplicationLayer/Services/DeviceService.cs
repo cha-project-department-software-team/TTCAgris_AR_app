@@ -23,35 +23,35 @@ namespace ApplicationLayer.Services
         }
 
         //! Tham số là Dto, Dữ liệu trả về là Dto
-        public async Task<DeviceResponseDto> GetDeviceByIdAsync(string id)
+        public async Task<DeviceResponseDto> GetDeviceByIdAsync(int id)
         {
             UnityEngine.Debug.Log("Run Service");
 
             return await _DeviceUseCase.GetDeviceByIdAsync(id);
         }
-        public async Task<IEnumerable<DeviceBasicDto>> GetListDeviceGeneralAsync(string grapperId)
+        public async Task<List<DeviceBasicDto>> GetListDeviceGeneralAsync(int grapperId)
         {
             return await _DeviceUseCase.GetListDeviceGeneralAsync(grapperId);
         }
-        public async Task<IEnumerable<DeviceResponseDto>> GetListDeviceInformationFromGrapperAsync(string grapperId)
+        public async Task<List<DeviceResponseDto>> GetListDeviceInformationFromGrapperAsync(int grapperId)
         {
             return await _DeviceUseCase.GetListDeviceInformationFromGrapperAsync(grapperId);
         }
-        public async Task<IEnumerable<DeviceResponseDto>> GetListDeviceInformationFromModuleAsync(string moduleId)
+        public async Task<List<DeviceBasicDto>> GetListDeviceInformationFromModuleAsync(int moduleId)
         {
             return await _DeviceUseCase.GetListDeviceInformationFromModuleAsync(moduleId);
         }
-        public async Task<bool> CreateNewDeviceAsync(string grapperId, DeviceRequestDto DeviceRequestDto)
+        public async Task<bool> CreateNewDeviceAsync(int grapperId, DeviceRequestDto DeviceRequestDto)
         {
             return await _DeviceUseCase.CreateNewDeviceAsync(grapperId, DeviceRequestDto);
         }
-        public async Task<bool> UpdateDeviceAsync(string DeviceId, DeviceRequestDto DeviceRequestDto)
+        public async Task<bool> UpdateDeviceAsync(int deviceId, DeviceRequestDto DeviceRequestDto)
         {
-            return await _DeviceUseCase.UpdateDeviceAsync(DeviceId, DeviceRequestDto);
+            return await _DeviceUseCase.UpdateDeviceAsync(deviceId, DeviceRequestDto);
         }
-        public async Task<bool> DeleteDeviceAsync(string DeviceId)
+        public async Task<bool> DeleteDeviceAsync(int deviceId)
         {
-            return await _DeviceUseCase.DeleteDeviceAsync(DeviceId);
+            return await _DeviceUseCase.DeleteDeviceAsync(deviceId);
         }
     }
 

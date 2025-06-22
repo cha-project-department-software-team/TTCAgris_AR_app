@@ -23,7 +23,7 @@ public class AdapterSpecificationManager : MonoBehaviour
         //! Dependency Injection
         _IAdapterSpecificationService = ServiceLocator.Instance.AdapterSpecificationService;
     }
-    public async void GetAdapterSpecificationList(string companyId)
+    public async void GetAdapterSpecificationList(int companyId)
     {
         try
         {
@@ -58,11 +58,11 @@ public class AdapterSpecificationManager : MonoBehaviour
         }
     }
 
-    public async void GetAdapterSpecificationById(string AdapterSpecificationId)
+    public async void GetAdapterSpecificationById(int adapterSpecificationId)
     {
         try
         {
-            var AdapterSpecification = await _IAdapterSpecificationService.GetAdapterSpecificationByIdAsync(AdapterSpecificationId); // Gọi Service
+            var AdapterSpecification = await _IAdapterSpecificationService.GetAdapterSpecificationByIdAsync(adapterSpecificationId); // Gọi Service
             if (AdapterSpecification != null)
             {
                 Debug.Log($"AdapterSpecification: {AdapterSpecification.Code}");
@@ -93,7 +93,7 @@ public class AdapterSpecificationManager : MonoBehaviour
         }
     }
 
-    public async void CreateNewAdapterSpecification(string companyId, AdapterSpecificationRequestDto AdapterSpecificationRequestDto)
+    public async void CreateNewAdapterSpecification(int companyId, AdapterSpecificationRequestDto AdapterSpecificationRequestDto)
     {
         try
         {
@@ -122,7 +122,7 @@ public class AdapterSpecificationManager : MonoBehaviour
 
         }
     }
-    public async void UpdateAdapterSpecification(string adapterSpecificationId, AdapterSpecificationRequestDto AdapterSpecificationRequestDto)
+    public async void UpdateAdapterSpecification(int adapterSpecificationId, AdapterSpecificationRequestDto AdapterSpecificationRequestDto)
     {
         try
         {
@@ -149,11 +149,11 @@ public class AdapterSpecificationManager : MonoBehaviour
 
         }
     }
-    public async void DeleteAdapterSpecification(string AdapterSpecificationId)
+    public async void DeleteAdapterSpecification(int adapterSpecificationId)
     {
         try
         {
-            bool result = await _IAdapterSpecificationService.DeleteAdapterSpecificationAsync(AdapterSpecificationId);
+            bool result = await _IAdapterSpecificationService.DeleteAdapterSpecificationAsync(adapterSpecificationId);
             Debug.Log(result ? "AdapterSpecification deleted successfully" : "Failed to delete AdapterSpecification");
         }
 

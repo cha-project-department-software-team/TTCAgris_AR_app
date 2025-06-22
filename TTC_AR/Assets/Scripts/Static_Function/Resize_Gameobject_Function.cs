@@ -47,4 +47,45 @@ public class Resize_GameObject_Function : MonoBehaviour
     LayoutRebuilder.ForceRebuildLayoutImmediate(imageComponent.rectTransform);
 
   }
+  public static IEnumerator Set_NativeSize_For_GameObject(RawImage imageComponent)
+  {
+    if (imageComponent == null)
+    {
+      Debug.LogWarning("RawImage component is null.");
+      yield break;
+    }
+
+    Canvas.ForceUpdateCanvases();
+
+    if (imageComponent.texture == null)
+    {
+      Debug.LogWarning("Texture is null on RawImage component.");
+      yield break;
+    }
+
+    // imageComponent.SetNativeSize();
+
+    // yield return new WaitForEndOfFrame();
+
+    float originalWidth = imageComponent.texture.width;
+    float originalHeight = imageComponent.texture.height;
+
+    Debug.Log($"Texture Size: {originalWidth}x{originalHeight}");
+    if (originalHeight <= 0)
+    {
+      Debug.LogWarning("Texture height is zero or negative, aspect ratio calculation will fail.");
+      yield break;
+    }
+
+    RectTransform rectTransform = imageComponent.rectTransform;
+    if (rectTransform == null)
+    {
+      Debug.LogWarning("RectTransform is null on RawImage component.");
+      yield break;
+    }
+
+    float aspectRatio = originalWidth / originalHeight;
+    rectTransform.sizeDelta = new Vector2(rectTransform.sizeDelta.x, rectTransform.sizeDelta.x / aspectRatio);
+    LayoutRebuilder.ForceRebuildLayoutImmediate(rectTransform);
+  }
 }

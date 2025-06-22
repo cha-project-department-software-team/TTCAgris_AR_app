@@ -1,8 +1,8 @@
 [
   {
-    "Id": "FD12212",
+    "id": "FD12212",
     "Type": "Biến tần",
-    "Name": "Che lớn",
+    "name": "Che lớn",
     "Cabinet_Code": "Big Mill 1",
     "Brand": "ABB",
     "Rated_Power": "950 KW",
@@ -12,7 +12,7 @@
     "Active_Voltage": "660V",
     "Frequency": "50 Hz",
     "RotationSpeed": "1492 RPM",
-    "ListConnectionImages": [
+    "listConnectionImages": [
       "https://firebasestorage.googleapis.com/v0/b/ttc-project-81b04.appspot.com/o/Field_Device_Connection%2FGrapA_Connection_Inverter_CHE%20EP%20LON_1.png?alt=media&token=d518394f-3d82-402e-adf5-8633ba3f90b4",
       "https://firebasestorage.googleapis.com/v0/b/ttc-project-81b04.appspot.com/o/Field_Device_Connection%2FGrapA_Connection_Inverter_CHE%20EP%20LON_2.png?alt=media&token=00a897d8-37d5-4bdc-b280-78e2ab7d69dc",
       "https://firebasestorage.googleapis.com/v0/b/ttc-project-81b04.appspot.com/o/Field_Device_Connection%2FGrapA_Connection_Inverter_CHE%20EP%20LON_CHE%20EP%20NHO_3.png?alt=media&token=27fd39f7-f18a-43ac-bbb3-7b4e641d2f56",
@@ -21,7 +21,7 @@
       "https://firebasestorage.googleapis.com/v0/b/ttc-project-81b04.appspot.com/o/Field_Device_Connection%2FGrapA_Connection_Inverter_CHE%20EP%20LON_CHE%20EP%20NHO_6.png?alt=media&token=839f40a0-a0f4-4e87-a006-ad7b37d2df2a",
       "https://firebasestorage.googleapis.com/v0/b/ttc-project-81b04.appspot.com/o/Field_Device_Connection%2FGrapA_Connection_Inverter_CHE%20EP%20LON_CHE%20EP%20NHO_7.png?alt=media&token=d301f074-c775-444c-bda9-fe8b58bd9340",
       "https://firebasestorage.googleapis.com/v0/b/ttc-project-81b04.appspot.com/o/Field_Device_Connection%2FGrapA_Connection_Inverter_CHE%20EP%20LON_CHE%20EP%20NHO_8.png?alt=media&token=10bf2ed3-a060-45d3-8c7a-eb9ba810a7da",
-      "https://firebasestorage.googleapis.com/v0/b/ttc-project-81b04.appspot.com/o/Field_Device_Connection%2FGrapA_Connection_Inverter_CHE%20EP%20LON_CHE%20EP%20NHO_9.png?alt=media&token=094f47fb-0de4-4faa-ab89-a3ccbf5306fe" ,    
+      "https://firebasestorage.googleapis.com/v0/b/ttc-project-81b04.appspot.com/o/Field_Device_Connection%2FGrapA_Connection_Inverter_CHE%20EP%20LON_CHE%20EP%20NHO_9.png?alt=media&token=094f47fb-0de4-4faa-ab89-a3ccbf5306fe",
       "https://firebasestorage.googleapis.com/v0/b/ttc-project-81b04.appspot.com/o/Field_Device_Connection%2FGrapA_Connection_Inverter_CHE%20EP%20LON_CHE%20EP%20NHO_10.png?alt=media&token=b77eb206-6edf-4862-bc1a-eae98fbc9a0f",
       "https://firebasestorage.googleapis.com/v0/b/ttc-project-81b04.appspot.com/o/Field_Device_Connection%2FGrapA_Connection_Inverter_CHE%20EP%20LON_CHE%20EP%20NHO_11.png?alt=media&token=7f32c2c5-f89e-40cb-9493-81627cd2c599",
       "https://firebasestorage.googleapis.com/v0/b/ttc-project-81b04.appspot.com/o/Field_Device_Connection%2FGrapA_Connection_Inverter_CHE%20EP%20LON_CHE%20EP%20NHO_12.png?alt=media&token=f338394b-05a3-4171-a8c2-ad8481c62938",

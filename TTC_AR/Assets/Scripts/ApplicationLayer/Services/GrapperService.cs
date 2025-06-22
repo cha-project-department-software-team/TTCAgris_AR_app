@@ -19,23 +19,23 @@ namespace ApplicationLayer.Services
         }
 
         //! Tham số là Dto, Dữ liệu trả về là Dto
-        public async Task<GrapperResponseDto> GetGrapperByIdAsync(string id)
+        public async Task<GrapperResponseDto> GetGrapperByIdAsync(int id)
         {
             return await _GrapperUseCase.GetGrapperByIdAsync(id);
         }
-        public async Task<List<GrapperBasicDto>> GetListGrapperAsync(string grapperId)
+        public async Task<List<GrapperBasicDto>> GetListGrapperAsync(int grapperId)
         {
             return await _GrapperUseCase.GetListGrapperAsync(grapperId);
         }
-        public async Task<bool> CreateNewGrapperAsync(string grapperId, GrapperRequestDto GrapperRequestDto)
+        public async Task<bool> CreateNewGrapperAsync(int grapperId, GrapperRequestDto GrapperRequestDto)
         {
             return await _GrapperUseCase.CreateNewGrapperAsync(grapperId, GrapperRequestDto);
         }
-        public async Task<bool> UpdateGrapperAsync(string GrapperId, GrapperRequestDto GrapperRequestDto)
+        public async Task<bool> UpdateGrapperAsync(int GrapperId, GrapperRequestDto GrapperRequestDto)
         {
             return await _GrapperUseCase.UpdateGrapperAsync(GrapperId, GrapperRequestDto);
         }
-        public async Task<bool> DeleteGrapperAsync(string GrapperId)
+        public async Task<bool> DeleteGrapperAsync(int GrapperId)
         {
             return await _GrapperUseCase.DeleteGrapperAsync(GrapperId);
         }

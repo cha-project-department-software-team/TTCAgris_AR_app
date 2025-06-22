@@ -21,7 +21,7 @@ namespace ApplicationLayer.UseCases
             _IRackRepository = IRackRepository;
         }
 
-        public async Task<List<RackBasicDto>> GetListRackAsync(string grapperId)
+        public async Task<List<RackBasicDto>> GetListRackAsync(int grapperId)
         {
             try
             {
@@ -37,22 +37,22 @@ namespace ApplicationLayer.UseCases
 
                 var RackBasicDtos = new List<RackBasicDto>(count);
 
-                var listRackInfo = new List<RackInformationModel>(count);
+                // var listRackInfo = new List<RackInformationModel>(count);
 
-                var dictRackInfo = new Dictionary<string, RackInformationModel>(count);
+                // var dictRackInfo = new Dictionary<string, RackInformationModel>(count);
 
                 foreach (var RackEntity in RackEntities)
                 {
                     var dto = MapToBasicDto(RackEntity);
-                    var model = new RackInformationModel(dto.Id, dto.Name);
+                    // var model = new RackInformationModel(dto.Id, dto.Name);
 
                     RackBasicDtos.Add(dto);
-                    listRackInfo.Add(model);
-                    dictRackInfo[dto.Name] = model;
+                    // listRackInfo.Add(model);
+                    // dictRackInfo[dto.Name] = model;
                 }
 
-                GlobalVariable.temp_List_RackInformationModel = listRackInfo;
-                GlobalVariable.temp_Dictionary_RackInformationModel = dictRackInfo;
+                // GlobalVariable.temp_ListRackInformationModel = listRackInfo;
+                // GlobalVariable.temp_Dictionary_RackInformationModel = dictRackInfo;
 
                 return RackBasicDtos;
 
@@ -60,41 +60,43 @@ namespace ApplicationLayer.UseCases
             }
             catch (ArgumentException)
             {
-                throw; // Ném lại lỗi validation cho Unity xử lý
+                throw new ApplicationException("Failed to get Rack list"); // Ném lại lỗi validation cho Unity xử lý
             }
             catch (Exception ex)
             {
-                throw new ApplicationException("Failed to get Rack list", ex);
+                throw new ApplicationException("Failed to get Rack list", ex); // Bao bọc lỗi từ Repository
             }
+
         }
 
-        public async Task<RackResponseDto> GetRackByIdAsync(string RackId)
+        public async Task<RackResponseDto> GetRackByIdAsync(int rackId)
         {
             try
             {
-                var RackEntity = await _IRackRepository.GetRackByIdAsync(RackId) ??
+                var RackEntity = await _IRackRepository.GetRackByIdAsync(rackId) ??
                     throw new ApplicationException("Failed to get Rack");
 
                 return MapToResponseDto(RackEntity);
             }
             catch (ArgumentException)
             {
-                throw; // Ném lại lỗi validation cho Unity xử lý
+                throw new ApplicationException("Failed to get Rack"); // Ném lại lỗi validation cho Unity xử lý
             }
             catch (Exception ex)
             {
                 throw new ApplicationException("Failed to get Rack", ex); // Bao bọc lỗi từ Repository
             }
+
         }
 
-        public async Task<bool> CreateNewRackAsync(string grapperId, RackRequestDto requestDto)
+        public async Task<bool> CreateNewRackAsync(int grapperId, RackRequestDto requestDto)
         {
             try
             {
                 // Validate
                 if (string.IsNullOrEmpty(requestDto.Name))
                 {
-                    throw new ArgumentException("Name cannot be empty");
+                    throw new ArgumentException("name cannot be empty");
                 }
 
                 var RackEntity = MapRequestToEntity(requestDto) ??
@@ -105,49 +107,50 @@ namespace ApplicationLayer.UseCases
             }
             catch (ArgumentException)
             {
-                throw; // Ném lại lỗi validation cho Unity xử lý
+                throw new ApplicationException("Failed to create Rack"); // Ném lại lỗi validation cho Unity xử lý
             }
             catch (Exception ex)
             {
                 throw new ApplicationException("Failed to create Rack", ex); // Bao bọc lỗi từ Repository
             }
+
         }
 
-        public async Task<bool> UpdateRackAsync(string RackId, RackRequestDto requestDto)
+        public async Task<bool> UpdateRackAsync(int rackId, RackRequestDto requestDto)
         {
             try
             {
                 // Validate
                 if (string.IsNullOrEmpty(requestDto.Name))
                 {
-                    throw new ArgumentException("Name cannot be empty");
+                    throw new ArgumentException("name cannot be empty");
                 }
 
                 var RackEntity = MapRequestToEntity(requestDto) ??
                     throw new ApplicationException("Failed to update Rack cause RackEntity is Null");
 
-                return await _IRackRepository.UpdateRackAsync(RackId, RackEntity);
+                return await _IRackRepository.UpdateRackAsync(rackId, RackEntity);
             }
             catch (ArgumentException)
             {
-                throw; // Ném lại lỗi validation cho Unity xử lý
+                throw new ApplicationException("Failed to update Rack"); // Ném lại lỗi validation cho Unity xử lý
             }
             catch (Exception ex)
             {
-                throw new ApplicationException("Failed to create Rack", ex); // Bao bọc lỗi từ Repository
+                throw new ApplicationException("Failed to update Rack", ex); // Bao bọc lỗi từ Repository
             }
         }
 
-        public async Task<bool> DeleteRackAsync(string RackId)
+        public async Task<bool> DeleteRackAsync(int rackId)
         {
             try
             {
-                var deletedRackResult = await _IRackRepository.DeleteRackAsync(RackId);
+                var deletedRackResult = await _IRackRepository.DeleteRackAsync(rackId);
                 return deletedRackResult;
             }
             catch (ArgumentException)
             {
-                throw; // Ném lại lỗi validation cho Unity xử lý
+                throw new ApplicationException("Failed to delete Rack"); // Ném lại lỗi validation cho Unity xử lý
             }
             catch (Exception ex)
             {
@@ -155,30 +158,27 @@ namespace ApplicationLayer.UseCases
             }
         }
 
+
+        //! Dto => Entity
         private RackEntity MapRequestToEntity(RackRequestDto RackRequestDto)
         {
-            int count = RackRequestDto.ModuleBasicDtos?.Count ?? 0; // Lấy số lượng phần tử trước
             return new RackEntity(
                 name: RackRequestDto.Name,
-                moduleEntities: count == 0
-                    ? new List<ModuleEntity>() // Nếu không có dữ liệu, trả về danh sách rỗng
-                    : new List<ModuleEntity>(RackRequestDto.ModuleBasicDtos.Select(module => new ModuleEntity(module.Id, module.Name)))
+                moduleEntities: RackRequestDto.ModuleBasicDtos.Any()
+                    ? RackRequestDto.ModuleBasicDtos.Select(module => new ModuleEntity(module.Id, module.Name)).ToList()
+                    : new List<ModuleEntity>()
             );
         }
-
-
-
         //! Entity => Dto
         private RackResponseDto MapToResponseDto(RackEntity rackEntity)
         {
-            var moduleEntities = rackEntity.ModuleEntities;
 
             return new RackResponseDto(
                 id: rackEntity.Id,
                 name: rackEntity.Name,
-                moduleBasicDtos: moduleEntities.Any()
-                    ? moduleEntities.Select(m => new ModuleBasicDto(m.Id, m.Name)).ToList()
-                    : new()
+                moduleBasicDtos: rackEntity.ModuleEntities.Any()
+                    ? rackEntity.ModuleEntities.Select(m => new ModuleBasicDto(m.Id, m.Name)).ToList()
+                    : new List<ModuleBasicDto>()
             );
         }
 

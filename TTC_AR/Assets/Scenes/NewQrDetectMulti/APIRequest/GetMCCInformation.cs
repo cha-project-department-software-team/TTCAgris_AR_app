@@ -32,7 +32,7 @@ public class GetMCCInformation : MonoBehaviour
             var mccCabinetCode = title.text.Substring(firstSpaceIndex + 1);
 
             //? Mcc tương ứng
-            var mcc = StaticVariable.temp_ListMccInformationModel.Find(mcc => mcc.CabinetCode == mccCabinetCode);
+            var mcc = StaticVariable.temp_ListMCCInformationModel.Find(mcc => mcc.CabinetCode == mccCabinetCode);
 
             if (mcc == null)
             {

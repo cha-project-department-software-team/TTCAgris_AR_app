@@ -13,29 +13,30 @@ namespace ApplicationLayer.Dtos.Device
     [Preserve]
     public class DeviceGeneralDto : DeviceBasicDto //! Để GetListDeviceInformation và làm Property cho GetModuleInformation
     {
-        [JsonProperty("Function")] public string Function { get; set; }
-        [JsonProperty("Range")] public string Range { get; set; }
-        [JsonProperty("Unit")] public string Unit { get; set; }
-        [JsonProperty("IOAddress")] public string IOAddress { get; set; }
-        [JsonProperty("Module")] public ModuleBasicDto? ModuleBasicDto { get; set; }
-        [JsonProperty("JBs")] public List<JBBasicDto>? JBBasicDtos { get; set; }
-        [JsonProperty("AdditionalConnectionImages")] public List<ImageResponseDto>? AdditionalImageResponseDtos { get; set; }
+        [JsonProperty("function")] public string Function { get; set; }
+        [JsonProperty("range")] public string Range { get; set; }
+        [JsonProperty("unit")] public string Unit { get; set; }
+        [JsonProperty("ioAddress")] public string IOAddress { get; set; }
+        [JsonProperty("module")] public ModuleBasicDto? ModuleBasicDto { get; set; }
+        [JsonProperty("jBs")] public List<JBBasicDto>? JBBasicDtos { get; set; }
+        [JsonProperty("additionalConnectionImages")] public List<ImageBasicDto>? AdditionalImageBasicDtos { get; set; }
 
         [Preserve]
 
-        public DeviceGeneralDto(string id, string code, string function, string range, string unit, string ioAddress, ModuleBasicDto? moduleBasicDto, List<JBBasicDto>? jbBasicDtos, List<ImageResponseDto>? additionalImageResponseDtos) : base(id, code)
+        public DeviceGeneralDto(int id, string code, string function, string range, string unit, string ioAddress, ModuleBasicDto? moduleBasicDto, List<JBBasicDto>? jbBasicDtos, List<ImageBasicDto>? additionalImageBasicDtos) : base(id, code)
         {
-            Function = function;
-            Range = range;
-            Unit = unit;
-            IOAddress = ioAddress;
+            Function = string.IsNullOrEmpty(function) ? "Chưa cập nhật" : function;
+            Range = string.IsNullOrEmpty(range) ? "Chưa cập nhật" : range;
+            Unit = string.IsNullOrEmpty(unit) ? "Chưa cập nhật" : unit;
+            IOAddress = string.IsNullOrEmpty(ioAddress) ? "Chưa cập nhật" : ioAddress;
+            IOAddress = string.IsNullOrEmpty(ioAddress) ? "Chưa cập nhật" : ioAddress;
             ModuleBasicDto = moduleBasicDto;
             JBBasicDtos = jbBasicDtos;
-            AdditionalImageResponseDtos = additionalImageResponseDtos;
+            AdditionalImageBasicDtos = additionalImageBasicDtos;
         }
         // [Preserve]
         // 
-        // public DeviceGeneralDto(string id, string code, string function, string range, string unit, string ioAddress, ModuleBasicDto moduleBasicDto, JBBasicDto jbBasicDto, List<ImageResponseDto> additionalImageResponseDtos) : base(id, code)
+        // public DeviceGeneralDto(int id, string code, string function, string range, string unit, string ioAddress, ModuleBasicDto moduleBasicDto, JBBasicDto jbBasicDto, List<ImageBasicDto> additionalImageBasicDtos) : base(id, code)
         // {
         //     Function = function == "" ? string.Empty : function;
         //     Range = range == "" ? string.Empty : range;
@@ -43,7 +44,7 @@ namespace ApplicationLayer.Dtos.Device
         //     IOAddress = ioAddress == "" ? string.Empty : ioAddress;
         //     ModuleBasicDto = moduleBasicDto ?? throw new ArgumentException(nameof(moduleBasicDto));
         //     JBBasicDto = jbBasicDto ?? throw new ArgumentException(nameof(jbBasicDto));
-        //     AdditionalImageResponseDtos = additionalImageResponseDtos ?? new List<ImageResponseDto>();
+        //     AdditionalImageBasicDtos = additionalImageBasicDtos ?? new List<ImageBasicDto>();
         // }
 
     }

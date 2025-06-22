@@ -17,7 +17,7 @@ namespace ApplicationLayer.UseCases
         {
             _IModuleSpecificationRepository = IModuleSpecificationRepository;
         }
-        public async Task<List<ModuleSpecificationBasicDto>> GetListModuleSpecificationAsync(string companyId)
+        public async Task<List<ModuleSpecificationBasicDto>> GetListModuleSpecificationAsync(int companyId)
         {
             try
             {
@@ -35,34 +35,36 @@ namespace ApplicationLayer.UseCases
 
                 var listModuleSpecificationInfo = new List<ModuleSpecificationModel>(count);
 
-                var dictModuleSpecificationInfo = new Dictionary<string, ModuleSpecificationModel>(count);
+                // var dictModuleSpecificationInfo = new Dictionary<string, ModuleSpecificationModel>(count);
 
                 foreach (var ModuleSpecificationEntity in ModuleSpecificationEntities)
                 {
                     var dto = MapToBasicDto(ModuleSpecificationEntity);
-                    var model = new ModuleSpecificationModel(dto.Id, dto.Code);
+                    // var model = new ModuleSpecificationModel(dto.Id, dto.Code);
 
                     ModuleSpecificationBasicDtos.Add(dto);
-                    listModuleSpecificationInfo.Add(model);
-                    dictModuleSpecificationInfo[dto.Code] = model;
+                    // listModuleSpecificationInfo.Add(model);
+                    // dictModuleSpecificationInfo[dto.Code] = model;
                 }
 
-                GlobalVariable.temp_List_ModuleSpecificationModel = listModuleSpecificationInfo;
-                GlobalVariable.temp_Dictionary_ModuleSpecificationModel = dictModuleSpecificationInfo;
+                // GlobalVariable.temp_List_ModuleSpecificationModel = listModuleSpecificationInfo;
+                // GlobalVariable.temp_Dictionary_ModuleSpecificationModel = dictModuleSpecificationInfo;
 
                 return ModuleSpecificationBasicDtos;
 
             }
             catch (ArgumentException)
             {
-                throw; // Ném lại lỗi validation cho Unity xử lý
+                throw new ApplicationException("Failed to get ModuleSpecification list"); // Ném lại lỗi validation cho Unity xử lý
             }
             catch (Exception ex)
             {
-                throw new ApplicationException("Failed to get ModuleSpecification list", ex);
+                throw new ApplicationException("Failed to get ModuleSpecification list", ex); // Bao bọc lỗi từ Repository
             }
+
+
         }
-        public async Task<ModuleSpecificationResponseDto> GetModuleSpecificationByIdAsync(string moduleSpecificationId)
+        public async Task<ModuleSpecificationResponseDto> GetModuleSpecificationByIdAsync(int moduleSpecificationId)
         {
             try
             {
@@ -72,16 +74,15 @@ namespace ApplicationLayer.UseCases
             }
             catch (ArgumentException)
             {
-                throw; // Ném lại lỗi validation cho Unity xử lý
+                throw new ApplicationException("Failed to get ModuleSpecification"); // Ném lại lỗi validation cho Unity xử lý
             }
             catch (Exception ex)
             {
                 throw new ApplicationException("Failed to get ModuleSpecification", ex); // Bao bọc lỗi từ Repository
             }
         }
-        public async Task<bool> CreateNewModuleSpecificationAsync(string companyId, ModuleSpecificationRequestDto requestDto)
+        public async Task<bool> CreateNewModuleSpecificationAsync(int companyId, ModuleSpecificationRequestDto requestDto)
         {
-            companyId = GlobalVariable.companyId;
             try
             {
                 if (string.IsNullOrEmpty(requestDto.Code))
@@ -102,16 +103,16 @@ namespace ApplicationLayer.UseCases
             }
             catch (ArgumentException)
             {
-                throw; // Ném lại lỗi validation cho Unity xử lý
+                throw new ApplicationException("Failed to create ModuleSpecification cause Code is Null"); // Ném lại lỗi validation cho Unity xử lý
+
             }
             catch (Exception ex)
             {
                 throw new ApplicationException("Failed to create ModuleSpecification", ex); // Bao bọc lỗi từ Repository
             }
         }
-        public async Task<bool> UpdateModuleSpecificationAsync(string moduleSpecificationId, ModuleSpecificationRequestDto requestDto)
+        public async Task<bool> UpdateModuleSpecificationAsync(int moduleSpecificationId, ModuleSpecificationRequestDto requestDto)
         {
-            moduleSpecificationId = GlobalVariable.ModuleSpecificationId;
             try
             {
                 // Validate
@@ -133,16 +134,16 @@ namespace ApplicationLayer.UseCases
 
             catch (ArgumentException)
             {
-                throw; // Ném lại lỗi validation cho Unity xử lý
+                throw new ApplicationException("Failed to update ModuleSpecification cause Code is Null"); // Ném lại lỗi validation cho Unity xử lý
             }
             catch (Exception ex)
             {
                 throw new ApplicationException("Failed to update ModuleSpecification", ex); // Bao bọc lỗi từ Repository
             }
         }
-        public async Task<bool> DeleteModuleSpecificationAsync(string moduleSpecificationId)
+        public async Task<bool> DeleteModuleSpecificationAsync(int moduleSpecificationId)
         {
-            // moduleSpecificationId = GlobalVariable.ModuleSpecificationId;
+            // moduleSpecificationId = GlobalVariable.moduleSpecificationId;
 
             try
             {
@@ -151,7 +152,7 @@ namespace ApplicationLayer.UseCases
             }
             catch (ArgumentException)
             {
-                throw; // Ném lại lỗi validation cho Unity xử lý
+                throw new ApplicationException("Failed to delete ModuleSpecification"); // Ném lại lỗi validation cho Unity xử lý
             }
             catch (Exception ex)
             {

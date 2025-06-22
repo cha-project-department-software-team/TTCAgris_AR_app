@@ -11,13 +11,13 @@ namespace Domain.Interfaces
     {
         //!  Do kết quả server trả về là tập hợp con của DeviceEntity nên sẽ lựa chọn hàm trả veỀ DeviceResponseDto
         //! Tham số là Entity
-        Task<JBEntity> GetJBByIdAsync(string JBId);
-        Task<List<JBEntity>> GetListJBGeneralAsync(string grapperId);
-        Task<List<JBEntity>> GetListJBInformationAsync(string grapperId);
+        Task<JBEntity> GetJBByIdAsync(int JBId);
+        Task<List<JBEntity>> GetListJBGeneralAsync(int grapperId);
+        Task<List<JBEntity>> GetListJBInformationAsync(int grapperId);
 
-        Task<bool> CreateNewJBAsync(string grapperId, JBEntity jBEntity);
-        Task<bool> UpdateJBAsync(string JBId, JBEntity jBEntity);
-        Task<bool> DeleteJBAsync(string JBId);
+        Task<bool> CreateNewJBAsync(int grapperId, JBEntity jBEntity);
+        Task<bool> UpdateJBAsync(int JBId, JBEntity jBEntity);
+        Task<bool> DeleteJBAsync(int JBId);
     }
     //! Được Implement ở JBRepository.cs trong Infrastructure Layer
 }

@@ -1,25 +1,25 @@
 [
   {
-    "Id": "DV02LT002",
+    "id": "DV02LT002",
     "Code": "02LT002",
     "Function": "Đo mức bồn nước chè échaudage số 1",
     "Range": "-50 to 150",
     "Unit": "Celsius",
     "IOAddress": "A4.0.I.01",
     "Module": {
-      "Id": "MOAA4.0.I",
-      "Name": "A4.0.I",
+      "id": "MOAA4.0.I",
+      "name": "A4.0.I",
       "Rack": {
-        "Id": "RKA4",
-        "Name": "Rack_4"
+        "id": "RKA4",
+        "name": "Rack_4"
       }
     },
     "JB": {
-      "Id": "AJB01",
-      "Name": "JB1",
+      "id": "AJB01",
+      "name": "JB1",
       "Location": "Cầu thang lên che ép",
       "OutdoorImage": "52.230.123.204:81/api/files/GrapA_Location_JB1.png",
-      "ListConnectionImages": [
+      "listConnectionImages": [
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_1.png",
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_2.png"
       ]
@@ -29,26 +29,26 @@
     ]
   },
   {
-    "Id": "DV02LT003",
+    "id": "DV02LT003",
     "Code": "02LT003",
     "Function": "Đo mức bồn nước chè échaudage số 2",
     "Range": "-50 to 1850",
     "Unit": "Cels8ius",
     "IOAddress": "A4.0.I.02",
     "Module": {
-      "Id": "MOAA4.0.I",
-      "Name": "A4.0.I",
+      "id": "MOAA4.0.I",
+      "name": "A4.0.I",
       "Rack": {
-        "Id": "RKA4",
-        "Name": "Rack_4"
+        "id": "RKA4",
+        "name": "Rack_4"
       }
     },
     "JB": {
-      "Id": "AJB02",
-      "Name": "JB2",
+      "id": "AJB02",
+      "name": "JB2",
       "Location": "MCC",
       "OutdoorImage": "http://52.230.123.204:81/api/files/GrapA_Location_JB1.png",
-      "ListConnectionImages": [
+      "listConnectionImages": [
         "http://52.230.123.204:81/api/files/GrapA_Connection_JB1_2.png",
         "http://52.230.123.204:81/api/files/GrapA_Connection_JB1_2.png"
       ]
@@ -58,26 +58,26 @@
     ]
   },
   {
-    "Id": "DV02LT004",
+    "id": "DV02LT004",
     "Code": "02LT004",
     "Function": "Đo mức bồn nước chè échaudage số 02",
     "Range": "-50 to 1850",
     "Unit": "Cels8ius",
     "IOAddress": "A4.0.I.03",
     "Module": {
-      "Id": "MOAA4.0.I",
-      "Name": "A4.0.I",
+      "id": "MOAA4.0.I",
+      "name": "A4.0.I",
       "Rack": {
-        "Id": "RKA4",
-        "Name": "Rack_4"
+        "id": "RKA4",
+        "name": "Rack_4"
       }
     },
     "JB": {
-      "Id": "AJB02",
-      "Name": "JB2",
+      "id": "AJB02",
+      "name": "JB2",
       "Location": "MCC",
       "OutdoorImage": "52.230.123.204:81/api/files/GrapA_Location_JB1.png",
-      "ListConnectionImages": [
+      "listConnectionImages": [
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_1.png",
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_2.png"
       ]
@@ -87,26 +87,26 @@
     ]
   },
   {
-    "Id": "DV02LT005",
+    "id": "DV02LT005",
     "Code": "02LT005",
     "Function": "Đo mức bồn nước chè échaudage số 3",
     "Range": "-50 to 200",
     "Unit": "Celsius",
     "IOAddress": "A4.0.I.04",
     "Module": {
-      "Id": "MOAA4.0.I",
-      "Name": "A4.0.I",
+      "id": "MOAA4.0.I",
+      "name": "A4.0.I",
       "Rack": {
-        "Id": "RKA4",
-        "Name": "Rack_4"
+        "id": "RKA4",
+        "name": "Rack_4"
       }
     },
     "JB": {
-      "Id": "AJB03",
-      "Name": "JB3",
+      "id": "AJB03",
+      "name": "JB3",
       "Location": "Cầu thang lên che ép",
       "OutdoorImage": "52.230.123.204:81/api/files/GrapA_Location_JB1.png",
-      "ListConnectionImages": [
+      "listConnectionImages": [
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_1.png",
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_2.png"
       ]
@@ -116,26 +116,26 @@
     ]
   },
   {
-    "Id": "DV02LT006",
+    "id": "DV02LT006",
     "Code": "02LT006",
     "Function": "Đo mức bồn nước chè échaudage số 4",
     "Range": "-50 to 250",
     "Unit": "Celsius",
     "IOAddress": "A4.0.I.05",
     "Module": {
-      "Id": "MOAA4.0.I",
-      "Name": "A4.0.I",
+      "id": "MOAA4.0.I",
+      "name": "A4.0.I",
       "Rack": {
-        "Id": "RKA4",
-        "Name": "Rack_4"
+        "id": "RKA4",
+        "name": "Rack_4"
       }
     },
     "JB": {
-      "Id": "AJB04",
-      "Name": "JB4",
+      "id": "AJB04",
+      "name": "JB4",
       "Location": "Cầu thang lên che ép",
       "OutdoorImage": "52.230.123.204:81/api/files/GrapA_Location_JB1.png",
-      "ListConnectionImages": [
+      "listConnectionImages": [
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_1.png",
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_2.png"
       ]
@@ -145,26 +145,26 @@
     ]
   },
   {
-    "Id": "DV02LT007",
+    "id": "DV02LT007",
     "Code": "02LT007",
     "Function": "Đo mức bồn nước chè échaudage số 5",
     "Range": "-50 to 300",
     "Unit": "Celsius",
     "IOAddress": "A4.0.I.06",
     "Module": {
-      "Id": "MOAA4.0.I",
-      "Name": "A4.0.I",
+      "id": "MOAA4.0.I",
+      "name": "A4.0.I",
       "Rack": {
-        "Id": "RKA4",
-        "Name": "Rack_4"
+        "id": "RKA4",
+        "name": "Rack_4"
       }
     },
     "JB": {
-      "Id": "AJB05",
-      "Name": "JB5",
+      "id": "AJB05",
+      "name": "JB5",
       "Location": "Cầu thang lên che ép",
       "OutdoorImage": "52.230.123.204:81/api/files/GrapA_Location_JB1.png",
-      "ListConnectionImages": [
+      "listConnectionImages": [
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_1.png",
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_2.png"
       ]
@@ -174,26 +174,26 @@
     ]
   },
   {
-    "Id": "DV02LT008",
+    "id": "DV02LT008",
     "Code": "02LT008",
     "Function": "Đo mức bồn nước chè échaudage số 6",
     "Range": "-50 to 350",
     "Unit": "Celsius",
     "IOAddress": "A4.0.I.07",
     "Module": {
-      "Id": "MOAA4.0.I",
-      "Name": "A4.0.I",
+      "id": "MOAA4.0.I",
+      "name": "A4.0.I",
       "Rack": {
-        "Id": "RKA4",
-        "Name": "Rack_4"
+        "id": "RKA4",
+        "name": "Rack_4"
       }
     },
     "JB": {
-      "Id": "AJB06",
-      "Name": "JB6",
+      "id": "AJB06",
+      "name": "JB6",
       "Location": "Cầu thang lên che ép",
       "OutdoorImage": "52.230.123.204:81/api/files/GrapA_Location_JB1.png",
-      "ListConnectionImages": [
+      "listConnectionImages": [
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_1.png",
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_2.png"
       ]
@@ -203,26 +203,26 @@
     ]
   },
   {
-    "Id": "DV02LT009",
+    "id": "DV02LT009",
     "Code": "02LT009",
     "Function": "Đo mức bồn nước chè échaudage số 7",
     "Range": "-50 to 400",
     "Unit": "Celsius",
     "IOAddress": "A4.0.I.08",
     "Module": {
-      "Id": "MOAA4.0.I",
-      "Name": "A4.0.I",
+      "id": "MOAA4.0.I",
+      "name": "A4.0.I",
       "Rack": {
-        "Id": "RKA4",
-        "Name": "Rack_4"
+        "id": "RKA4",
+        "name": "Rack_4"
       }
     },
     "JB": {
-      "Id": "AJB07",
-      "Name": "JB7",
+      "id": "AJB07",
+      "name": "JB7",
       "Location": "Cầu thang lên che ép",
       "OutdoorImage": "52.230.123.204:81/api/files/GrapA_Location_JB1.png",
-      "ListConnectionImages": [
+      "listConnectionImages": [
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_1.png",
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_2.png"
       ]
@@ -232,26 +232,26 @@
     ]
   },
   {
-    "Id": "DV02LT010",
+    "id": "DV02LT010",
     "Code": "02LT010",
     "Function": "Đo mức bồn nước chè échaudage số 8",
     "Range": "-50 to 450",
     "Unit": "Celsius",
     "IOAddress": "A4.0.I.09",
     "Module": {
-      "Id": "MOAA4.0.I",
-      "Name": "A4.0.I",
+      "id": "MOAA4.0.I",
+      "name": "A4.0.I",
       "Rack": {
-        "Id": "RKA4",
-        "Name": "Rack_4"
+        "id": "RKA4",
+        "name": "Rack_4"
       }
     },
     "JB": {
-      "Id": "AJB08",
-      "Name": "JB8",
+      "id": "AJB08",
+      "name": "JB8",
       "Location": "Cầu thang lên che ép",
       "OutdoorImage": "52.230.123.204:81/api/files/GrapA_Location_JB1.png",
-      "ListConnectionImages": [
+      "listConnectionImages": [
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_1.png",
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_2.png"
       ]
@@ -261,26 +261,26 @@
     ]
   },
   {
-    "Id": "DV02LT011",
+    "id": "DV02LT011",
     "Code": "02LT011",
     "Function": "Đo mức bồn nước chè échaudage số 9",
     "Range": "-50 to 500",
     "Unit": "Celsius",
     "IOAddress": "A4.0.I.10",
     "Module": {
-      "Id": "MOAA4.0.I",
-      "Name": "A4.0.I",
+      "id": "MOAA4.0.I",
+      "name": "A4.0.I",
       "Rack": {
-        "Id": "RKA4",
-        "Name": "Rack_4"
+        "id": "RKA4",
+        "name": "Rack_4"
       }
     },
     "JB": {
-      "Id": "AJB09",
-      "Name": "JB9",
+      "id": "AJB09",
+      "name": "JB9",
       "Location": "Cầu thang lên che ép",
       "OutdoorImage": "52.230.123.204:81/api/files/GrapA_Location_JB1.png",
-      "ListConnectionImages": [
+      "listConnectionImages": [
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_1.png",
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_2.png"
       ]
@@ -290,26 +290,26 @@
     ]
   },
   {
-    "Id": "DV02LT012",
+    "id": "DV02LT012",
     "Code": "02LT012",
     "Function": "Đo mức bồn nước chè échaudage số 10",
     "Range": "-50 to 550",
     "Unit": "Celsius",
     "IOAddress": "A4.0.I.11",
     "Module": {
-      "Id": "MOAA4.0.I",
-      "Name": "A4.0.I",
+      "id": "MOAA4.0.I",
+      "name": "A4.0.I",
       "Rack": {
-        "Id": "RKA4",
-        "Name": "Rack_4"
+        "id": "RKA4",
+        "name": "Rack_4"
       }
     },
     "JB": {
-      "Id": "AJB10",
-      "Name": "JB10",
+      "id": "AJB10",
+      "name": "JB10",
       "Location": "Cầu thang lên che ép",
       "OutdoorImage": "52.230.123.204:81/api/files/GrapA_Location_JB1.png",
-      "ListConnectionImages": [
+      "listConnectionImages": [
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_1.png",
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_2.png"
       ]
@@ -319,26 +319,26 @@
     ]
   },
   {
-    "Id": "DV02LT013",
+    "id": "DV02LT013",
     "Code": "02LT013",
     "Function": "Đo mức bồn nước chè échaudage số 11",
     "Range": "-50 to 600",
     "Unit": "Celsius",
     "IOAddress": "A4.0.I.12",
     "Module": {
-      "Id": "MOAA4.0.I",
-      "Name": "A4.0.I",
+      "id": "MOAA4.0.I",
+      "name": "A4.0.I",
       "Rack": {
-        "Id": "RKA4",
-        "Name": "Rack_4"
+        "id": "RKA4",
+        "name": "Rack_4"
       }
     },
     "JB": {
-      "Id": "AJB11",
-      "Name": "JB11",
+      "id": "AJB11",
+      "name": "JB11",
       "Location": "Cầu thang lên che ép",
       "OutdoorImage": "52.230.123.204:81/api/files/GrapA_Location_JB1.png",
-      "ListConnectionImages": [
+      "listConnectionImages": [
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_1.png",
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_2.png"
       ]
@@ -348,26 +348,26 @@
     ]
   },
   {
-    "Id": "DV02LT014",
+    "id": "DV02LT014",
     "Code": "02LT014",
     "Function": "Đo mức bồn nước chè échaudage số 12",
     "Range": "-50 to 650",
     "Unit": "Celsius",
     "IOAddress": "A4.0.I.13",
     "Module": {
-      "Id": "MOAA4.0.I",
-      "Name": "A4.0.I",
+      "id": "MOAA4.0.I",
+      "name": "A4.0.I",
       "Rack": {
-        "Id": "RKA4",
-        "Name": "Rack_4"
+        "id": "RKA4",
+        "name": "Rack_4"
       }
     },
     "JB": {
-      "Id": "AJB12",
-      "Name": "JB12",
+      "id": "AJB12",
+      "name": "JB12",
       "Location": "Cầu thang lên che ép",
       "OutdoorImage": "52.230.123.204:81/api/files/GrapA_Location_JB1.png",
-      "ListConnectionImages": [
+      "listConnectionImages": [
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_1.png",
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_2.png"
       ]
@@ -377,26 +377,26 @@
     ]
   },
   {
-    "Id": "DV02LT015",
+    "id": "DV02LT015",
     "Code": "02LT015",
     "Function": "Đo mức bồn nước chè échaudage số 13",
     "Range": "-50 to 700",
     "Unit": "Celsius",
     "IOAddress": "A4.0.I.14",
     "Module": {
-      "Id": "MOAA4.0.I",
-      "Name": "A4.0.I",
+      "id": "MOAA4.0.I",
+      "name": "A4.0.I",
       "Rack": {
-        "Id": "RKA4",
-        "Name": "Rack_4"
+        "id": "RKA4",
+        "name": "Rack_4"
       }
     },
     "JB": {
-      "Id": "AJB13",
-      "Name": "JB13",
+      "id": "AJB13",
+      "name": "JB13",
       "Location": "Cầu thang lên che ép",
       "OutdoorImage": "52.230.123.204:81/api/files/GrapA_Location_JB1.png",
-      "ListConnectionImages": [
+      "listConnectionImages": [
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_1.png",
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_2.png"
       ]
@@ -406,26 +406,26 @@
     ]
   },
   {
-    "Id": "DV02LT016",
+    "id": "DV02LT016",
     "Code": "02LT016",
     "Function": "Đo mức bồn nước chè échaudage số 14",
     "Range": "-50 to 750",
     "Unit": "Celsius",
     "IOAddress": "A4.0.I.15",
     "Module": {
-      "Id": "MOAA4.0.I",
-      "Name": "A4.0.I",
+      "id": "MOAA4.0.I",
+      "name": "A4.0.I",
       "Rack": {
-        "Id": "RKA4",
-        "Name": "Rack_4"
+        "id": "RKA4",
+        "name": "Rack_4"
       }
     },
     "JB": {
-      "Id": "AJB14",
-      "Name": "JB14",
+      "id": "AJB14",
+      "name": "JB14",
       "Location": "Cầu thang lên che ép",
       "OutdoorImage": "52.230.123.204:81/api/files/GrapA_Location_JB1.png",
-      "ListConnectionImages": [
+      "listConnectionImages": [
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_1.png",
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_2.png"
       ]
@@ -435,26 +435,26 @@
     ]
   },
   {
-    "Id": "DV02LT017",
+    "id": "DV02LT017",
     "Code": "02LT017",
     "Function": "Đo mức bồn nước chè échaudage số 15",
     "Range": "-50 to 800",
     "Unit": "Celsius",
     "IOAddress": "A4.0.I.16",
     "Module": {
-      "Id": "MOAA4.0.I",
-      "Name": "A4.0.I",
+      "id": "MOAA4.0.I",
+      "name": "A4.0.I",
       "Rack": {
-        "Id": "RKA4",
-        "Name": "Rack_4"
+        "id": "RKA4",
+        "name": "Rack_4"
       }
     },
     "JB": {
-      "Id": "AJB15",
-      "Name": "JB15",
+      "id": "AJB15",
+      "name": "JB15",
       "Location": "Cầu thang lên che ép",
       "OutdoorImage": "52.230.123.204:81/api/files/GrapA_Location_JB1.png",
-      "ListConnectionImages": [
+      "listConnectionImages": [
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_1.png",
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_2.png"
       ]
@@ -464,26 +464,26 @@
     ]
   },
   {
-    "Id": "DV02LT018",
+    "id": "DV02LT018",
     "Code": "02LT018",
     "Function": "Đo mức bồn nước chè échaudage số 16",
     "Range": "-50 to 850",
     "Unit": "Celsius",
     "IOAddress": "A4.0.I.17",
     "Module": {
-      "Id": "MOAA4.0.I",
-      "Name": "A4.0.I",
+      "id": "MOAA4.0.I",
+      "name": "A4.0.I",
       "Rack": {
-        "Id": "RKA4",
-        "Name": "Rack_4"
+        "id": "RKA4",
+        "name": "Rack_4"
       }
     },
     "JB": {
-      "Id": "AJB16",
-      "Name": "JB16",
+      "id": "AJB16",
+      "name": "JB16",
       "Location": "Cầu thang lên che ép",
       "OutdoorImage": "52.230.123.204:81/api/files/GrapA_Location_JB1.png",
-      "ListConnectionImages": [
+      "listConnectionImages": [
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_1.png",
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_2.png"
       ]
@@ -493,26 +493,26 @@
     ]
   },
   {
-    "Id": "DV02LT019",
+    "id": "DV02LT019",
     "Code": "02LT019",
     "Function": "Đo mức bồn nước chè échaudage số 17",
     "Range": "-50 to 900",
     "Unit": "Celsius",
     "IOAddress": "A4.0.I.18",
     "Module": {
-      "Id": "MOAA4.0.I",
-      "Name": "A4.0.I",
+      "id": "MOAA4.0.I",
+      "name": "A4.0.I",
       "Rack": {
-        "Id": "RKA4",
-        "Name": "Rack_4"
+        "id": "RKA4",
+        "name": "Rack_4"
       }
     },
     "JB": {
-      "Id": "AJB17",
-      "Name": "JB17",
+      "id": "AJB17",
+      "name": "JB17",
       "Location": "Cầu thang lên che ép",
       "OutdoorImage": "52.230.123.204:81/api/files/GrapA_Location_JB1.png",
-      "ListConnectionImages": [
+      "listConnectionImages": [
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_1.png",
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_2.png"
       ]
@@ -522,26 +522,26 @@
     ]
   },
   {
-    "Id": "DV02LT020",
+    "id": "DV02LT020",
     "Code": "02LT020",
     "Function": "Đo mức bồn nước chè échaudage số 18",
     "Range": "-50 to 950",
     "Unit": "Celsius",
     "IOAddress": "A4.0.I.19",
     "Module": {
-      "Id": "MOAA4.0.I",
-      "Name": "A4.0.I",
+      "id": "MOAA4.0.I",
+      "name": "A4.0.I",
       "Rack": {
-        "Id": "RKA4",
-        "Name": "Rack_4"
+        "id": "RKA4",
+        "name": "Rack_4"
       }
     },
     "JB": {
-      "Id": "AJB18",
-      "Name": "JB18",
+      "id": "AJB18",
+      "name": "JB18",
       "Location": "Cầu thang lên che ép",
       "OutdoorImage": "52.230.123.204:81/api/files/GrapA_Location_JB1.png",
-      "ListConnectionImages": [
+      "listConnectionImages": [
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_1.png",
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_2.png"
       ]
@@ -551,26 +551,26 @@
     ]
   },
   {
-    "Id": "DV02LT021",
+    "id": "DV02LT021",
     "Code": "02LT021",
     "Function": "Đo mức bồn nước chè échaudage số 19",
     "Range": "-50 to 1000",
     "Unit": "Celsius",
     "IOAddress": "A4.0.I.20",
     "Module": {
-      "Id": "MOAA4.0.I",
-      "Name": "A4.0.I",
+      "id": "MOAA4.0.I",
+      "name": "A4.0.I",
       "Rack": {
-        "Id": "RKA4",
-        "Name": "Rack_4"
+        "id": "RKA4",
+        "name": "Rack_4"
       }
     },
     "JB": {
-      "Id": "AJB19",
-      "Name": "JB19",
+      "id": "AJB19",
+      "name": "JB19",
       "Location": "Cầu thang lên che ép",
       "OutdoorImage": "52.230.123.204:81/api/files/GrapA_Location_JB1.png",
-      "ListConnectionImages": [
+      "listConnectionImages": [
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_1.png",
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_2.png"
       ]
@@ -580,26 +580,26 @@
     ]
   },
   {
-    "Id": "DV02LT022",
+    "id": "DV02LT022",
     "Code": "02LT022",
     "Function": "Đo mức bồn nước chè échaudage số 20",
     "Range": "-50 to 1050",
     "Unit": "Celsius",
     "IOAddress": "A4.0.I.21",
     "Module": {
-      "Id": "MOAA4.0.I",
-      "Name": "A4.0.I",
+      "id": "MOAA4.0.I",
+      "name": "A4.0.I",
       "Rack": {
-        "Id": "RKA4",
-        "Name": "Rack_4"
+        "id": "RKA4",
+        "name": "Rack_4"
       }
     },
     "JB": {
-      "Id": "AJB20",
-      "Name": "JB20",
+      "id": "AJB20",
+      "name": "JB20",
       "Location": "Cầu thang lên che ép",
       "OutdoorImage": "52.230.123.204:81/api/files/GrapA_Location_JB1.png",
-      "ListConnectionImages": [
+      "listConnectionImages": [
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_1.png",
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_2.png"
       ]
@@ -609,26 +609,26 @@
     ]
   },
   {
-    "Id": "DV02LT023",
+    "id": "DV02LT023",
     "Code": "02LT023",
     "Function": "Đo mức bồn nước chè échaudage số 21",
     "Range": "-50 to 1100",
     "Unit": "Celsius",
     "IOAddress": "A4.0.I.22",
     "Module": {
-      "Id": "MOAA4.0.I",
-      "Name": "A4.0.I",
+      "id": "MOAA4.0.I",
+      "name": "A4.0.I",
       "Rack": {
-        "Id": "RKA4",
-        "Name": "Rack_4"
+        "id": "RKA4",
+        "name": "Rack_4"
       }
     },
     "JB": {
-      "Id": "AJB21",
-      "Name": "JB21",
+      "id": "AJB21",
+      "name": "JB21",
       "Location": "Cầu thang lên che ép",
       "OutdoorImage": "52.230.123.204:81/api/files/GrapA_Location_JB1.png",
-      "ListConnectionImages": [
+      "listConnectionImages": [
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_1.png",
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_2.png"
       ]
@@ -638,26 +638,26 @@
     ]
   },
   {
-    "Id": "DV02LT024",
+    "id": "DV02LT024",
     "Code": "02LT024",
     "Function": "Đo mức bồn nước chè échaudage số 22",
     "Range": "-50 to 1150",
     "Unit": "Celsius",
     "IOAddress": "A4.0.I.23",
     "Module": {
-      "Id": "MOAA4.0.I",
-      "Name": "A4.0.I",
+      "id": "MOAA4.0.I",
+      "name": "A4.0.I",
       "Rack": {
-        "Id": "RKA4",
-        "Name": "Rack_4"
+        "id": "RKA4",
+        "name": "Rack_4"
       }
     },
     "JB": {
-      "Id": "AJB22",
-      "Name": "JB22",
+      "id": "AJB22",
+      "name": "JB22",
       "Location": "Cầu thang lên che ép",
       "OutdoorImage": "52.230.123.204:81/api/files/GrapA_Location_JB1.png",
-      "ListConnectionImages": [
+      "listConnectionImages": [
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_1.png",
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_2.png"
       ]
@@ -667,26 +667,26 @@
     ]
   },
   {
-    "Id": "DV02LT025",
+    "id": "DV02LT025",
     "Code": "02LT025",
     "Function": "Đo mức bồn nước chè échaudage số 23",
     "Range": "-50 to 1200",
     "Unit": "Celsius",
     "IOAddress": "A4.0.I.24",
     "Module": {
-      "Id": "MOAA4.0.I",
-      "Name": "A4.0.I",
+      "id": "MOAA4.0.I",
+      "name": "A4.0.I",
       "Rack": {
-        "Id": "RKA4",
-        "Name": "Rack_4"
+        "id": "RKA4",
+        "name": "Rack_4"
       }
     },
     "JB": {
-      "Id": "AJB23",
-      "Name": "JB23",
+      "id": "AJB23",
+      "name": "JB23",
       "Location": "Cầu thang lên che ép",
       "OutdoorImage": "52.230.123.204:81/api/files/GrapA_Location_JB1.png",
-      "ListConnectionImages": [
+      "listConnectionImages": [
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_1.png",
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_2.png"
       ]
@@ -696,26 +696,26 @@
     ]
   },
   {
-    "Id": "DV02LT026",
+    "id": "DV02LT026",
     "Code": "02LT026",
     "Function": "Đo mức bồn nước chè échaudage số 24",
     "Range": "-50 to 1250",
     "Unit": "Celsius",
     "IOAddress": "A4.0.I.25",
     "Module": {
-      "Id": "MOAA4.0.I",
-      "Name": "A4.0.I",
+      "id": "MOAA4.0.I",
+      "name": "A4.0.I",
       "Rack": {
-        "Id": "RKA4",
-        "Name": "Rack_4"
+        "id": "RKA4",
+        "name": "Rack_4"
       }
     },
     "JB": {
-      "Id": "AJB24",
-      "Name": "JB24",
+      "id": "AJB24",
+      "name": "JB24",
       "Location": "Cầu thang lên che ép",
       "OutdoorImage": "52.230.123.204:81/api/files/GrapA_Location_JB1.png",
-      "ListConnectionImages": [
+      "listConnectionImages": [
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_1.png",
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_2.png"
       ]
@@ -725,26 +725,26 @@
     ]
   },
   {
-    "Id": "DV02LT027",
+    "id": "DV02LT027",
     "Code": "02LT027",
     "Function": "Đo mức bồn nước chè échaudage số 25",
     "Range": "-50 to 1300",
     "Unit": "Celsius",
     "IOAddress": "A4.0.I.26",
     "Module": {
-      "Id": "MOAA4.0.I",
-      "Name": "A4.0.I",
+      "id": "MOAA4.0.I",
+      "name": "A4.0.I",
       "Rack": {
-        "Id": "RKA4",
-        "Name": "Rack_4"
+        "id": "RKA4",
+        "name": "Rack_4"
       }
     },
     "JB": {
-      "Id": "AJB25",
-      "Name": "JB25",
+      "id": "AJB25",
+      "name": "JB25",
       "Location": "Cầu thang lên che ép",
       "OutdoorImage": "52.230.123.204:81/api/files/GrapA_Location_JB1.png",
-      "ListConnectionImages": [
+      "listConnectionImages": [
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_1.png",
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_2.png"
       ]
@@ -754,26 +754,26 @@
     ]
   },
   {
-    "Id": "DV02LT028",
+    "id": "DV02LT028",
     "Code": "02LT028",
     "Function": "Đo mức bồn nước chè échaudage số 26",
     "Range": "-50 to 1350",
     "Unit": "Celsius",
     "IOAddress": "A4.0.I.27",
     "Module": {
-      "Id": "MOAA4.0.I",
-      "Name": "A4.0.I",
+      "id": "MOAA4.0.I",
+      "name": "A4.0.I",
       "Rack": {
-        "Id": "RKA4",
-        "Name": "Rack_4"
+        "id": "RKA4",
+        "name": "Rack_4"
       }
     },
     "JB": {
-      "Id": "AJB26",
-      "Name": "JB26",
+      "id": "AJB26",
+      "name": "JB26",
       "Location": "Cầu thang lên che ép",
       "OutdoorImage": "52.230.123.204:81/api/files/GrapA_Location_JB1.png",
-      "ListConnectionImages": [
+      "listConnectionImages": [
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_1.png",
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_2.png"
       ]
@@ -783,26 +783,26 @@
     ]
   },
   {
-    "Id": "DV02LT029",
+    "id": "DV02LT029",
     "Code": "02LT029",
     "Function": "Đo mức bồn nước chè échaudage số 27",
     "Range": "-50 to 1400",
     "Unit": "Celsius",
     "IOAddress": "A4.0.I.28",
     "Module": {
-      "Id": "MOAA4.0.I",
-      "Name": "A4.0.I",
+      "id": "MOAA4.0.I",
+      "name": "A4.0.I",
       "Rack": {
-        "Id": "RKA4",
-        "Name": "Rack_4"
+        "id": "RKA4",
+        "name": "Rack_4"
       }
     },
     "JB": {
-      "Id": "AJB27",
-      "Name": "JB27",
+      "id": "AJB27",
+      "name": "JB27",
       "Location": "Cầu thang lên che ép",
       "OutdoorImage": "52.230.123.204:81/api/files/GrapA_Location_JB1.png",
-      "ListConnectionImages": [
+      "listConnectionImages": [
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_1.png",
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_2.png"
       ]
@@ -812,26 +812,26 @@
     ]
   },
   {
-    "Id": "DV02LT030",
+    "id": "DV02LT030",
     "Code": "02LT030",
     "Function": "Đo mức bồn nước chè échaudage số 28",
     "Range": "-50 to 1450",
     "Unit": "Celsius",
     "IOAddress": "A4.0.I.29",
     "Module": {
-      "Id": "MOAA4.0.I",
-      "Name": "A4.0.I",
+      "id": "MOAA4.0.I",
+      "name": "A4.0.I",
       "Rack": {
-        "Id": "RKA4",
-        "Name": "Rack_4"
+        "id": "RKA4",
+        "name": "Rack_4"
       }
     },
     "JB": {
-      "Id": "AJB28",
-      "Name": "JB28",
+      "id": "AJB28",
+      "name": "JB28",
       "Location": "Cầu thang lên che ép",
       "OutdoorImage": "52.230.123.204:81/api/files/GrapA_Location_JB1.png",
-      "ListConnectionImages": [
+      "listConnectionImages": [
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_1.png",
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_2.png"
       ]
@@ -841,26 +841,26 @@
     ]
   },
   {
-    "Id": "DV02LT031",
+    "id": "DV02LT031",
     "Code": "02LT031",
     "Function": "Đo mức bồn nước chè échaudage số 29",
     "Range": "-50 to 1500",
     "Unit": "Celsius",
     "IOAddress": "A4.0.I.30",
     "Module": {
-      "Id": "MOAA4.0.I",
-      "Name": "A4.0.I",
+      "id": "MOAA4.0.I",
+      "name": "A4.0.I",
       "Rack": {
-        "Id": "RKA4",
-        "Name": "Rack_4"
+        "id": "RKA4",
+        "name": "Rack_4"
       }
     },
     "JB": {
-      "Id": "AJB29",
-      "Name": "JB29",
+      "id": "AJB29",
+      "name": "JB29",
       "Location": "Cầu thang lên che ép",
       "OutdoorImage": "52.230.123.204:81/api/files/GrapA_Location_JB1.png",
-      "ListConnectionImages": [
+      "listConnectionImages": [
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_1.png",
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_2.png"
       ]
@@ -870,26 +870,26 @@
     ]
   },
   {
-    "Id": "DV02LT032",
+    "id": "DV02LT032",
     "Code": "02LT032",
     "Function": "Đo mức bồn nước chè échaudage số 30",
     "Range": "-50 to 1550",
     "Unit": "Celsius",
     "IOAddress": "A4.0.I.31",
     "Module": {
-      "Id": "MOAA4.0.I",
-      "Name": "A4.0.I",
+      "id": "MOAA4.0.I",
+      "name": "A4.0.I",
       "Rack": {
-        "Id": "RKA4",
-        "Name": "Rack_4"
+        "id": "RKA4",
+        "name": "Rack_4"
       }
     },
     "JB": {
-      "Id": "AJB30",
-      "Name": "JB30",
+      "id": "AJB30",
+      "name": "JB30",
       "Location": "Cầu thang lên che ép",
       "OutdoorImage": "52.230.123.204:81/api/files/GrapA_Location_JB1.png",
-      "ListConnectionImages": [
+      "listConnectionImages": [
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_1.png",
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_2.png"
       ]
@@ -899,26 +899,26 @@
     ]
   },
   {
-    "Id": "DV02LT033",
+    "id": "DV02LT033",
     "Code": "02LT033",
     "Function": "Đo mức bồn nước chè échaudage số 31",
     "Range": "-50 to 1600",
     "Unit": "Celsius",
     "IOAddress": "A4.0.I.32",
     "Module": {
-      "Id": "MOAA4.0.I",
-      "Name": "A4.0.I",
+      "id": "MOAA4.0.I",
+      "name": "A4.0.I",
       "Rack": {
-        "Id": "RKA4",
-        "Name": "Rack_4"
+        "id": "RKA4",
+        "name": "Rack_4"
       }
     },
     "JB": {
-      "Id": "AJB31",
-      "Name": "JB31",
+      "id": "AJB31",
+      "name": "JB31",
       "Location": "Cầu thang lên che ép",
       "OutdoorImage": "52.230.123.204:81/api/files/GrapA_Location_JB1.png",
-      "ListConnectionImages": [
+      "listConnectionImages": [
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_1.png",
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_2.png"
       ]
@@ -928,26 +928,26 @@
     ]
   },
   {
-    "Id": "DV02LT034",
+    "id": "DV02LT034",
     "Code": "02LT034",
     "Function": "Đo mức bồn nước chè échaudage số 32",
     "Range": "-50 to 1650",
     "Unit": "Celsius",
     "IOAddress": "A4.0.I.33",
     "Module": {
-      "Id": "MOAA4.0.I",
-      "Name": "A4.0.I",
+      "id": "MOAA4.0.I",
+      "name": "A4.0.I",
       "Rack": {
-        "Id": "RKA4",
-        "Name": "Rack_4"
+        "id": "RKA4",
+        "name": "Rack_4"
       }
     },
     "JB": {
-      "Id": "AJB32",
-      "Name": "JB32",
+      "id": "AJB32",
+      "name": "JB32",
       "Location": "Cầu thang lên che ép",
       "OutdoorImage": "52.230.123.204:81/api/files/GrapA_Location_JB1.png",
-      "ListConnectionImages": [
+      "listConnectionImages": [
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_1.png",
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_2.png"
       ]
@@ -957,26 +957,26 @@
     ]
   },
   {
-    "Id": "DV02LT035",
+    "id": "DV02LT035",
     "Code": "02LT035",
     "Function": "Đo mức bồn nước chè échaudage số 33",
     "Range": "-50 to 1700",
     "Unit": "Celsius",
     "IOAddress": "A4.0.I.34",
     "Module": {
-      "Id": "MOAA4.0.I",
-      "Name": "A4.0.I",
+      "id": "MOAA4.0.I",
+      "name": "A4.0.I",
       "Rack": {
-        "Id": "RKA4",
-        "Name": "Rack_4"
+        "id": "RKA4",
+        "name": "Rack_4"
       }
     },
     "JB": {
-      "Id": "AJB33",
-      "Name": "JB33",
+      "id": "AJB33",
+      "name": "JB33",
       "Location": "Cầu thang lên che ép",
       "OutdoorImage": "52.230.123.204:81/api/files/GrapA_Location_JB1.png",
-      "ListConnectionImages": [
+      "listConnectionImages": [
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_1.png",
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_2.png"
       ]
@@ -986,26 +986,26 @@
     ]
   },
   {
-    "Id": "DV02LT036",
+    "id": "DV02LT036",
     "Code": "02LT036",
     "Function": "Đo mức bồn nước chè échaudage số 34",
     "Range": "-50 to 1750",
     "Unit": "Celsius",
     "IOAddress": "A4.0.I.35",
     "Module": {
-      "Id": "MOAA4.0.I",
-      "Name": "A4.0.I",
+      "id": "MOAA4.0.I",
+      "name": "A4.0.I",
       "Rack": {
-        "Id": "RKA4",
-        "Name": "Rack_4"
+        "id": "RKA4",
+        "name": "Rack_4"
       }
     },
     "JB": {
-      "Id": "AJB34",
-      "Name": "JB34",
+      "id": "AJB34",
+      "name": "JB34",
       "Location": "Cầu thang lên che ép",
       "OutdoorImage": "52.230.123.204:81/api/files/GrapA_Location_JB1.png",
-      "ListConnectionImages": [
+      "listConnectionImages": [
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_1.png",
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_2.png"
       ]
@@ -1015,26 +1015,26 @@
     ]
   },
   {
-    "Id": "DV02LT037",
+    "id": "DV02LT037",
     "Code": "02LT037",
     "Function": "Đo mức bồn nước chè échaudage số 35",
     "Range": "-50 to 1800",
     "Unit": "Celsius",
     "IOAddress": "A4.0.I.36",
     "Module": {
-      "Id": "MOAA4.0.I",
-      "Name": "A4.0.I",
+      "id": "MOAA4.0.I",
+      "name": "A4.0.I",
       "Rack": {
-        "Id": "RKA4",
-        "Name": "Rack_4"
+        "id": "RKA4",
+        "name": "Rack_4"
       }
     },
     "JB": {
-      "Id": "AJB35",
-      "Name": "JB35",
+      "id": "AJB35",
+      "name": "JB35",
       "Location": "Cầu thang lên che ép",
       "OutdoorImage": "52.230.123.204:81/api/files/GrapA_Location_JB1.png",
-      "ListConnectionImages": [
+      "listConnectionImages": [
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_1.png",
         "52.230.123.204:81/api/files/GrapA_Connection_JB1_2.png"
       ]

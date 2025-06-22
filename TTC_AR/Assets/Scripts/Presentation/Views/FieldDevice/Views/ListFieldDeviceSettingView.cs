@@ -23,16 +23,21 @@ public class ListFieldDeviceSettingView : MonoBehaviour, IFieldDeviceView
     public GameObject DialogOneButton;
     public GameObject DialogTwoButton;
     private FieldDevicePresenter _presenter;
+    private int grapperId;
+    private GameObject _fieldDeviceItem;
+    private Sprite warningConfirmButtonSprite;
 
     void Awake()
     {
-        // var DeviceManager = FindObjectOfType<DeviceManager>();
-        _presenter = new FieldDevicePresenter(this, ManagerLocator.Instance.FieldDeviceManager._IFieldDeviceService);
-        // DeviceManager._IDeviceService
+        _presenter = new FieldDevicePresenter(
+            this, ManagerLocator.Instance.FieldDeviceManager._IFieldDeviceService);
     }
 
     void OnEnable()
     {
+        warningConfirmButtonSprite = Resources.Load<Sprite>("images/UIimages/Warning_Back_Button_Background");
+        Debug.Log(warningConfirmButtonSprite);
+        grapperId = GlobalVariable.GrapperId;
         LoadListFieldDevice();
     }
     void OnDisable()
@@ -53,7 +58,7 @@ public class ListFieldDeviceSettingView : MonoBehaviour, IFieldDeviceView
     public void LoadListFieldDevice()
     {
         RefreshList();
-        _presenter.LoadListFieldDevice(GlobalVariable.GrapperId);
+        _presenter.LoadListFieldDevice(grapperId);
 
     }
     public void DisplayList(List<FieldDeviceInformationModel> models)
@@ -62,16 +67,21 @@ public class ListFieldDeviceSettingView : MonoBehaviour, IFieldDeviceView
         {
             foreach (var model in models)
             {
-                int FieldDeviceIndex = models.IndexOf(model);
-                Debug.Log(FieldDeviceIndex);
+                // int FieldDeviceIndex = models.IndexOf(model);
+                // Debug.Log(FieldDeviceIndex);
                 var newFieldDeviceItem = Instantiate(FieldDevice_Item_Prefab, Parent_Vertical_Layout_Group.transform);
+                newFieldDeviceItem.SetActive(true);
                 Transform newFieldDeviceItemTransform = newFieldDeviceItem.transform;
                 Transform newFieldDeviceItemPreviewInforGroup = newFieldDeviceItemTransform.GetChild(0);
                 newFieldDeviceItemPreviewInforGroup.Find("Preview_FieldDevice_Name").GetComponent<TMP_Text>().text = model.Name;
                 Transform newFieldDeviceItemPreviewButtonGroup = newFieldDeviceItemTransform.GetChild(1);
                 listFieldDeviceItems.Add(newFieldDeviceItem);
-                newFieldDeviceItemPreviewButtonGroup.Find("Group/Edit_Button").GetComponent<Button>().onClick.AddListener(() => EditFieldDeviceItem(model.Id));
-                newFieldDeviceItemPreviewButtonGroup.Find("Group/Delete_Button").GetComponent<Button>().onClick.AddListener(() => DeleFieldDeviceItem(newFieldDeviceItem, model));
+                var editButton = newFieldDeviceItemPreviewButtonGroup.Find("Group/Edit_Button").GetComponent<Button>();
+                var deleteButton = newFieldDeviceItemPreviewButtonGroup.Find("Group/Delete_Button").GetComponent<Button>();
+                editButton.onClick.RemoveAllListeners();
+                deleteButton.onClick.RemoveAllListeners();
+                editButton.onClick.AddListener(() => EditFieldDeviceItem(model.Id));
+                deleteButton.onClick.AddListener(() => DeleFieldDeviceItem(newFieldDeviceItem, model));
             }
         }
         else
@@ -79,12 +89,12 @@ public class ListFieldDeviceSettingView : MonoBehaviour, IFieldDeviceView
             Debug.Log("No FieldDevices found");
         }
         FieldDevice_Item_Prefab.SetActive(false);
-
+        scrollView.verticalNormalizedPosition = 1f;
     }
 
-    private void EditFieldDeviceItem(string id)
+    private void EditFieldDeviceItem(int id)
     {
-        GlobalVariable.FieldDeviceId = id;
+        GlobalVariable.fieldDeviceId = id;
         OpenUpdateCanvas();
     }
     private void DeleFieldDeviceItem(GameObject FieldDeviceItem, FieldDeviceInformationModel model)
@@ -103,7 +113,6 @@ public class ListFieldDeviceSettingView : MonoBehaviour, IFieldDeviceView
         List_FieldDevice_Canvas.SetActive(false);
         Add_New_FieldDevice_Canvas.SetActive(false);
         Update_FieldDevice_Canvas.SetActive(true);
-
     }
 
     private void OpenDeleteWarningDialog(GameObject FieldDeviceItem, FieldDeviceInformationModel model)
@@ -114,30 +123,39 @@ public class ListFieldDeviceSettingView : MonoBehaviour, IFieldDeviceView
 
         var Horizontal_Group = DialogTwoButton.transform.Find("Background/Horizontal_Group").gameObject.transform;
 
-        var dialog_Content = DialogTwoButton.transform.Find("Background/Dialog_Content").GetComponent<TMP_Text>().text = $"Bạn có chắc chắn muốn xóa thông tin thiết bi trường <b><color =#004C8A>{model.Name}</b></color> khỏi hệ thống? Hãy kiểm tra kĩ trước khi nhấn nút xác nhận phía dưới";
+        var dialog_Content = DialogTwoButton.transform.Find("Background/Dialog_Content").GetComponent<TMP_Text>().text = $"Bạn có chắc chắn muốn xóa thông tin thiết bi trường <color=#ED1C24><b>{model.Name}</b></color> khỏi hệ thống? Hãy kiểm tra kĩ trước khi nhấn nút xác nhận phía dưới";
 
         var dialog_Title = DialogTwoButton.transform.Find("Background/Dialog_Title").GetComponent<TMP_Text>().text = "Xóa thiết bi trường khỏi hệ thống?";
 
         backgroundTransform.Find("Dialog_Status_Icon").GetComponent<Image>().sprite = Resources.Load<Sprite>("images/UIimages/Warning_Icon_For_Dialog");
 
-        var confirmButton = Horizontal_Group.transform.Find("Confirm_Button").GetComponent<Button>();
+        var confirmButton = Horizontal_Group.Find("Confirm_Button").GetComponent<Button>();
+        var backButton = Horizontal_Group.Find("Back_Button").GetComponent<Button>();
 
-        confirmButton.GetComponent<Image>().sprite = Resources.Load<Sprite>("images/UIimages/Warning_Back_Button_Background");
+        var confirmButtonSprite = confirmButton.GetComponent<Image>();
 
+        confirmButtonSprite.sprite = warningConfirmButtonSprite;
 
-        var backButton = Horizontal_Group.transform.Find("Back_Button").GetComponent<Button>();
+        var confirmButtonText = confirmButton.GetComponentInChildren<TMP_Text>();
+        var backButtonText = backButton.GetComponentInChildren<TMP_Text>();
+
+        // var colors = confirmButton.colors;
+        // colors.normalColor = new Color32(92, 237, 115, 255); // #5CED73 in RGB
+        // confirmButton.colors = colors;
+
+        confirmButtonText.text = "Xác nhận";
+        backButtonText.text = "Trở lại";
 
         confirmButton.onClick.RemoveAllListeners();
-
         backButton.onClick.RemoveAllListeners();
 
         confirmButton.onClick.AddListener(() =>
         {
-            listFieldDeviceItems.Remove(FieldDeviceItem);
+            _fieldDeviceItem = FieldDeviceItem;
             Debug.Log(model.Id);
             _presenter.DeleteFieldDevice(model.Id);
             DialogTwoButton.SetActive(false);
-            Destroy(FieldDeviceItem);
+
         });
         backButton.onClick.AddListener(() =>
         {
@@ -194,20 +212,22 @@ public class ListFieldDeviceSettingView : MonoBehaviour, IFieldDeviceView
         if (GlobalVariable.APIRequestType.Contains("DELETE_FieldDevice"))
         {
             OpenErrorDialog();
+
         }
 
     }
     public void ShowSuccess()
     {
-        Show_Toast.Instance.Set_Instance_Status_True();
+
         if (GlobalVariable.APIRequestType.Contains("GET_FieldDevice_List"))
         {
             Show_Toast.Instance.ShowToast("success", "Tải danh sách thành công");
         }
         if (GlobalVariable.APIRequestType.Contains("DELETE_FieldDevice"))
         {
+            listFieldDeviceItems.Remove(_fieldDeviceItem);
+            Destroy(_fieldDeviceItem);
             Show_Toast.Instance.ShowToast("success", "Xóa thiết bi trường thành công");
-
         }
 
         StartCoroutine(Show_Toast.Instance.Set_Instance_Status_False(1f));

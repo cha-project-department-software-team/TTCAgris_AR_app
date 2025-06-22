@@ -17,25 +17,25 @@ namespace ApplicationLayer.Services
         }
 
         //! Tham số là Dto, Dữ liệu trả về là Dto
-        public async Task<RackResponseDto> GetRackByIdAsync(string id)
+        public async Task<RackResponseDto> GetRackByIdAsync(int id)
         {
             return await _RackUseCase.GetRackByIdAsync(id);
         }
-        public async Task<IEnumerable<RackBasicDto>> GetListRackAsync(string grapperId)
+        public async Task<IEnumerable<RackBasicDto>> GetListRackAsync(int grapperId)
         {
             return await _RackUseCase.GetListRackAsync(grapperId);
         }
-        public async Task<bool> CreateNewRackAsync(string grapperId, RackRequestDto RackRequestDto)
+        public async Task<bool> CreateNewRackAsync(int grapperId, RackRequestDto RackRequestDto)
         {
             return await _RackUseCase.CreateNewRackAsync(grapperId, RackRequestDto);
         }
-        public async Task<bool> UpdateRackAsync(string RackId, RackRequestDto RackRequestDto)
+        public async Task<bool> UpdateRackAsync(int rackId, RackRequestDto RackRequestDto)
         {
-            return await _RackUseCase.UpdateRackAsync(RackId, RackRequestDto);
+            return await _RackUseCase.UpdateRackAsync(rackId, RackRequestDto);
         }
-        public async Task<bool> DeleteRackAsync(string RackId)
+        public async Task<bool> DeleteRackAsync(int rackId)
         {
-            return await _RackUseCase.DeleteRackAsync(RackId);
+            return await _RackUseCase.DeleteRackAsync(rackId);
         }
     }
 

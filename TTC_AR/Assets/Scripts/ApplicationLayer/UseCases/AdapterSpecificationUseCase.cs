@@ -17,24 +17,13 @@ namespace ApplicationLayer.UseCases
         {
             _IAdapterSpecificationRepository = IAdapterSpecificationRepository;
         }
-        public async Task<List<AdapterSpecificationBasicDto>> GetListAdapterSpecificationAsync(string companyId)
+        public async Task<List<AdapterSpecificationBasicDto>> GetListAdapterSpecificationAsync(int companyId)
         {
             try
             {
-                // var AdapterSpecificationEntities = await _IAdapterSpecificationRepository.GetListAdapterSpecificationAsync(companyId);
-
-                // if (AdapterSpecificationEntities == null)
-                // {
-                //     throw new ApplicationException("Failed to get AdapterSpecification list");
-                // }
-                // else
-                // {
-                //     var AdapterSpecificationBasicDtos = AdapterSpecificationEntities.Select(MapToBasicDto).ToList();
-                //     return AdapterSpecificationBasicDtos;
-                // }
                 var AdapterSpecificationEntities = await _IAdapterSpecificationRepository.GetListAdapterSpecificationAsync(companyId) ??
 
-                                             throw new ApplicationException("Failed to get AdapterSpecification list");
+                                  throw new ApplicationException("Failed to get AdapterSpecification list");
 
                 int count = AdapterSpecificationEntities.Count;
 
@@ -54,22 +43,24 @@ namespace ApplicationLayer.UseCases
                     dictAdapterSpecificationInfo[dto.Code] = model;
                 }
 
-                GlobalVariable.temp_List_AdapterSpecificationModel = listAdapterSpecificationInfo;
-                GlobalVariable.temp_Dictionary_AdapterSpecificationModel = dictAdapterSpecificationInfo;
+                // GlobalVariable.temp_ListAdapterSpecificationModel = listAdapterSpecificationInfo;
+                // GlobalVariable.temp_Dictionary_AdapterSpecificationModel = dictAdapterSpecificationInfo;
 
                 return AdapterSpecificationBasicDtos;
 
             }
+
             catch (ArgumentException)
             {
-                throw; // Ném lại lỗi validation cho Unity xử lý
+                throw new ApplicationException("Failed to get AdapterSpecification list"); // Ném lại lỗi validation cho Unity xử lý
             }
             catch (Exception ex)
             {
-                throw new ApplicationException("Failed to get AdapterSpecification list", ex);
+                throw new ApplicationException("Failed to get AdapterSpecification list", ex); // Bao bọc lỗi từ Repository
             }
+
         }
-        public async Task<AdapterSpecificationResponseDto> GetAdapterSpecificationByIdAsync(string adapterSpecificationId)
+        public async Task<AdapterSpecificationResponseDto> GetAdapterSpecificationByIdAsync(int adapterSpecificationId)
         {
             try
             {
@@ -86,16 +77,15 @@ namespace ApplicationLayer.UseCases
             }
             catch (ArgumentException)
             {
-                throw; // Ném lại lỗi validation cho Unity xử lý
+                throw new ApplicationException("Failed to get AdapterSpecification"); // Ném lại lỗi validation cho Unity xử lý
             }
             catch (Exception ex)
             {
                 throw new ApplicationException("Failed to get AdapterSpecification", ex); // Bao bọc lỗi từ Repository
             }
         }
-        public async Task<bool> CreateNewAdapterSpecificationAsync(string companyId, AdapterSpecificationRequestDto requestDto)
+        public async Task<bool> CreateNewAdapterSpecificationAsync(int companyId, AdapterSpecificationRequestDto requestDto)
         {
-            companyId = GlobalVariable.companyId;
             try
             {
                 // Validate
@@ -116,16 +106,16 @@ namespace ApplicationLayer.UseCases
             }
             catch (ArgumentException)
             {
-                throw; // Ném lại lỗi validation cho Unity xử lý
+                throw new ApplicationException("Failed to create AdapterSpecification"); // Ném lại lỗi validation cho Unity xử lý
             }
             catch (Exception ex)
             {
                 throw new ApplicationException("Failed to create AdapterSpecification", ex); // Bao bọc lỗi từ Repository
             }
         }
-        public async Task<bool> UpdateAdapterSpecificationAsync(string adapterSpecificationId, AdapterSpecificationRequestDto requestDto)
+        public async Task<bool> UpdateAdapterSpecificationAsync(int adapterSpecificationId, AdapterSpecificationRequestDto requestDto)
         {
-            // adapterSpecificationId = GlobalVariable.AdapterSpecificationId;
+            // adapterSpecificationId = GlobalVariable.adapterSpecificationId;
             try
             {
                 // Validate
@@ -149,16 +139,16 @@ namespace ApplicationLayer.UseCases
             }
             catch (ArgumentException)
             {
-                throw; // Ném lại lỗi validation cho Unity xử lý
+                throw new ApplicationException("Failed to update AdapterSpecification"); // Ném lại lỗi validation cho Unity xử lý
             }
             catch (Exception ex)
             {
                 throw new ApplicationException("Failed to update AdapterSpecification", ex); // Bao bọc lỗi từ Repository
             }
         }
-        public async Task<bool> DeleteAdapterSpecificationAsync(string adapterSpecificationId)
+        public async Task<bool> DeleteAdapterSpecificationAsync(int adapterSpecificationId)
         {
-            //adapterSpecificationId = GlobalVariable.AdapterSpecificationId;
+            //adapterSpecificationId = GlobalVariable.adapterSpecificationId;
             try
             {
                 var deletedAdapterSpecificationResult = await _IAdapterSpecificationRepository.DeleteAdapterSpecificationAsync(adapterSpecificationId);
@@ -166,7 +156,7 @@ namespace ApplicationLayer.UseCases
             }
             catch (ArgumentException)
             {
-                throw; // Ném lại lỗi validation cho Unity xử lý
+                throw new ApplicationException("Failed to delete AdapterSpecification"); // Ném lại lỗi validation cho Unity xử lý
             }
             catch (Exception ex)
             {
@@ -176,7 +166,6 @@ namespace ApplicationLayer.UseCases
 
 
         //! Entity => Dto
-
         private AdapterSpecificationBasicDto MapToBasicDto(AdapterSpecificationEntity AdapterSpecificationEntity)
         {
             return new AdapterSpecificationBasicDto(AdapterSpecificationEntity.Id, AdapterSpecificationEntity.Code)

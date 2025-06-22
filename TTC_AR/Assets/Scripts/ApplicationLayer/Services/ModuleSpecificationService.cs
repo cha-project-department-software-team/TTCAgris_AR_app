@@ -19,27 +19,27 @@ namespace ApplicationLayer.Services
 
         //! Dữ liệu trả về là Dto
 
-        public async Task<ModuleSpecificationResponseDto> GetModuleSpecificationByIdAsync(string ModuleSpecificationId)
+        public async Task<ModuleSpecificationResponseDto> GetModuleSpecificationByIdAsync(int moduleSpecificationId)
         {
-            return await _ModuleSpecificationUseCase.GetModuleSpecificationByIdAsync(ModuleSpecificationId);
+            return await _ModuleSpecificationUseCase.GetModuleSpecificationByIdAsync(moduleSpecificationId);
         }
 
-        public async Task<IEnumerable<ModuleSpecificationBasicDto>> GetListModuleSpecificationAsync(string companyId)
+        public async Task<IEnumerable<ModuleSpecificationBasicDto>> GetListModuleSpecificationAsync(int companyId)
         {
             return await _ModuleSpecificationUseCase.GetListModuleSpecificationAsync(companyId);
         }
 
-        public async Task<bool> CreateNewModuleSpecificationAsync(string companyId, ModuleSpecificationRequestDto ModuleSpecificationRequestDto)
+        public async Task<bool> CreateNewModuleSpecificationAsync(int companyId, ModuleSpecificationRequestDto ModuleSpecificationRequestDto)
         {
             return await _ModuleSpecificationUseCase.CreateNewModuleSpecificationAsync(companyId, ModuleSpecificationRequestDto);
         }
-        public async Task<bool> UpdateModuleSpecificationAsync(string ModuleSpecificationId, ModuleSpecificationRequestDto ModuleSpecificationRequestDto)
+        public async Task<bool> UpdateModuleSpecificationAsync(int moduleSpecificationId, ModuleSpecificationRequestDto ModuleSpecificationRequestDto)
         {
-            return await _ModuleSpecificationUseCase.UpdateModuleSpecificationAsync(ModuleSpecificationId, ModuleSpecificationRequestDto);
+            return await _ModuleSpecificationUseCase.UpdateModuleSpecificationAsync(moduleSpecificationId, ModuleSpecificationRequestDto);
         }
-        public async Task<bool> DeleteModuleSpecificationAsync(string ModuleSpecificationId)
+        public async Task<bool> DeleteModuleSpecificationAsync(int moduleSpecificationId)
         {
-            return await _ModuleSpecificationUseCase.DeleteModuleSpecificationAsync(ModuleSpecificationId);
+            return await _ModuleSpecificationUseCase.DeleteModuleSpecificationAsync(moduleSpecificationId);
         }
     }
 

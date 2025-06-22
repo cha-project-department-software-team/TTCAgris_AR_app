@@ -12,10 +12,10 @@ namespace ApplicationLayer.Dtos.Company
     [Preserve]
     public class CompanyRequestDto
     {
-        [JsonProperty("Name")] public string Name { get; set; }
-        [JsonProperty("ListGrappers")] public List<GrapperBasicDto>? GrapperBasicDtos { get; set; }
-        [JsonProperty("ListModuleSpecifications")] public List<ModuleSpecificationBasicDto>? ModuleSpecificationBasicDtos { get; set; }
-        [JsonProperty("ListAdapterSpecifications")] public List<AdapterSpecificationBasicDto>? AdapterSpecificationBasicDtos { get; set; }
+        [JsonProperty("name")] public string Name { get; set; }
+        [JsonProperty("listGrappers")] public List<GrapperBasicDto>? GrapperBasicDtos { get; set; }
+        [JsonProperty("listModuleSpecifications")] public List<ModuleSpecificationBasicDto>? ModuleSpecificationBasicDtos { get; set; }
+        [JsonProperty("listAdapterSpecifications")] public List<AdapterSpecificationBasicDto>? AdapterSpecificationBasicDtos { get; set; }
 
         [Preserve]
 

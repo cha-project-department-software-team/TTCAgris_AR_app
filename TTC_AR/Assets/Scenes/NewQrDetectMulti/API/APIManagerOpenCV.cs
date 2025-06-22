@@ -148,12 +148,12 @@ public class APIManagerOpenCV : MonoBehaviour
 
                 var listMccInformationModel = JsonConvert.DeserializeObject<List<MccInformationModel>>(response);
 
-                StaticVariable.temp_ListMccInformationModel.Clear();
+                StaticVariable.temp_ListMCCInformationModel.Clear();
                 StaticVariable.Dic_MccInformationModel.Clear();
 
                 if (listMccInformationModel != null && listMccInformationModel.Count > 0)
                 {
-                    StaticVariable.temp_ListMccInformationModel = listMccInformationModel;
+                    StaticVariable.temp_ListMCCInformationModel = listMccInformationModel;
                     Dic_MccInformationModels.Clear();
 
                     foreach (var Mcc in listMccInformationModel)
@@ -263,7 +263,7 @@ public class APIManagerOpenCV : MonoBehaviour
                             {
                                 continue;
                             }
-                            StaticVariable.temp_ListAdditionalImageFromDevice.Add(device.Code, device.AdditionalConnectionImages.Select(image => image.url).ToList());
+                            StaticVariable.temp_ListAdditionalImageFromDevice.Add(device.Code, device.AdditionalConnectionImages.Select(image => image.Name).ToList());
                             // Debug.Log("device.Code: " + device.Code + " device.AdditionalConnectionImages.Count: " + device.AdditionalConnectionImages.Count);
                         }
                     }

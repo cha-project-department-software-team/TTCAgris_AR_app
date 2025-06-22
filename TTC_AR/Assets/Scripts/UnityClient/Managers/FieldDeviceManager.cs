@@ -23,7 +23,7 @@ public class FieldDeviceManager : MonoBehaviour
         //! Dependency Injection
         _IFieldDeviceService = ServiceLocator.Instance.FieldDeviceService;
     }
-    public async void GetFieldDeviceList(string grapperId)
+    public async void GetFieldDeviceList(int grapperId)
     {
         try
         {
@@ -58,11 +58,11 @@ public class FieldDeviceManager : MonoBehaviour
         }
     }
 
-    public async void GetFieldDeviceById(string FieldDeviceId)
+    public async void GetFieldDeviceById(int fieldDeviceId)
     {
         try
         {
-            var FieldDevice = await _IFieldDeviceService.GetFieldDeviceByIdAsync(FieldDeviceId.ToString()); // Gọi Service
+            var FieldDevice = await _IFieldDeviceService.GetFieldDeviceByIdAsync(fieldDeviceId); // Gọi Service
             if (FieldDevice != null)
             {
 
@@ -93,7 +93,7 @@ public class FieldDeviceManager : MonoBehaviour
         }
     }
 
-    public async void CreateNewFieldDevice(string grapperId, FieldDeviceRequestDto FieldDeviceRequestDto)
+    public async void CreateNewFieldDevice(int grapperId, FieldDeviceRequestDto FieldDeviceRequestDto)
     {
         try
         {
@@ -122,11 +122,11 @@ public class FieldDeviceManager : MonoBehaviour
 
         }
     }
-    public async void UpdateFieldDevice(FieldDeviceRequestDto FieldDeviceRequestDto)
+    public async void UpdateFieldDevice(int fieldDeviceId, FieldDeviceRequestDto FieldDeviceRequestDto)
     {
         try
         {
-            bool result = await _IFieldDeviceService.UpdateFieldDeviceAsync(GlobalVariable.GrapperId, FieldDeviceRequestDto);
+            bool result = await _IFieldDeviceService.UpdateFieldDeviceAsync(fieldDeviceId, FieldDeviceRequestDto);
             Debug.Log(result ? "FieldDevice updated successfully" : "Failed to update FieldDevice");
         }
 
@@ -149,11 +149,11 @@ public class FieldDeviceManager : MonoBehaviour
 
         }
     }
-    public async void DeleteFieldDevice(string FieldDeviceId)
+    public async void DeleteFieldDevice(int fieldDeviceId)
     {
         try
         {
-            bool result = await _IFieldDeviceService.DeleteFieldDeviceAsync(FieldDeviceId);
+            bool result = await _IFieldDeviceService.DeleteFieldDeviceAsync(fieldDeviceId);
             Debug.Log(result ? "FieldDevice deleted successfully" : "Failed to delete FieldDevice");
         }
 

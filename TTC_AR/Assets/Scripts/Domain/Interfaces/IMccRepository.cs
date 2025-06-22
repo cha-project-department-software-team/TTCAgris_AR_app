@@ -8,10 +8,10 @@ namespace Domain.Interfaces
 {
     public interface IMccRepository
     {
-        Task<MccEntity> GetMccByIdAsync(string mccId);
-        Task<List<MccEntity>> GetListMccAsync(string grapperId);
-        Task<bool> CreateNewMccAsync(string grapperId, MccEntity mccEntity);
-        Task<bool> UpdateMccAsync(string mccId, MccEntity mccEntity);
-        Task<bool> DeleteMccAsync(string mccId);
+        Task<MccEntity> GetMccByIdAsync(int mccId);
+        Task<List<MccEntity>> GetListMccAsync(int grapperId);
+        Task<bool> CreateNewMccAsync(int grapperId, MccEntity mccEntity);
+        Task<bool> UpdateMccAsync(int mccId, MccEntity mccEntity);
+        Task<bool> DeleteMccAsync(int mccId);
     }
 }

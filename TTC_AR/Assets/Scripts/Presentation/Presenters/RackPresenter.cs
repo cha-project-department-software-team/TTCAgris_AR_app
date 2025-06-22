@@ -1,3 +1,4 @@
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +25,7 @@ public class RackPresenter
     }
 
     //! Get list Rack chỉ có Id và Code
-    public async void LoadListRack(string grapperId)
+    public async void LoadListRack(int grapperId)
     {
         GlobalVariable.APIRequestType.Add("GET_Rack_List");
         _view.ShowLoading("Đang tải dữ liệu...");
@@ -64,14 +65,14 @@ public class RackPresenter
     }
 
     //! GET Rack Detail với đầy đủ thông tin
-    public async void LoadDetailById(string RackId)
+    public async void LoadDetailById(int rackId)
     {
         GlobalVariable.APIRequestType.Add("GET_Rack");
         _view.ShowLoading("Đang tải dữ liệu...");
         try
         {
             UnityEngine.Debug.Log("Run Presenter");
-            var RackResponseDto = await _service.GetRackByIdAsync(RackId);
+            var RackResponseDto = await _service.GetRackByIdAsync(rackId);
             if (RackResponseDto != null)
             {
                 var model = ConvertFromResponseDto(RackResponseDto);
@@ -98,7 +99,7 @@ public class RackPresenter
             GlobalVariable.APIRequestType.Remove("GET_Rack");
         }
     }
-    public async void CreateNewRack(string grapperId, RackInformationModel model)
+    public async void CreateNewRack(int grapperId, RackInformationModel model)
     {
         GlobalVariable.APIRequestType.Add("POST_Rack");
         _view.ShowLoading("Đang thực hiện...");
@@ -128,7 +129,7 @@ public class RackPresenter
         }
     }
 
-    public async void UpdateRack(string RackId, RackInformationModel model)
+    public async void UpdateRack(int rackId, RackInformationModel model)
     {
         GlobalVariable.APIRequestType.Add("PUT_Rack");
         _view.ShowLoading("Đang thực hiện...");
@@ -137,7 +138,7 @@ public class RackPresenter
             UnityEngine.Debug.Log("Run Presenter");
             var dto = ConvertToRequestDto(model);
             UnityEngine.Debug.Log("Convert to Request DTO Successfully");
-            var result = await _service.UpdateRackAsync(RackId, dto);
+            var result = await _service.UpdateRackAsync(rackId, dto);
             UnityEngine.Debug.Log("Run Service Successfully");
 
             if (result)
@@ -159,13 +160,13 @@ public class RackPresenter
             GlobalVariable.APIRequestType.Remove("PUT_Rack");
         }
     }
-    public async void DeleteRack(string RackId)
+    public async void DeleteRack(int rackId)
     {
         GlobalVariable.APIRequestType.Add("DELETE_Rack");
         _view.ShowLoading("Đang thực hiện...");
         try
         {
-            var result = await _service.DeleteRackAsync(RackId);
+            var result = await _service.DeleteRackAsync(rackId);
             if (result)
             {
                 _view.ShowSuccess(); // Chỉ hiển thị thành công nếu result == true

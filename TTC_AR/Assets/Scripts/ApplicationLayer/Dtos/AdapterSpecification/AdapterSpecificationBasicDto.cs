@@ -10,12 +10,12 @@ namespace ApplicationLayer.Dtos.AdapterSpecification
 
   public class AdapterSpecificationBasicDto
   {
-    [JsonProperty("Id")] public string Id { get; set; }
-    [JsonProperty("Code")] public string Code { get; set; }
+    [JsonProperty("id")] public int Id { get; set; }
+    [JsonProperty("code")] public string Code { get; set; }
 
     [Preserve]
 
-    public AdapterSpecificationBasicDto(string id, string code)
+    public AdapterSpecificationBasicDto(int id, string code)
     {
       Id = id;
       Code = string.IsNullOrEmpty(code) ? throw new ArgumentException(nameof(code)) : code;

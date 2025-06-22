@@ -33,6 +33,9 @@ public enum MyEnum
 
 public enum HttpMethodTypeEnum
 {
+    //?Company
+    [Description("GET_Company_List")] GETListCompany,
+    [Description("GET_Company")] GETCompany,
     //?Grapper
     [Description("GET_Grapper_List")] GETListGrapper,
     [Description("GET_Grapper")] GETGrapper,
@@ -105,6 +108,8 @@ public enum HttpMethodTypeEnum
     [Description("GET_Image_List")] GETListImage,
     [Description("GET_Image")] GETImage,
     [Description("POST_Image")] POSTImage,
+    [Description("DELETE_Image")] DELETEImage,
+
 }
 
 public static class EnumExtensions

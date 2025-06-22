@@ -23,6 +23,9 @@ public class ListAdapterSpecificationSettingView : MonoBehaviour, IAdapterSpecif
     public GameObject DialogOneButton;
     public GameObject DialogTwoButton;
     private AdapterSpecificationPresenter _presenter;
+    private Sprite warningConfirmButtonSprite;
+    private int companyId;
+    private GameObject AdapterSpecificationItem;
 
     void Awake()
     {
@@ -33,11 +36,14 @@ public class ListAdapterSpecificationSettingView : MonoBehaviour, IAdapterSpecif
 
     void OnEnable()
     {
+        companyId = GlobalVariable.companyId;
+        warningConfirmButtonSprite = Resources.Load<Sprite>("images/UIimages/Warning_Back_Button_Background");
+        Debug.Log(warningConfirmButtonSprite);
         LoadListAdapterSpecification();
     }
     void OnDisable()
     {
-
+        StopAllCoroutines();
     }
 
     private void RefreshList()
@@ -54,7 +60,7 @@ public class ListAdapterSpecificationSettingView : MonoBehaviour, IAdapterSpecif
     public void LoadListAdapterSpecification()
     {
         RefreshList();
-        _presenter.LoadListAdapterSpecification(GlobalVariable.companyId);
+        _presenter.LoadListAdapterSpecification(companyId);
 
     }
     public void DisplayList(List<AdapterSpecificationModel> models)
@@ -83,10 +89,10 @@ public class ListAdapterSpecificationSettingView : MonoBehaviour, IAdapterSpecif
 
     }
 
-    private void EditAdapterSpecificationItem(string id)
+    private void EditAdapterSpecificationItem(int id)
     {
 
-        GlobalVariable.AdapterSpecificationId = id;
+        GlobalVariable.adapterSpecificationId = id;
 
         OpenUpdateCanvas();
     }
@@ -123,21 +129,29 @@ public class ListAdapterSpecificationSettingView : MonoBehaviour, IAdapterSpecif
 
         backgroundTransform.Find("Dialog_Status_Icon").GetComponent<Image>().sprite = Resources.Load<Sprite>("images/UIimages/Warning_Icon_For_Dialog");
 
-        var confirmButton = Horizontal_Group.transform.Find("Confirm_Button").GetComponent<Button>();
+        var confirmButton = Horizontal_Group.Find("Confirm_Button").GetComponent<Button>();
+        var backButton = Horizontal_Group.Find("Back_Button").GetComponent<Button>();
 
-        confirmButton.GetComponent<Image>().sprite = Resources.Load<Sprite>("images/UIimages/Warning_Back_Button_Background");
+        var confirmButtonSprite = confirmButton.GetComponent<Image>();
 
+        confirmButtonSprite.sprite = warningConfirmButtonSprite;
 
-        var backButton = Horizontal_Group.transform.Find("Back_Button").GetComponent<Button>();
+        var confirmButtonText = confirmButton.GetComponentInChildren<TMP_Text>();
+        var backButtonText = backButton.GetComponentInChildren<TMP_Text>();
+
+        // var colors = confirmButton.colors;
+        // colors.normalColor = new Color32(92, 237, 115, 255); // #5CED73 in RGB
+        // confirmButton.colors = colors;
+
+        confirmButtonText.text = "Xác nhận";
+        backButtonText.text = "Trở lại";
 
         confirmButton.onClick.RemoveAllListeners();
-
         backButton.onClick.RemoveAllListeners();
 
         confirmButton.onClick.AddListener(() =>
         {
-            Destroy(AdapterSpecificationItem);
-            listAdapterSpecificationItems.Remove(AdapterSpecificationItem);
+            this.AdapterSpecificationItem = AdapterSpecificationItem;
             _presenter.DeleteAdapterSpecification(model.Id);
             DialogTwoButton.SetActive(false);
 
@@ -188,23 +202,24 @@ public class ListAdapterSpecificationSettingView : MonoBehaviour, IAdapterSpecif
         {
             OpenErrorDialog(title: "Tải danh sách loại Adapter thất bại", content: "Đã có lỗi xảy ra khi tải danh sách loại Adapter. Vui lòng thử lại sau");
         }
-        else if (GlobalVariable.APIRequestType.Contains("DELETE_AdapterSpecification"))
+        if (GlobalVariable.APIRequestType.Contains("DELETE_AdapterSpecification"))
         {
             OpenErrorDialog();
         }
 
     }
-    public void ShowSuccess()
+    public void ShowSuccess(string message)
     {
-        Show_Toast.Instance.Set_Instance_Status_True();
+
         if (GlobalVariable.APIRequestType.Contains("GET_AdapterSpecification_List"))
         {
             Show_Toast.Instance.ShowToast("success", "Tải danh sách thành công");
         }
         if (GlobalVariable.APIRequestType.Contains("DELETE_AdapterSpecification"))
         {
+            listAdapterSpecificationItems.Remove(AdapterSpecificationItem);
+            Destroy(AdapterSpecificationItem);
             Show_Toast.Instance.ShowToast("success", "Xóa loại Adapter thành công");
-
         }
 
         StartCoroutine(Show_Toast.Instance.Set_Instance_Status_False(1f));

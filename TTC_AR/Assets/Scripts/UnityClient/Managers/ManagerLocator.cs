@@ -4,7 +4,19 @@ public class ManagerLocator : MonoBehaviour
 {
     //! Singleton
     private static ManagerLocator _instance;
-    public static ManagerLocator Instance => _instance ??= new ManagerLocator();
+    public static ManagerLocator Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                GameObject managerLocatorObject = new GameObject("ManagerLocator");
+                _instance = managerLocatorObject.AddComponent<ManagerLocator>();
+                DontDestroyOnLoad(managerLocatorObject);
+            }
+            return _instance;
+        }
+    }
 
     //! Các Manager cần quản lý
     public CompanyManager CompanyManager { get; private set; }

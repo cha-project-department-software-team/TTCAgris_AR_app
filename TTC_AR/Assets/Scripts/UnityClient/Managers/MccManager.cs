@@ -23,7 +23,7 @@ public class MccManager : MonoBehaviour
         //! Dependency Injection
         _IMccService = ServiceLocator.Instance.MccService;
     }
-    public async void GetMccList(string grapperId)
+    public async void GetMccList(int grapperId)
     {
         try
         {
@@ -58,11 +58,11 @@ public class MccManager : MonoBehaviour
         }
     }
 
-    public async void GetMccById(string MccId)
+    public async void GetMccById(int mccId)
     {
         try
         {
-            var Mcc = await _IMccService.GetMccByIdAsync(MccId); // Gọi Service
+            var Mcc = await _IMccService.GetMccByIdAsync(mccId); // Gọi Service
             if (Mcc != null)
             {
                 Debug.Log($"Mcc: {Mcc.CabinetCode}");
@@ -93,7 +93,7 @@ public class MccManager : MonoBehaviour
         }
     }
 
-    public async void CreateNewMcc(string grapperId, MccRequestDto MccRequestDto)
+    public async void CreateNewMcc(int grapperId, MccRequestDto MccRequestDto)
     {
         try
         {
@@ -122,12 +122,12 @@ public class MccManager : MonoBehaviour
 
         }
     }
-    public async void UpdateMcc(string MccId, MccRequestDto MccRequestDto)
+    public async void UpdateMcc(int mccId, MccRequestDto MccRequestDto)
     {
-        MccId = GlobalVariable.MccId;
+        mccId = GlobalVariable.mccId;
         try
         {
-            bool result = await _IMccService.UpdateMccAsync(MccId, MccRequestDto);
+            bool result = await _IMccService.UpdateMccAsync(mccId, MccRequestDto);
             Debug.Log(result ? "Mcc updated successfully" : "Failed to update Mcc");
         }
 
@@ -150,12 +150,12 @@ public class MccManager : MonoBehaviour
 
         }
     }
-    public async void DeleteMcc(string MccId)
+    public async void DeleteMcc(int mccId)
     {
-        MccId = GlobalVariable.MccId;
+        mccId = GlobalVariable.mccId;
         try
         {
-            bool result = await _IMccService.DeleteMccAsync(MccId);
+            bool result = await _IMccService.DeleteMccAsync(mccId);
             Debug.Log(result ? "Mcc deleted successfully" : "Failed to delete Mcc");
         }
 

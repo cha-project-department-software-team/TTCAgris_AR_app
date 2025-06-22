@@ -90,7 +90,7 @@
 
 //         scrollRect.verticalNormalizedPosition = 1;
 
-//         _presenter.LoadDetailById(GlobalVariable.RackId);
+//         _presenter.LoadDetailById(GlobalVariable.rackId);
 
 //     }
 
@@ -120,14 +120,14 @@
 //             // Debug.Log("RackSpecification Code: " + RackInformationModel.RackSpecificationModel.Code);
 //             // Debug.Log("AdapterSpecification Code: " + RackInformationModel.AdapterSpecificationModel.Code);
 
-//             _presenter.UpdateRack(GlobalVariable.RackId, RackInformationModel);
+//             _presenter.UpdateRack(GlobalVariable.rackId, RackInformationModel);
 //         }
 //     }
 //     public void loadDetailById()
 //     {
 //         RenewView();
 
-//         _presenter.LoadDetailById(GlobalVariable.RackId);
+//         _presenter.LoadDetailById(GlobalVariable.rackId);
 //     }
 //     private void RenewView()
 //     {
@@ -329,7 +329,7 @@
 //         backButton.onClick.AddListener(() =>
 //         {
 //             DialogOneButton.SetActive(false);
-//             _presenter.LoadDetailById(GlobalVariable.RackId);
+//             _presenter.LoadDetailById(GlobalVariable.rackId);
 //             scrollRect.verticalNormalizedPosition = 1;
 //         }
 //        );

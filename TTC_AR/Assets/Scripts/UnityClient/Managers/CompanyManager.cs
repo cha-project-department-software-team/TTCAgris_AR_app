@@ -1,19 +1,9 @@
 
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.Networking;
-using System.Threading;
-using UnityEngine.SceneManagement;
-using System.Linq;
 using System.Net.Http;
 using ApplicationLayer.Interfaces;
-using ApplicationLayer.Dtos;
-using ApplicationLayer.Dtos.Company;
+
 
 public class CompanyManager : MonoBehaviour
 {
@@ -32,7 +22,7 @@ public class CompanyManager : MonoBehaviour
         //! Dependency Injection
         _ICompanyService = ServiceLocator.Instance.CompanyService;
     }
-    public async void GetCompanyById(string CompanyId)
+    public async void GetCompanyById(int CompanyId)
     {
         try
         {

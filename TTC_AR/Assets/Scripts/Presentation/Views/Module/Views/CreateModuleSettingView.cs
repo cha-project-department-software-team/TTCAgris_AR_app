@@ -64,6 +64,8 @@ public class CreateModuleSettingView : MonoBehaviour, IModuleView
     private readonly Dictionary<string, JBInformationModel> temp_Dictionary_JBModel = new();
     private readonly Dictionary<string, ModuleSpecificationModel> temp_Dictionary_ModuleSpecificationModel = new();
     private readonly Dictionary<string, AdapterSpecificationModel> temp_Dictionary_AdapterSpecificationModel = new();
+    private Sprite successConfirmButtonSprite;
+    private int grapperId;
 
     private readonly Dictionary<string, List<GameObject>> selectedGameObjects = new()
     {   { "Racks", new List<GameObject>() },
@@ -81,22 +83,17 @@ public class CreateModuleSettingView : MonoBehaviour, IModuleView
         { "ModuleSpecifications", 0 },
         { "AdapterSpecifications", 0 }
     };
-
-    // void Awake()
-    // {
-    //     var ModuleManager = FindObjectOfType<ModuleManager>();
-    //     _presenter = new ModulePresenter(this, ModuleManager._IModuleService);
-    // }
     void Awake()
     {
-        // var DeviceManager = FindObjectOfType<DeviceManager>();
         _presenter = new ModulePresenter(this, ManagerLocator.Instance.ModuleManager._IModuleService);
-        // DeviceManager._IDeviceService
     }
 
     void OnEnable()
     {
-        ResetAllInputFields();
+        grapperId = GlobalVariable.GrapperId;
+        successConfirmButtonSprite = Resources.Load<Sprite>("images/UIimages/Success_Back_Button_Background");
+        Debug.Log(successConfirmButtonSprite);
+        RenewView();
 
         AddButtonListeners(initialize_Module_List_Option_Selection.Rack_List_Selection_Option_Content_Transform, "Racks");
         AddButtonListeners(initialize_Module_List_Option_Selection.Device_List_Selection_Option_Content_Transform, "Devices");
@@ -132,35 +129,28 @@ public class CreateModuleSettingView : MonoBehaviour, IModuleView
 
     private void OnSubmitButtonClick()
     {
-        ModuleInformationModel = new ModuleInformationModel(
-            name: Name_TextField.text,
-            rack: temp_Dictionary_RackModel.Values.Any() ? temp_Dictionary_RackModel.Values.ToList().LastOrDefault() : null,
-            listDeviceInformationModel: temp_Dictionary_DeviceModel.Values.Any() ? temp_Dictionary_DeviceModel.Values.ToList() : new List<DeviceInformationModel>(),
-            listJBInformationModel: temp_Dictionary_JBModel.Values.Any() ? temp_Dictionary_JBModel.Values.ToList() : new List<JBInformationModel>(),
-            moduleSpecificationModel: temp_Dictionary_ModuleSpecificationModel.Values.Any() ? temp_Dictionary_ModuleSpecificationModel.Values.ToList().LastOrDefault() : null,
-            adapterSpecificationModel: temp_Dictionary_AdapterSpecificationModel.Values.Any() ? temp_Dictionary_AdapterSpecificationModel.Values.ToList().LastOrDefault() : null
-            );
-
         if (string.IsNullOrEmpty(Name_TextField.text))
         {
             OpenErrorDialog("Vui lòng nhập mã Module");
             return;
         }
-        if (GlobalVariable.temp_List_ModuleInformationModel.Any(x => x.Name == Name_TextField.text))
+        if (GlobalVariable.temp_Dictionary_ModuleInformationModel.ContainsKey(Name_TextField.text))
         {
-            OpenErrorDialog("Mã Module đã tồn tại", "Vui lòng nhập mã Module khác");
+            OpenErrorDialog("Module này đã tồn tại", "Vui lòng nhập mã Module khác");
             return;
         }
-        else
-        {
-            Debug.Log("Module Name: " + ModuleInformationModel.Name);
-            Debug.Log("Rack Name: " + ModuleInformationModel.Rack.Name);
-            Debug.Log("Device Count: " + ModuleInformationModel.ListDeviceInformationModel.Count);
-            Debug.Log("JB Count: " + ModuleInformationModel.ListJBInformationModel.Count);
-            Debug.Log("Module Specification Code: " + ModuleInformationModel.ModuleSpecificationModel.Code);
-            Debug.Log("Adapter Specification Code: " + ModuleInformationModel.AdapterSpecificationModel.Code);
+        ModuleInformationModel = new ModuleInformationModel(
+            name: Name_TextField.text,
+            rack: temp_Dictionary_RackModel.Any() ? temp_Dictionary_RackModel.Values.ToList().LastOrDefault() : null,
+            listDeviceInformationModel: temp_Dictionary_DeviceModel.Any() ? temp_Dictionary_DeviceModel.Values.ToList() : new List<DeviceInformationModel>(),
+            listJBInformationModel: temp_Dictionary_JBModel.Any() ? temp_Dictionary_JBModel.Values.ToList() : new List<JBInformationModel>(),
+            moduleSpecificationModel: temp_Dictionary_ModuleSpecificationModel.Any() ? temp_Dictionary_ModuleSpecificationModel.Values.ToList().LastOrDefault() : null,
+            adapterSpecificationModel: temp_Dictionary_AdapterSpecificationModel.Any() ? temp_Dictionary_AdapterSpecificationModel.Values.ToList().LastOrDefault() : null
+            );
 
-            _presenter.CreateNewModule(GlobalVariable.GrapperId, ModuleInformationModel);
+        if (ModuleInformationModel != null)
+        {
+            _presenter.CreateNewModule(grapperId, ModuleInformationModel);
         }
     }
 
@@ -170,35 +160,46 @@ public class CreateModuleSettingView : MonoBehaviour, IModuleView
         addModuleSpeButton.SetActive(true);
         addAdapterSpeButton.SetActive(true);
 
+        Device_Item_Prefab.SetActive(false);
+        JB_Item_Prefab.SetActive(false);
+        Rack_Item_Prefab.SetActive(false);
+        ModuleSpecification_Item_Prefab.SetActive(false);
+        AdapterSpecification_Item_Prefab.SetActive(false);
+
+        ResetAllInputFields();
+
         ClearActiveChildren(List_Racks_Parent_Vertical_Layout_Group);
         ClearActiveChildren(List_Devices_Parent_Grid_Layout_Group);
         ClearActiveChildren(List_JBs_Parent_Grid_Layout_Group);
         ClearActiveChildren(List_ModuleSpecification_Parent_Vertical_Layout_Group);
         ClearActiveChildren(List_AdapterSpecification_Parent_Vertical_Layout_Group);
 
-        ResetAllInputFields();
 
         temp_Dictionary_RackModel.Clear();
-        selectedGameObjects["Racks"].Clear();
-        selectedCounts["Racks"] = 0;
-
         temp_Dictionary_DeviceModel.Clear();
-        selectedGameObjects["Devices"].Clear();
-        selectedCounts["Devices"] = 0;
-
         temp_Dictionary_JBModel.Clear();
-        selectedGameObjects["JBs"].Clear();
-        selectedCounts["JBs"] = 0;
-
         temp_Dictionary_ModuleSpecificationModel.Clear();
-        selectedGameObjects["ModuleSpecifications"].Clear();
-        selectedCounts["ModuleSpecifications"] = 0;
-
         temp_Dictionary_AdapterSpecificationModel.Clear();
-        selectedGameObjects["AdapterSpecifications"].Clear();
-        selectedCounts["AdapterSpecifications"] = 0;
-    }
 
+        selectedGameObjects["Racks"].Clear();
+        selectedGameObjects["Devices"].Clear();
+        selectedGameObjects["ModuleSpecifications"].Clear();
+        selectedGameObjects["JBs"].Clear();
+        selectedGameObjects["AdapterSpecifications"].Clear();
+
+        selectedCounts["Racks"] = 0;
+        selectedCounts["Devices"] = 0;
+        selectedCounts["JBs"] = 0;
+        selectedCounts["ModuleSpecifications"] = 0;
+        selectedCounts["AdapterSpecifications"] = 0;
+
+        scrollRect.verticalNormalizedPosition = 1;
+        // scrollRect.content.localPosition = new Vector3(0, 0, 0);
+    }
+    private void ResetAllInputFields()
+    {
+        Name_TextField.text = "";
+    }
     public void CloseAddCanvas()
     {
         Add_New_Module_Canvas.SetActive(false);
@@ -206,10 +207,6 @@ public class CreateModuleSettingView : MonoBehaviour, IModuleView
         List_Module_Canvas.SetActive(true);
     }
 
-    private void ResetAllInputFields()
-    {
-        Name_TextField.text = "";
-    }
 
     private void AddButtonListeners(Transform contentTransform, string field)
     {
@@ -339,15 +336,16 @@ public class CreateModuleSettingView : MonoBehaviour, IModuleView
         {
             addRackButton.SetActive(false);
         }
-        else if (field == "ModuleSpecifications")
+        if (field == "ModuleSpecifications")
         {
             addModuleSpeButton.SetActive(false);
         }
-        else if (field == "AdapterSpecifications")
+        if (field == "AdapterSpecifications")
         {
             addAdapterSpeButton.SetActive(false);
         }
         var newItem = Instantiate(itemPrefab, parentGroup.transform);
+        newItem.SetActive(true);
         temp_Item_Transform = newItem.transform;
         var button = newItem.GetComponentInChildren<Button>();
         button.onClick.AddListener(() => DeselectItem(newItem, field));
@@ -369,11 +367,11 @@ public class CreateModuleSettingView : MonoBehaviour, IModuleView
         {
             addRackButton.SetActive(true);
         }
-        else if (field == "ModuleSpecifications")
+        if (field == "ModuleSpecifications")
         {
             addModuleSpeButton.SetActive(true);
         }
-        else if (field == "AdapterSpecifications")
+        if (field == "AdapterSpecifications")
         {
             addAdapterSpeButton.SetActive(true);
         }
@@ -490,9 +488,19 @@ public class CreateModuleSettingView : MonoBehaviour, IModuleView
         var confirmButton = horizontalGroupTransform.Find("Confirm_Button").GetComponent<Button>();
         var backButton = horizontalGroupTransform.Find("Back_Button").GetComponent<Button>();
 
-        confirmButton.GetComponent<Image>().sprite = Resources.Load<Sprite>("images/UIimages/Success_Back_Button_Background");
-        confirmButton.transform.Find("Text").GetComponent<TMP_Text>().text = "Tiếp tục thêm mới";
-        backButton.transform.Find("Text").GetComponent<TMP_Text>().text = "Trở lại danh sách";
+
+        var confirmButtonSprite = confirmButton.GetComponent<Image>();
+        confirmButtonSprite.sprite = successConfirmButtonSprite;
+
+        var confirmButtonText = confirmButton.GetComponentInChildren<TMP_Text>();
+        var backButtonText = backButton.GetComponentInChildren<TMP_Text>();
+
+        // var colors = confirmButton.colors;
+        // colors.normalColor = new Color32(92, 237, 115, 255); // #5CED73 in RGB
+        // confirmButton.colors = colors;
+
+        confirmButtonText.text = "Tiếp tục thêm mới";
+        backButtonText.text = "Trở lại danh sách";
 
         confirmButton.onClick.RemoveAllListeners();
         backButton.onClick.RemoveAllListeners();
@@ -536,11 +544,11 @@ public class CreateModuleSettingView : MonoBehaviour, IModuleView
         }
     }
 
-    public void ShowSuccess()
+    public void ShowSuccess(string message)
     {
         if (GlobalVariable.APIRequestType.Contains("POST_Module"))
         {
-            Show_Toast.Instance.ShowToast("success", "Thêm Module IO mới thành công");
+            Show_Toast.Instance.ShowToast("success", message);
             OpenSuccessDialog(ModuleInformationModel);
         }
 

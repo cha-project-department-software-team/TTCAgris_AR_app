@@ -98,7 +98,7 @@
 //             }
 //             else
 //             {
-//                 Debug.LogError("List thiết bị null hoặc không có đủ dữ liệu hợp lệ.");
+//                 Debug.LogError("list thiết bị null hoặc không có đủ dữ liệu hợp lệ.");
 //             }
 //         }
 //         catch (JsonException je)

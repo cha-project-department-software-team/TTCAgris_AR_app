@@ -1,204 +1,221 @@
-// using System.Collections.Generic;
-// using System.Linq;
-// using EasyUI.Progress;
-// using TMPro;
-// using UnityEngine;
-// using UnityEngine.UI;
+using System.Collections.Generic;
+using System.Linq;
+using EasyUI.Progress;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
 
-// public class ListRackSettingView : MonoBehaviour, IRackView
-// {
-//     [Header("Canvas")]
-//     public GameObject List_Rack_Canvas;
-//     public GameObject Add_New_Rack_Canvas;
-//     public GameObject Update_Rack_Canvas;
+public class ListGrapperSettingView : MonoBehaviour, IGrapperView
+{
+    [Header("Canvas")]
+    public GameObject List_Grapper_Canvas;
+    public GameObject Add_New_Grapper_Canvas;
+    public GameObject Update_Grapper_Canvas;
 
-//     public GameObject Rack_Item_Prefab;
-//     public GameObject Parent_Vertical_Layout_Group;
-//     public ScrollRect scrollView;
-//     private List<GameObject> listRackItems = new List<GameObject>();
+    public GameObject Grapper_Item_Prefab;
+    public GameObject Parent_Vertical_Layout_Group;
+    public ScrollRect scrollView;
+    private List<GameObject> listGrapperItems = new List<GameObject>();
 
-//     public GameObject DialogOneButton;
-//     public GameObject DialogTwoButton;
-//     private RackPresenter _presenter;
+    public GameObject DialogOneButton;
+    public GameObject DialogTwoButton;
+    private GrapperPresenter _presenter;
+    private Sprite warningConfirmButtonSprite;
+    private int companyId;
+    private GameObject GrapperItem;
 
-//     void Awake()
-//     {
-//         // var RackManager = FindObjectOfType<RackManager>();
-//         _presenter = new RackPresenter(this,
-//         ManagerLocator.Instance.RackManager._IRackService);
-//         // RackManager._IRackService
-//     }
-//     void OnEnable()
-//     {
-//         LoadListRack();
-//     }
-//     void OnDisable()
-//     {
-//     }
+    void Awake()
+    {
 
-//     private void RefreshList()
-//     {
-//         Rack_Item_Prefab.SetActive(true);
-//         foreach (var item in listRackItems)
-//         {
-//             if (item != Rack_Item_Prefab)
-//                 Destroy(item);
-//         }
-//         listRackItems.Clear();
-//     }
+        _presenter = new GrapperPresenter(this,
+        ManagerLocator.Instance.GrapperManager._IGrapperService);
 
-//     public void LoadListRack()
-//     {
-//         RefreshList();
-//         _presenter.LoadListRack(GlobalVariable.GrapperId);
-//     }
-//     public void DisplayList(List<RackInformationModel> models)
-//     {
-//         if (models.Any())
-//         {
-//             foreach (var model in models)
-//             {
-//                 int RackIndex = models.IndexOf(model);
-//                 Debug.Log(RackIndex);
-//                 var newRackItem = Instantiate(Rack_Item_Prefab, Parent_Vertical_Layout_Group.transform);
-//                 Transform newRackItemTransform = newRackItem.transform;
-//                 Transform newRackItemPreviewInforGroup = newRackItemTransform.GetChild(0);
-//                 newRackItemPreviewInforGroup.Find("Preview_Rack_Name").GetComponent<TMP_Text>().text = model.Name;
-//                 Transform newRackItemPreviewButtonGroup = newRackItemTransform.GetChild(1);
-//                 listRackItems.Add(newRackItem);
-//                 newRackItemPreviewButtonGroup.Find("Group/Edit_Button").GetComponent<Button>().onClick.AddListener(() => EditRackItem(model.Id));
-//                 newRackItemPreviewButtonGroup.Find("Group/Delete_Button").GetComponent<Button>().onClick.AddListener(() => DeleRackItem(newRackItem, model));
-//             }
-//         }
-//         else
-//         {
-//             Debug.Log("No Racks found");
-//         }
-//         Rack_Item_Prefab.SetActive(false);
-//     }
+    }
+    void OnEnable()
+    {
+        companyId = GlobalVariable.companyId;
+        warningConfirmButtonSprite = Resources.Load<Sprite>("images/UIimages/Warning_Back_Button_Background");
+        Debug.Log(warningConfirmButtonSprite);
+        LoadListGrapper();
+    }
+    void OnDisable()
+    {
+    }
 
-//     private void EditRackItem(string id)
-//     {
-//         GlobalVariable.RackId = id;
-//         OpenUpdateCanvas();
-//     }
-//     private void DeleRackItem(GameObject RackItem, RackInformationModel model)
-//     {
-//         OpenDeleteWarningDialog(RackItem, model);
-//     }
+    private void RefreshList()
+    {
+        Grapper_Item_Prefab.SetActive(true);
+        foreach (var item in listGrapperItems)
+        {
+            if (item != Grapper_Item_Prefab)
+                Destroy(item);
+        }
+        listGrapperItems.Clear();
+    }
 
-//     public void OpenAddNewCanvas()
-//     {
-//         Add_New_Rack_Canvas.SetActive(true);
-//         List_Rack_Canvas.SetActive(false);
-//         Update_Rack_Canvas.SetActive(false);
-//     }
-//     private void OpenUpdateCanvas()
-//     {
-//         List_Rack_Canvas.SetActive(false);
-//         Add_New_Rack_Canvas.SetActive(false);
-//         Update_Rack_Canvas.SetActive(true);
-//     }
+    public void LoadListGrapper()
+    {
+        RefreshList();
+        _presenter.LoadListGrapper(companyId);
+    }
+    public void DisplayList(List<GrapperInformationModel> models)
+    {
+        if (models.Any())
+        {
+            foreach (var model in models)
+            {
+                int GrapperIndex = models.IndexOf(model);
+                Debug.Log(GrapperIndex);
+                var newGrapperItem = Instantiate(Grapper_Item_Prefab, Parent_Vertical_Layout_Group.transform);
+                Transform newGrapperItemTransform = newGrapperItem.transform;
+                Transform newGrapperItemPreviewInforGroup = newGrapperItemTransform.GetChild(0);
+                newGrapperItemPreviewInforGroup.Find("Preview_Grapper_Name").GetComponent<TMP_Text>().text = model.Name;
+                Transform newGrapperItemPreviewButtonGroup = newGrapperItemTransform.GetChild(1);
+                listGrapperItems.Add(newGrapperItem);
+                newGrapperItemPreviewButtonGroup.Find("Group/Edit_Button").GetComponent<Button>().onClick.AddListener(() => EditGrapperItem(model.Id));
+                newGrapperItemPreviewButtonGroup.Find("Group/Delete_Button").GetComponent<Button>().onClick.AddListener(() => DeleGrapperItem(newGrapperItem, model));
+            }
+        }
+        else
+        {
+            Debug.Log("No Grappers found");
+        }
+        Grapper_Item_Prefab.SetActive(false);
+    }
 
-//     private void OpenDeleteWarningDialog(GameObject RackItem, RackInformationModel model)
-//     {
-//         DialogTwoButton.SetActive(true);
+    private void EditGrapperItem(int id)
+    {
+        GlobalVariable.GrapperId = id;
+        OpenUpdateCanvas();
+    }
+    private void DeleGrapperItem(GameObject GrapperItem, GrapperInformationModel model)
+    {
+        OpenDeleteWarningDialog(GrapperItem, model);
+    }
 
-//         var backgroundTransform = DialogTwoButton.transform.Find("Background");
+    public void OpenAddNewCanvas()
+    {
+        Add_New_Grapper_Canvas.SetActive(true);
+        List_Grapper_Canvas.SetActive(false);
+        Update_Grapper_Canvas.SetActive(false);
+    }
+    private void OpenUpdateCanvas()
+    {
+        List_Grapper_Canvas.SetActive(false);
+        Add_New_Grapper_Canvas.SetActive(false);
+        Update_Grapper_Canvas.SetActive(true);
+    }
 
-//         var Horizontal_Group = DialogTwoButton.transform.Find("Background/Horizontal_Group").gameObject.transform;
+    private void OpenDeleteWarningDialog(GameObject GrapperItem, GrapperInformationModel model)
+    {
+        DialogTwoButton.SetActive(true);
 
-//         var dialog_Content = DialogTwoButton.transform.Find("Background/Dialog_Content").GetComponent<TMP_Text>().text = $"Bạn có chắc chắn muốn xóa thông tin Rack IO <b><color =#004C8A>{model.Name}</b></color> khỏi hệ thống? Hãy kiểm tra kĩ trước khi nhấn nút xác nhận phía dưới";
+        var backgroundTransform = DialogTwoButton.transform.Find("Background");
 
-//         var dialog_Title = DialogTwoButton.transform.Find("Background/Dialog_Title").GetComponent<TMP_Text>().text = "Xóa Rack IO khỏi hệ thống?";
+        var Horizontal_Group = DialogTwoButton.transform.Find("Background/Horizontal_Group").gameObject.transform;
 
-//         backgroundTransform.Find("Dialog_Status_Icon").GetComponent<Image>().sprite = Resources.Load<Sprite>("images/UIimages/Warning_Icon_For_Dialog");
+        var dialog_Content = DialogTwoButton.transform.Find("Background/Dialog_Content").GetComponent<TMP_Text>().text = $"Bạn có chắc chắn muốn xóa thông tin Grapper IO <b><color=#ED1C24>{model.Name}</b></color> khỏi hệ thống? Hãy kiểm tra kĩ trước khi nhấn nút xác nhận phía dưới";
 
-//         var confirmButton = Horizontal_Group.transform.Find("Confirm_Button").GetComponent<Button>();
+        var dialog_Title = DialogTwoButton.transform.Find("Background/Dialog_Title").GetComponent<TMP_Text>().text = "Xóa Grapper IO khỏi hệ thống?";
 
-//         confirmButton.GetComponent<Image>().sprite = Resources.Load<Sprite>("images/UIimages/Warning_Back_Button_Background");
+        backgroundTransform.Find("Dialog_Status_Icon").GetComponent<Image>().sprite = Resources.Load<Sprite>("images/UIimages/Warning_Icon_For_Dialog");
 
-//         var backButton = Horizontal_Group.transform.Find("Back_Button").GetComponent<Button>();
+        var confirmButton = Horizontal_Group.Find("Confirm_Button").GetComponent<Button>();
+        var backButton = Horizontal_Group.Find("Back_Button").GetComponent<Button>();
 
-//         confirmButton.onClick.RemoveAllListeners();
+        var confirmButtonSprite = confirmButton.GetComponent<Image>();
 
-//         backButton.onClick.RemoveAllListeners();
+        confirmButtonSprite.sprite = warningConfirmButtonSprite;
 
-//         confirmButton.onClick.AddListener(() =>
-//         {
-//             listRackItems.Remove(RackItem);
-//             Debug.Log(model.Id);
-//             _presenter.DeleteRack(model.Id);
-//             DialogTwoButton.SetActive(false);
-//             Destroy(RackItem);
-//         });
-//         backButton.onClick.AddListener(() =>
-//         {
-//             DialogTwoButton.SetActive(false);
-//         });
-//     }
-//     private void OpenErrorDialog(string title = "Xóa Rack IO thất bại", string message = "Đã có lỗi xảy ra khi xóa Rack IO khỏi hệ thống. Vui lòng thử lại sau")
-//     {
-//         DialogOneButton.SetActive(true);
+        var confirmButtonText = confirmButton.GetComponentInChildren<TMP_Text>();
+        var backButtonText = backButton.GetComponentInChildren<TMP_Text>();
 
-//         var backButton = DialogOneButton.transform.Find("Background/Back_Button").GetComponent<Button>();
+        // var colors = confirmButton.colors;
+        // colors.normalColor = new Color32(92, 237, 115, 255); // #5CED73 in RGB
+        // confirmButton.colors = colors;
 
-//         backButton.gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("images/UIimages/Error_Back_Button_Background");
+        confirmButtonText.text = "Xác nhận";
+        backButtonText.text = "Trở lại";
+        confirmButton.onClick.RemoveAllListeners();
 
-//         var dialog_Icon = DialogOneButton.transform.Find("Background/Dialog_Status_Icon").GetComponent<Image>().sprite = Resources.Load<Sprite>("images/UIimages/Error_Icon_For_Dialog");
+        backButton.onClick.RemoveAllListeners();
 
-//         var dialog_Content = DialogOneButton.transform.Find("Background/Dialog_Content").GetComponent<TMP_Text>().text = message;
+        confirmButton.onClick.AddListener(() =>
+        {
+            Debug.Log(model.Id);
+            this.GrapperItem = GrapperItem;
+            _presenter.DeleteGrapper(model.Id);
+            DialogTwoButton.SetActive(false);
+        });
+        backButton.onClick.AddListener(() =>
+        {
+            DialogTwoButton.SetActive(false);
+        });
+    }
+    private void OpenErrorDialog(string title = "Xóa Grapper IO thất bại", string message = "Đã có lỗi xảy ra khi xóa Grapper IO khỏi hệ thống. Vui lòng thử lại sau")
+    {
+        DialogOneButton.SetActive(true);
 
-//         var dialog_Title = DialogOneButton.transform.Find("Background/Dialog_Title").GetComponent<TMP_Text>().text = title;
+        var backButton = DialogOneButton.transform.Find("Background/Back_Button").GetComponent<Button>();
 
-//         backButton.onClick.RemoveAllListeners();
+        backButton.gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("images/UIimages/Error_Back_Button_Background");
 
-//         backButton.onClick.AddListener(() =>
-//         {
-//             DialogOneButton.SetActive(false);
-//         });
+        var dialog_Icon = DialogOneButton.transform.Find("Background/Dialog_Status_Icon").GetComponent<Image>().sprite = Resources.Load<Sprite>("images/UIimages/Error_Icon_For_Dialog");
 
-//     }
-//     private void ShowProgressBar(string title, string details)
-//     {
-//         Progress.Show(title, ProgressColor.Blue, true);
-//         Progress.SetDetailsText(details);
-//     }
-//     private void HideProgressBar()
-//     {
-//         Progress.Hide();
-//     }
-//     public void ShowLoading(string title) => ShowProgressBar(title, "Đang tải dữ liệu...");
-//     public void HideLoading() => HideProgressBar();
+        var dialog_Content = DialogOneButton.transform.Find("Background/Dialog_Content").GetComponent<TMP_Text>().text = message;
 
-//     public void ShowError(string message)
-//     {
-//         if (GlobalVariable.APIRequestType.Contains("GET_Rack_List"))
-//         {
-//             OpenErrorDialog(title: "Tải danh sách thất bại", message: "Đã có lỗi xảy ra khi tải danh sách. Vui lòng thử lại sau");
-//         }
-//         else if (GlobalVariable.APIRequestType.Contains("DELETE_Rack"))
-//         {
-//             OpenErrorDialog();
-//         }
-//     }
-//     public void ShowSuccess()
-//     {
-//         if (GlobalVariable.APIRequestType.Contains("GET_Rack_List"))
-//         {
-//             Show_Toast.Instance.ShowToast("success", "Tải danh sách thành công");
-//         }
-//         else if (GlobalVariable.APIRequestType.Contains("DELETE_Rack"))
-//         {
-//             Show_Toast.Instance.ShowToast("success", "Xóa Rack IO thành công");
-//         }
+        var dialog_Title = DialogOneButton.transform.Find("Background/Dialog_Title").GetComponent<TMP_Text>().text = title;
 
-//         StartCoroutine(Show_Toast.Instance.Set_Instance_Status_False());
-//     }
+        backButton.onClick.RemoveAllListeners();
 
-//     // Không dùng trong ListView
-//     public void DisplayDetail(RackInformationModel model) { }
-//     public void DisplayCreateResult(bool success) { }
-//     public void DisplayUpdateResult(bool success) { }
-//     public void DisplayDeleteResult(bool success) { }
-// }
+        backButton.onClick.AddListener(() =>
+        {
+            DialogOneButton.SetActive(false);
+        });
+
+    }
+    private void ShowProgressBar(string title, string details)
+    {
+        Progress.Show(title, ProgressColor.Blue, true);
+        Progress.SetDetailsText(details);
+    }
+    private void HideProgressBar()
+    {
+        Progress.Hide();
+    }
+    public void ShowLoading(string title) => ShowProgressBar(title, "Đang tải dữ liệu...");
+    public void HideLoading() => HideProgressBar();
+
+    public void ShowError(string message)
+    {
+        if (GlobalVariable.APIRequestType.Contains("GET_Grapper_List"))
+        {
+            OpenErrorDialog(title: "Tải danh sách thất bại", message: "Đã có lỗi xảy ra khi tải danh sách. Vui lòng thử lại sau");
+        }
+        if (GlobalVariable.APIRequestType.Contains("DELETE_Grapper"))
+        {
+            OpenErrorDialog();
+        }
+    }
+    public void ShowSuccess()
+    {
+        if (GlobalVariable.APIRequestType.Contains("GET_Grapper_List"))
+        {
+            Show_Toast.Instance.ShowToast("success", "Tải danh sách thành công");
+        }
+        if (GlobalVariable.APIRequestType.Contains("DELETE_Grapper"))
+        {
+            listGrapperItems.Remove(GrapperItem);
+            Destroy(GrapperItem);
+            Show_Toast.Instance.ShowToast("success", "Xóa Grapper IO thành công");
+        }
+
+        StartCoroutine(Show_Toast.Instance.Set_Instance_Status_False());
+    }
+
+    // Không dùng trong ListView
+    public void DisplayDetail(GrapperInformationModel model) { }
+    public void DisplayCreateResult(bool success) { }
+    public void DisplayUpdateResult(bool success) { }
+    public void DisplayDeleteResult(bool success) { }
+}

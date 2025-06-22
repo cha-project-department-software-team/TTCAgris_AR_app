@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using EasyUI.Progress;
@@ -20,16 +21,20 @@ public class ListModuleSettingView : MonoBehaviour, IModuleView
     public GameObject DialogOneButton;
     public GameObject DialogTwoButton;
     private ModulePresenter _presenter;
-
+    private Sprite warningConfirmButtonSprite;
+    private int grapperId;
+    private GameObject _moduleItem;
     void Awake()
     {
-        // var ModuleManager = FindObjectOfType<ModuleManager>();
         _presenter = new ModulePresenter(this,
         ManagerLocator.Instance.ModuleManager._IModuleService);
-        // ModuleManager._IModuleService
     }
     void OnEnable()
     {
+        grapperId = GlobalVariable.GrapperId;
+
+        warningConfirmButtonSprite = Resources.Load<Sprite>("images/UIimages/Warning_Back_Button_Background");
+        Debug.Log(warningConfirmButtonSprite);
         LoadListModule();
     }
     void OnDisable()
@@ -50,7 +55,7 @@ public class ListModuleSettingView : MonoBehaviour, IModuleView
     public void LoadListModule()
     {
         RefreshList();
-        _presenter.LoadListModule(GlobalVariable.GrapperId);
+        _presenter.LoadListModule(grapperId);
     }
     public void DisplayList(List<ModuleInformationModel> models)
     {
@@ -58,9 +63,10 @@ public class ListModuleSettingView : MonoBehaviour, IModuleView
         {
             foreach (var model in models)
             {
-                int ModuleIndex = models.IndexOf(model);
-                Debug.Log(ModuleIndex);
+                // int ModuleIndex = models.IndexOf(model);
+                // Debug.Log(ModuleIndex);
                 var newModuleItem = Instantiate(Module_Item_Prefab, Parent_Vertical_Layout_Group.transform);
+                newModuleItem.SetActive(true);
                 Transform newModuleItemTransform = newModuleItem.transform;
                 Transform newModuleItemPreviewInforGroup = newModuleItemTransform.GetChild(0);
                 newModuleItemPreviewInforGroup.Find("Preview_Module_Name").GetComponent<TMP_Text>().text = model.Name;
@@ -72,14 +78,15 @@ public class ListModuleSettingView : MonoBehaviour, IModuleView
         }
         else
         {
-            Debug.Log("No Modules found");
+            Debug.Log("No Mccs found");
         }
         Module_Item_Prefab.SetActive(false);
+        scrollView.verticalNormalizedPosition = 1f;
     }
 
-    private void EditModuleItem(string id)
+    private void EditModuleItem(int id)
     {
-        GlobalVariable.ModuleId = id;
+        GlobalVariable.moduleId = id;
         OpenUpdateCanvas();
     }
     private void DeleModuleItem(GameObject ModuleItem, ModuleInformationModel model)
@@ -108,17 +115,28 @@ public class ListModuleSettingView : MonoBehaviour, IModuleView
 
         var Horizontal_Group = DialogTwoButton.transform.Find("Background/Horizontal_Group").gameObject.transform;
 
-        var dialog_Content = DialogTwoButton.transform.Find("Background/Dialog_Content").GetComponent<TMP_Text>().text = $"Bạn có chắc chắn muốn xóa thông tin Module IO <b><color =#004C8A>{model.Name}</b></color> khỏi hệ thống? Hãy kiểm tra kĩ trước khi nhấn nút xác nhận phía dưới";
+        var dialog_Content = DialogTwoButton.transform.Find("Background/Dialog_Content").GetComponent<TMP_Text>().text = $"Bạn có chắc chắn muốn xóa Module IO <color=#ED1C24><b>{model.Name}</b></color> khỏi hệ thống? Hãy kiểm tra kĩ trước khi nhấn nút \"xác nhận\" phía dưới";
 
         var dialog_Title = DialogTwoButton.transform.Find("Background/Dialog_Title").GetComponent<TMP_Text>().text = "Xóa Module IO khỏi hệ thống?";
 
         backgroundTransform.Find("Dialog_Status_Icon").GetComponent<Image>().sprite = Resources.Load<Sprite>("images/UIimages/Warning_Icon_For_Dialog");
 
-        var confirmButton = Horizontal_Group.transform.Find("Confirm_Button").GetComponent<Button>();
+        var confirmButton = Horizontal_Group.Find("Confirm_Button").GetComponent<Button>();
+        var backButton = Horizontal_Group.Find("Back_Button").GetComponent<Button>();
 
-        confirmButton.GetComponent<Image>().sprite = Resources.Load<Sprite>("images/UIimages/Warning_Back_Button_Background");
+        var confirmButtonSprite = confirmButton.GetComponent<Image>();
 
-        var backButton = Horizontal_Group.transform.Find("Back_Button").GetComponent<Button>();
+        confirmButtonSprite.sprite = warningConfirmButtonSprite;
+
+        var confirmButtonText = confirmButton.GetComponentInChildren<TMP_Text>();
+        var backButtonText = backButton.GetComponentInChildren<TMP_Text>();
+
+        // var colors = confirmButton.colors;
+        // colors.normalColor = new Color32(92, 237, 115, 255); // #5CED73 in RGB
+        // confirmButton.colors = colors;
+
+        confirmButtonText.text = "Xác nhận";
+        backButtonText.text = "Trở lại";
 
         confirmButton.onClick.RemoveAllListeners();
 
@@ -126,11 +144,9 @@ public class ListModuleSettingView : MonoBehaviour, IModuleView
 
         confirmButton.onClick.AddListener(() =>
         {
-            listModuleItems.Remove(ModuleItem);
-            Debug.Log(model.Id);
+            _moduleItem = ModuleItem;
             _presenter.DeleteModule(model.Id);
             DialogTwoButton.SetActive(false);
-            Destroy(ModuleItem);
         });
         backButton.onClick.AddListener(() =>
         {
@@ -175,27 +191,28 @@ public class ListModuleSettingView : MonoBehaviour, IModuleView
     {
         if (GlobalVariable.APIRequestType.Contains("GET_Module_List"))
         {
-            OpenErrorDialog(title: "Tải danh sách thất bại", message: "Đã có lỗi xảy ra khi tải danh sách. Vui lòng thử lại sau");
+            OpenErrorDialog(title: "Tải danh sách thất bại", message: " Đã có lỗi xảy ra khi tải danh sách Module IO. Vui lòng thử lại sau");
         }
-        else if (GlobalVariable.APIRequestType.Contains("DELETE_Module"))
+        if (GlobalVariable.APIRequestType.Contains("DELETE_Module"))
         {
-            OpenErrorDialog();
+            OpenErrorDialog(title: "Xóa Module IO thất bại", message: "Đã có lỗi xảy ra khi xóa Module IO khỏi hệ thống. Vui lòng thử lại sau");
         }
     }
-    public void ShowSuccess()
+    public void ShowSuccess(string message)
     {
         if (GlobalVariable.APIRequestType.Contains("GET_Module_List"))
         {
-            Show_Toast.Instance.ShowToast("success", "Tải danh sách thành công");
+            Show_Toast.Instance.ShowToast("success", message: "Tải danh sách thành công");
         }
-        else if (GlobalVariable.APIRequestType.Contains("DELETE_Module"))
+        if (GlobalVariable.APIRequestType.Contains("DELETE_Module"))
         {
-            Show_Toast.Instance.ShowToast("success", "Xóa Module IO thành công");
-        }
+            listModuleItems.Remove(_moduleItem);
+            Destroy(_moduleItem.gameObject);
+            Show_Toast.Instance.ShowToast("success", message: "Xóa Module IO thành công");
 
+        }
         StartCoroutine(Show_Toast.Instance.Set_Instance_Status_False());
     }
-
     // Không dùng trong ListView
     public void DisplayDetail(ModuleInformationModel model) { }
     public void DisplayCreateResult(bool success) { }

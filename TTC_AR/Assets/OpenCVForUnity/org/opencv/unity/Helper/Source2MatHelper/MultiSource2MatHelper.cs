@@ -1,7 +1,9 @@
 using OpenCVForUnity.CoreModule;
-#if UNITY_EDITOR
+
+#if UNITY_EDITOR 
 using OpenCVForUnity.UnityUtils.Helper.Editor;
 #endif
+
 using System;
 using UnityEngine;
 using UnityEngine.Events;
@@ -56,10 +58,11 @@ namespace OpenCVForUnity.UnityUtils.Helper
         }
 
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR 
+
         [OpenCVForUnityRuntimeDisable]
 #endif
-        [SerializeField, FormerlySerializedAs("requestedSource2MatHelperClassName"), TooltipAttribute("Select the source to mat helper class name. If CustomSource2MatHelper is selected, only the UnityEvent inspector is overridden for the custom helper class component.")]
+        [SerializeField, FormerlySerializedAs("requestedSource2MatHelperClassName"), Tooltip("Select the source to mat helper class name. If CustomSource2MatHelper is selected, only the UnityEvent inspector is overridden for the custom helper class component.")]
         protected MultiSource2MatHelperClassName _requestedSource2MatHelperClassName = MultiSource2MatHelperClassName.WebCamTexture2MatHelper;
 
         /// <summary>
@@ -97,10 +100,10 @@ namespace OpenCVForUnity.UnityUtils.Helper
         protected MultiSource2MatHelperClassInterfaces _currentSource2MatHelperClassInterfaces = MultiSource2MatHelperClassInterfaces.Camera;
 
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR 
         [OpenCVForUnityConditionalDisableInInspector("_currentSource2MatHelperClassInterfaces", (int)MultiSource2MatHelperClassInterfaces.Camera, conditionalInvisible: true, runtimeDisable: true, comparisonType: OpenCVForUnityConditionalDisableInInspectorComparisonType.FlagMatch)]
 #endif
-        [SerializeField, FormerlySerializedAs("requestedDeviceName"), TooltipAttribute("Set the name of the device to use. (or device index number)")]
+        [SerializeField, FormerlySerializedAs("requestedDeviceName"), Tooltip("Set the name of the device to use. (or device index number)")]
         protected string _requestedDeviceName = null;
 
         /// <summary>
@@ -121,12 +124,13 @@ namespace OpenCVForUnity.UnityUtils.Helper
         }
 
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR 
+
         [OpenCVForUnityConditionalDisableInInspector("_currentSource2MatHelperClassInterfaces", (int)MultiSource2MatHelperClassInterfaces.Camera, conditionalInvisible: true, runtimeDisable: true, comparisonType: OpenCVForUnityConditionalDisableInInspectorComparisonType.FlagMatch)]
 #endif
-        [SerializeField, FormerlySerializedAs("requestedWidth"), TooltipAttribute("Set the width of camera.")]
-        protected int _requestedWidth = 640;
-
+        [SerializeField, FormerlySerializedAs("requestedWidth"), Tooltip("Set the width of camera.")]
+        public int _requestedWidth = Screen.width;
+        
         /// <summary>
         /// Set the width of camera.
         /// </summary>
@@ -146,11 +150,12 @@ namespace OpenCVForUnity.UnityUtils.Helper
         }
 
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR 
+
         [OpenCVForUnityConditionalDisableInInspector("_currentSource2MatHelperClassInterfaces", (int)MultiSource2MatHelperClassInterfaces.Camera, conditionalInvisible: true, runtimeDisable: true, comparisonType: OpenCVForUnityConditionalDisableInInspectorComparisonType.FlagMatch)]
 #endif
-        [SerializeField, FormerlySerializedAs("requestedHeight"), TooltipAttribute("Set the height of camera.")]
-        protected int _requestedHeight = 480;
+        [SerializeField, FormerlySerializedAs("requestedHeight"), Tooltip("Set the height of camera.")]
+        public int _requestedHeight = Screen.height;
 
         /// <summary>
         /// Set the height of camera.
@@ -171,10 +176,11 @@ namespace OpenCVForUnity.UnityUtils.Helper
         }
 
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR 
+
         [OpenCVForUnityConditionalDisableInInspector("_currentSource2MatHelperClassInterfaces", (int)MultiSource2MatHelperClassInterfaces.Camera, conditionalInvisible: true, runtimeDisable: true, comparisonType: OpenCVForUnityConditionalDisableInInspectorComparisonType.FlagMatch)]
 #endif
-        [SerializeField, FormerlySerializedAs("requestedIsFrontFacing"), TooltipAttribute("Set whether to use the front facing camera.")]
+        [SerializeField, FormerlySerializedAs("requestedIsFrontFacing"), Tooltip("Set whether to use the front facing camera.")]
         protected bool _requestedIsFrontFacing = false;
 
         /// <summary>
@@ -195,11 +201,12 @@ namespace OpenCVForUnity.UnityUtils.Helper
         }
 
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR 
+
         [OpenCVForUnityConditionalDisableInInspector("_currentSource2MatHelperClassInterfaces", (int)MultiSource2MatHelperClassInterfaces.Camera, conditionalInvisible: true, runtimeDisable: true, comparisonType: OpenCVForUnityConditionalDisableInInspectorComparisonType.FlagMatch)]
 #endif
-        [SerializeField, FormerlySerializedAs("requestedFPS"), TooltipAttribute("Set the frame rate of camera.")]
-        protected float _requestedFPS = 30f;
+        [SerializeField, FormerlySerializedAs("requestedFPS"), Tooltip("Set the frame rate of camera.")]
+        public float _requestedFPS = 30f;
 
         /// <summary>
         /// Set the frame rate of camera.
@@ -221,10 +228,11 @@ namespace OpenCVForUnity.UnityUtils.Helper
 
 
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR 
+
         [OpenCVForUnityConditionalDisableInInspector("_currentSource2MatHelperClassInterfaces", (int)MultiSource2MatHelperClassInterfaces.MatUpdateFPS, conditionalInvisible: true, runtimeDisable: true, comparisonType: OpenCVForUnityConditionalDisableInInspectorComparisonType.FlagMatch)]
 #endif
-        [SerializeField, FormerlySerializedAs("requestedMatUpdateFPS"), TooltipAttribute("Set the frame rate of camera.")]
+        [SerializeField, FormerlySerializedAs("requestedMatUpdateFPS"), Tooltip("Set the frame rate of camera.")]
         protected float _requestedMatUpdateFPS = 30f;
 
         /// <summary>
@@ -247,10 +255,11 @@ namespace OpenCVForUnity.UnityUtils.Helper
 
 
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR 
+
         [OpenCVForUnityConditionalDisableInInspector("_currentSource2MatHelperClassInterfaces", (int)MultiSource2MatHelperClassInterfaces.Video, conditionalInvisible: true, runtimeDisable: true, comparisonType: OpenCVForUnityConditionalDisableInInspectorComparisonType.FlagMatch)]
 #endif
-        [SerializeField, FormerlySerializedAs("requestedVideoFilePath"), TooltipAttribute("Set the video file path, relative to the starting point of the \"StreamingAssets\" folder, or absolute path.")]
+        [SerializeField, FormerlySerializedAs("requestedVideoFilePath"), Tooltip("Set the video file path, relative to the starting point of the \"StreamingAssets\" folder, or absolute path.")]
         protected string _requestedVideoFilePath = string.Empty;
 
         /// <summary>
@@ -271,10 +280,11 @@ namespace OpenCVForUnity.UnityUtils.Helper
         }
 
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR 
+
         [OpenCVForUnityConditionalDisableInInspector("_currentSource2MatHelperClassInterfaces", (int)MultiSource2MatHelperClassInterfaces.Video, conditionalInvisible: true, runtimeDisable: true, comparisonType: OpenCVForUnityConditionalDisableInInspectorComparisonType.FlagMatch)]
 #endif
-        [SerializeField, FormerlySerializedAs("loop"), TooltipAttribute("Indicate whether to play this video in a loop.")]
+        [SerializeField, FormerlySerializedAs("loop"), Tooltip("Indicate whether to play this video in a loop.")]
         protected bool _loop = true;
 
         /// <summary>
@@ -297,10 +307,11 @@ namespace OpenCVForUnity.UnityUtils.Helper
 
 
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR 
+
         [OpenCVForUnityConditionalDisableInInspector("_currentSource2MatHelperClassInterfaces", (int)MultiSource2MatHelperClassInterfaces.Image, conditionalInvisible: true, runtimeDisable: true, comparisonType: OpenCVForUnityConditionalDisableInInspectorComparisonType.FlagMatch)]
 #endif
-        [SerializeField, FormerlySerializedAs("requestedImageFilePath"), TooltipAttribute("Set the image file path, relative to the starting point of the \"StreamingAssets\" folder, or absolute path.")]
+        [SerializeField, FormerlySerializedAs("requestedImageFilePath"), Tooltip("Set the image file path, relative to the starting point of the \"StreamingAssets\" folder, or absolute path.")]
         protected string _requestedImageFilePath = string.Empty;
 
         /// <summary>
@@ -321,10 +332,11 @@ namespace OpenCVForUnity.UnityUtils.Helper
         }
 
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR 
+
         [OpenCVForUnityConditionalDisableInInspector("_currentSource2MatHelperClassInterfaces", (int)MultiSource2MatHelperClassInterfaces.Image, conditionalInvisible: true, runtimeDisable: true, comparisonType: OpenCVForUnityConditionalDisableInInspectorComparisonType.FlagMatch)]
 #endif
-        [SerializeField, FormerlySerializedAs("repeat"), TooltipAttribute("Indicate whether to play this image in a repeat.")]
+        [SerializeField, FormerlySerializedAs("repeat"), Tooltip("Indicate whether to play this image in a repeat.")]
         protected bool _repeat = true;
 
         /// <summary>
@@ -347,10 +359,11 @@ namespace OpenCVForUnity.UnityUtils.Helper
 
 
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR 
+
         [OpenCVForUnityConditionalDisableInInspector("_currentSource2MatHelperClassInterfaces", (int)MultiSource2MatHelperClassInterfaces.Texture, conditionalInvisible: true, runtimeDisable: true, comparisonType: OpenCVForUnityConditionalDisableInInspectorComparisonType.FlagMatch)]
 #endif
-        [SerializeField, FormerlySerializedAs("sourceTexture"), TooltipAttribute("Set the source texture.")]
+        [SerializeField, FormerlySerializedAs("sourceTexture"), Tooltip("Set the source texture.")]
         protected Texture _sourceTexture;
 
         /// <summary>
@@ -373,10 +386,11 @@ namespace OpenCVForUnity.UnityUtils.Helper
 
 
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR 
+
         [OpenCVForUnityConditionalDisableInInspector("_currentSource2MatHelperClassInterfaces", (int)MultiSource2MatHelperClassInterfaces.Custom, conditionalInvisible: true, runtimeDisable: true, comparisonType: OpenCVForUnityConditionalDisableInInspectorComparisonType.FlagMatch)]
 #endif
-        [SerializeField, FormerlySerializedAs("customClassComponent"), TooltipAttribute("Set the custom class <ISource2MatHelper> component.")]
+        [SerializeField, FormerlySerializedAs("customClassComponent"), Tooltip("Set the custom class <ISource2MatHelper> component.")]
         protected Component _customClassComponent = null;
 
         /// <summary>
@@ -393,10 +407,11 @@ namespace OpenCVForUnity.UnityUtils.Helper
 
 
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR 
+
         [OpenCVForUnityRuntimeDisable]
 #endif
-        [SerializeField, FormerlySerializedAs("outputColorFormat"), TooltipAttribute("Select the output color format.")]
+        [SerializeField, FormerlySerializedAs("outputColorFormat"), Tooltip("Select the output color format.")]
         protected Source2MatHelperColorFormat _outputColorFormat = Source2MatHelperColorFormat.RGBA;
 
         /// <summary>
@@ -417,10 +432,11 @@ namespace OpenCVForUnity.UnityUtils.Helper
         }
 
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR 
+
         [OpenCVForUnityRuntimeDisable]
 #endif
-        [SerializeField, FormerlySerializedAs("timeoutFrameCount"), TooltipAttribute("The number of frames before the initialization process times out.")]
+        [SerializeField, FormerlySerializedAs("timeoutFrameCount"), Tooltip("The number of frames before the initialization process times out.")]
         protected int _timeoutFrameCount = 1500;
 
         /// <summary>
@@ -437,10 +453,10 @@ namespace OpenCVForUnity.UnityUtils.Helper
             }
         }
 
-
-        [SerializeField, FormerlySerializedAs("onInitialized"), TooltipAttribute("UnityEvent that is triggered when this instance is initialized.")]
+        //! Hàm này được gọi khi đối tượng này được khởi tạo, có chức năng khởi tạo các biến và sự kiện
+        [SerializeField, FormerlySerializedAs("onInitialized"), Tooltip("UnityEvent that is triggered when this instance is initialized.")]
+        [Header("UnityEvent")]
         protected UnityEvent _onInitialized;
-
         /// <summary>
         /// UnityEvent that is triggered when this instance is initialized.
         /// </summary>
@@ -449,14 +465,17 @@ namespace OpenCVForUnity.UnityUtils.Helper
             get => _onInitialized;
             set
             {
+                //! Cho phép thay đổi giá trị của biến _onInitialized 
+                //! Cho phép bên ngoài truy cập và gán giá trị mới cho _onInitialized.
+                //! Khi gán, nó đồng bộ sự kiện này với _source2MatHelper.onInitialized nếu _source2MatHelper đã tồn tại.
                 _onInitialized = value;
                 if (_source2MatHelper != null)
                     _source2MatHelper.onInitialized = _onInitialized;
             }
         }
 
-
-        [SerializeField, FormerlySerializedAs("onDisposed"), TooltipAttribute("UnityEvent that is triggered when this instance is disposed.")]
+        //! Hàm này được gọi khi đối tượng này bị hủy, có chức năng hủy các biến và sự kiện
+        [SerializeField, FormerlySerializedAs("onDisposed"), Tooltip("UnityEvent that is triggered when this instance is disposed.")]
         protected UnityEvent _onDisposed;
 
         /// <summary>
@@ -473,8 +492,8 @@ namespace OpenCVForUnity.UnityUtils.Helper
             }
         }
 
-
-        [SerializeField, FormerlySerializedAs("onErrorOccurred"), TooltipAttribute("UnityEvent that is triggered when this instance is error Occurred.")]
+        //! Hàm này được gọi khi đối tượng này xảy ra lỗi, có chức năng xử lý lỗi
+        [SerializeField, FormerlySerializedAs("onErrorOccurred"), Tooltip("UnityEvent that is triggered when this instance is error Occurred.")]
         protected Source2MatHelperErrorUnityEvent _onErrorOccurred;
 
         /// <summary>
@@ -566,6 +585,7 @@ namespace OpenCVForUnity.UnityUtils.Helper
                         _source2MatHelper = gameObject.AddComponent(typeof(AsyncGPUReadback2MatHelper)) as ISource2MatHelper;
                         break;
 #if !OPENCV_DONT_USE_WEBCAMTEXTURE_API
+
                     case MultiSource2MatHelperClassName.WebCamTexture2MatAsyncGPUHelper:
                         _source2MatHelper = gameObject.AddComponent(typeof(WebCamTexture2MatAsyncGPUHelper)) as ISource2MatHelper;
                         break;

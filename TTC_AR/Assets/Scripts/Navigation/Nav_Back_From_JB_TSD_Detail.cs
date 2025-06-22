@@ -11,17 +11,16 @@ public class Nav_Back_From_JB_TSD_Detail : MonoBehaviour
 {
 
     [SerializeField]
-    private Canvas module_Canvas;
-    private RectTransform list_Devices_Transform;
-    private RectTransform jb_TSD_General_Transform;
-    private RectTransform jb_TSD_Detail_Transform;
+    public Canvas main_Canvas;
+    public GameObject list_Devices;
+    public GameObject jb_TSD_General;
+    public GameObject jb_TSD_Detail;
     void Start()
     {
-
-        module_Canvas = GetComponentInParent<Canvas>();
-        list_Devices_Transform = module_Canvas.gameObject.transform.Find("List_Devices").GetComponent<RectTransform>();
-        jb_TSD_General_Transform = module_Canvas.gameObject.transform.Find("JB_TSD_General_Panel").GetComponent<RectTransform>();
-        jb_TSD_Detail_Transform = module_Canvas.gameObject.transform.Find("Detail_JB_TSD").GetComponent<RectTransform>();
+        main_Canvas ??= GetComponentInParent<Canvas>();
+        list_Devices ??= main_Canvas.gameObject.transform.Find("List_Devices").gameObject;
+        jb_TSD_General ??= main_Canvas.gameObject.transform.Find("JB_TSD_General_Panel").gameObject;
+        jb_TSD_Detail ??= main_Canvas.gameObject.transform.Find("Detail_JB_TSD").gameObject;
     }
 
     void Update()
@@ -30,17 +29,17 @@ public class Nav_Back_From_JB_TSD_Detail : MonoBehaviour
 
     public void NavigatePop()
     {
-        if (StaticVariable.navigate_from_JB_TSD_General)
+        if (GlobalVariable.navigate_from_list_JBs)
         {
-            jb_TSD_Detail_Transform.gameObject.SetActive(false);
-            jb_TSD_General_Transform.gameObject.SetActive(true);
-            StaticVariable.navigate_from_JB_TSD_General = false;
+            jb_TSD_Detail.SetActive(false);
+            jb_TSD_General.SetActive(true);
+            GlobalVariable.navigate_from_list_JBs = false;
         }
-        if (StaticVariable.navigate_from_List_Devices)
+        if (GlobalVariable.navigate_from_List_Devices)
         {
-            jb_TSD_Detail_Transform.gameObject.SetActive(false);
-            list_Devices_Transform.gameObject.SetActive(true);
-            StaticVariable.navigate_from_List_Devices = false;
+            jb_TSD_Detail.SetActive(false);
+            list_Devices.SetActive(true);
+            GlobalVariable.navigate_from_List_Devices = false;
         }
 
     }

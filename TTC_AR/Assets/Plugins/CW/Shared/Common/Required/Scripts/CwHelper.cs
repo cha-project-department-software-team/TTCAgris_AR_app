@@ -1,9 +1,9 @@
 ﻿#if UNITY_2021_3 && !(UNITY_2021_3_0 || UNITY_2021_3_1 || UNITY_2021_3_2 || UNITY_2021_3_3 || UNITY_2021_3_4 || UNITY_2021_3_5 || UNITY_2021_3_6 || UNITY_2021_3_7 || UNITY_2021_3_8 || UNITY_2021_3_9 || UNITY_2021_3_10 || UNITY_2021_3_11 || UNITY_2021_3_12 || UNITY_2021_3_13 || UNITY_2021_3_14 || UNITY_2021_3_15 || UNITY_2021_3_16 || UNITY_2021_3_17)
-	#define CW_HAS_NEW_FIND
+#define CW_HAS_NEW_FIND
 #elif UNITY_2022_2 && !(UNITY_2022_2_0 || UNITY_2022_2_1 || UNITY_2022_2_2 || UNITY_2022_2_3 || UNITY_2022_2_4)
-	#define CW_HAS_NEW_FIND
+#define CW_HAS_NEW_FIND
 #elif UNITY_2023_1_OR_NEWER
-	#define CW_HAS_NEW_FIND
+#define CW_HAS_NEW_FIND
 #endif
 
 using UnityEngine;
@@ -138,7 +138,7 @@ namespace CW.Common
 				var gameObject = GameObject.CreatePrimitive(PrimitiveType.Quad);
 
 				quadMeshSet = true;
-				quadMesh    = gameObject.GetComponent<MeshFilter>().sharedMesh;
+				quadMesh = gameObject.GetComponent<MeshFilter>().sharedMesh;
 
 				Object.DestroyImmediate(gameObject);
 			}
@@ -167,21 +167,21 @@ namespace CW.Common
 			if (gameObject != null)
 			{
 #if UNITY_EDITOR
-					if (Application.isPlaying == true)
+				if (Application.isPlaying == true)
+				{
+					return gameObject.AddComponent<T>();
+				}
+				else
+				{
+					if (recordUndo == true)
 					{
-						return gameObject.AddComponent<T>();
+						return UnityEditor.Undo.AddComponent<T>(gameObject);
 					}
 					else
 					{
-						if (recordUndo == true)
-						{
-							return UnityEditor.Undo.AddComponent<T>(gameObject);
-						}
-						else
-						{
-							return gameObject.AddComponent<T>();
-						}
+						return gameObject.AddComponent<T>();
 					}
+				}
 #else
 					return gameObject.AddComponent<T>();
 #endif
@@ -323,7 +323,7 @@ namespace CW.Common
 			}
 			else
 			{
-				return 1.0f - Mathf.Pow(1.0f - a, - p);
+				return 1.0f - Mathf.Pow(1.0f - a, -p);
 			}
 		}
 
@@ -503,7 +503,7 @@ namespace CW.Common
 				r.sharedMaterials = materials.ToArray(); materials.Clear();
 			}
 		}
-	
+
 		public static Texture2D CreateTempTexture2D(string name, int width, int height, TextureFormat format = TextureFormat.ARGB32, bool mips = false, bool linear = false)
 		{
 			var texture2D = new Texture2D(width, height, format, mips, linear);
@@ -530,7 +530,7 @@ namespace CW.Common
 		{
 			var material = new Material(shader);
 
-			material.name      = materialName;
+			material.name = materialName;
 			material.hideFlags = HideFlags.HideAndDontSave;
 
 			return material;
@@ -540,7 +540,7 @@ namespace CW.Common
 		{
 			var material = new Material(source);
 
-			material.name      = materialName;
+			material.name = materialName;
 			material.hideFlags = HideFlags.HideAndDontSave;
 
 			return material;
@@ -551,7 +551,7 @@ namespace CW.Common
 		{
 			if (o != null)
 			{
-	#if UNITY_EDITOR
+#if UNITY_EDITOR
 				if (Application.isPlaying == true)
 				{
 					Object.Destroy(o);
@@ -560,9 +560,9 @@ namespace CW.Common
 				{
 					Object.DestroyImmediate(o);
 				}
-	#else
+#else
 				Object.Destroy(o);
-	#endif
+#endif
 			}
 
 			return null;
@@ -583,7 +583,7 @@ namespace CW.Common
 
 			gameObject.transform.localPosition = localPosition;
 			gameObject.transform.localRotation = localRotation;
-			gameObject.transform.localScale    = localScale;
+			gameObject.transform.localScale = localScale;
 
 #if UNITY_EDITOR
 			if (recordUndo != null)
@@ -709,7 +709,7 @@ namespace CW.Common
 		{
 			return Mathf.Atan2(xy.x, xy.y);
 		}
-		
+
 		public static int Mod(int a, int b)
 		{
 			var m = a % b;
@@ -750,15 +750,15 @@ namespace CW.Common
 					height = texture.height;
 				}
 
-				var desc          = new RenderTextureDescriptor(width, height, RenderTextureFormat.ARGB32, 0);
+				var desc = new RenderTextureDescriptor(width, height, RenderTextureFormat.ARGB32, 0);
 				var renderTexture = CwRenderTextureManager.GetTemporary(desc, "CwHelper GetReadableCopy");
 
 				newTexture = new Texture2D(width, height, format, mipMaps, false);
 
 				BeginActive(renderTexture);
-					Graphics.Blit(texture, renderTexture);
+				Graphics.Blit(texture, renderTexture);
 
-					newTexture.ReadPixels(new Rect(0, 0, width, height), 0, 0);
+				newTexture.ReadPixels(new Rect(0, 0, width, height), 0, 0);
 				EndActive();
 
 				CwRenderTextureManager.ReleaseTemporary(renderTexture);
@@ -780,10 +780,10 @@ namespace CW.Common
 	{
 		private static Material cachedShapeOutline;
 
-		private static readonly int _CW_ShapeTex     = Shader.PropertyToID("_CW_ShapeTex");
-		private static readonly int _CW_ShapeCoords  = Shader.PropertyToID("_CW_ShapeCoords");
+		private static readonly int _CW_ShapeTex = Shader.PropertyToID("_CW_ShapeTex");
+		private static readonly int _CW_ShapeCoords = Shader.PropertyToID("_CW_ShapeCoords");
 		private static readonly int _CW_ShapeChannel = Shader.PropertyToID("_CW_ShapeChannel");
-		private static readonly int _CW_ShapeColor   = Shader.PropertyToID("_CW_ShapeColor");
+		private static readonly int _CW_ShapeColor = Shader.PropertyToID("_CW_ShapeColor");
 
 		public static void DrawShapeOutline(Texture shapeTexture, int shapeChannel, Matrix4x4 shapeMatrix)
 		{
@@ -868,7 +868,7 @@ namespace CW.Common
 			return null;
 		}
 
-		public static T LoadFirstAsset<T>(string pattern) // e.g. "Name t:mesh"
+		public static T LoadFirstAsset<T>(string pattern) // e.g. "name t:mesh"
 			where T : Object
 		{
 			var guids = AssetDatabase.FindAssets(pattern);
@@ -916,12 +916,12 @@ namespace CW.Common
 		{
 			ReimportAsset(AssetDatabase.GetAssetPath(asset));
 		}
-	
+
 		public static void ReimportAsset(string path)
 		{
 			AssetDatabase.ImportAsset(path);
 		}
-	
+
 		public static bool IsAsset(Object o)
 		{
 			return o != null && string.IsNullOrEmpty(AssetDatabase.GetAssetPath(o)) == false;
@@ -987,7 +987,7 @@ namespace CW.Common
 		public static GameObject CreatePrefabAsset(string name)
 		{
 			var gameObject = new GameObject(name);
-			var path       = AssetDatabase.GetAssetPath(Selection.activeObject);
+			var path = AssetDatabase.GetAssetPath(Selection.activeObject);
 
 			if (string.IsNullOrEmpty(path) == true)
 			{

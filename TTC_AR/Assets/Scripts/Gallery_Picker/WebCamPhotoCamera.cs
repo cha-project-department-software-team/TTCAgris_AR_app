@@ -1,149 +1,212 @@
 using UnityEngine;
 using System.Collections;
-using System;
 using UnityEngine.UI;
+using UnityEngine.Events;
+using EasyUI.Progress;
 
 public class WebCamPhotoCamera : MonoBehaviour
 {
     public static WebCamPhotoCamera Instance { get; private set; }
 
-    private WebCamTexture webCamTexture;
-    public GameObject Take_Photo_Module;
-    public RawImage Camera_Screen_For_Take_Photo;
-    public RawImage preview_Image;
-    public Button take_Photo_Button;
-    public Button save_Photo_Button;
-    public Button retake_Photo_Button;
-    public Button cancel_Take_Photo_Button;
+    [Header("Camera Settings")]
+    [SerializeField] private WebCamTexture webCamTexture;
+    [SerializeField] private Texture2D capturedPhoto;
 
-    private Update_Photo_JB currentUpdatePhotoJB; // Đối tượng nhận ảnh hiện tại
+    [Header("Canvas")]
+    public GameObject ConfirmImageCanvas;
+
+    [Header("Take Photo Module")]
+    public GameObject TakePhotoModule;
+    public RawImage CameraScreen;
+    public Button TakeButton;
+    public Button CancelTakePhotoButton;
+    public AspectRatioFitter CaptureScreenAspectRatioFitter;
+
+    [Header("Preview Photo Module")]
+    public GameObject PreviewPhotoModule;
+    public RawImage PreviewImage;
+    public Button AcceptButton;
+    public Button RetakeButton;
+    public AspectRatioFitter PreviewImageAspectRatioFitter;
+
+    // [Header("Flash Control")]
+    // [SerializeField] private Button FlashToggleButton;
+    // [SerializeField] private Sprite FlashOnSprite;
+    // [SerializeField] private Sprite FlashOffSprite;
+
+    [Header("Brightness Control")]
+    public Slider BrightnessSlider;
+    public float BrightnessValue = 1.5f; // Default brightness value
+    private PickPhotoFromCamera pickPhotoFromCamera;
 
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        if (Instance == null) Instance = this;
+        else Destroy(gameObject);
     }
 
-    void Start()
+    private void OnEnable()
     {
-        SetActiveUIElements(false);
-        if (take_Photo_Button != null && save_Photo_Button != null && retake_Photo_Button != null && cancel_Take_Photo_Button != null)
-        {
-            take_Photo_Button.onClick.AddListener(Take_Photo_Button_OnClick);
-            save_Photo_Button.onClick.AddListener(SavePhoto);
-            retake_Photo_Button.onClick.AddListener(ReTakePhoto);
-            cancel_Take_Photo_Button.onClick.AddListener(Stop_Camera_To_Take_Photo);
-        }
-        else
-        {
-            Debug.LogError("Some buttons are missing!");
-        }
+        RegisterUIEvents();
+        InitializeBrightnessSlider();
+        SetUIElementsActive(false);
     }
 
-    private void SetActiveUIElements(bool isActive)
+    private void OnDisable()
     {
-        Camera_Screen_For_Take_Photo.gameObject.SetActive(isActive);
-        preview_Image.gameObject.SetActive(isActive);
-        take_Photo_Button.gameObject.SetActive(isActive);
-        save_Photo_Button.gameObject.SetActive(isActive);
-        retake_Photo_Button.gameObject.SetActive(isActive);
-        cancel_Take_Photo_Button.gameObject.SetActive(isActive);
-        Take_Photo_Module.SetActive(isActive);
+        UnregisterUIEvents();
     }
 
-    public void Start_Camera_To_Take_Photo(Update_Photo_JB updatePhotoJB)
+    private void RegisterUIEvents()
     {
-        Take_Photo_Module.SetActive(true);
-        cancel_Take_Photo_Button.gameObject.SetActive(true);
-        Camera_Screen_For_Take_Photo.gameObject.SetActive(true);
-        take_Photo_Button.gameObject.SetActive(true);
+        TakeButton.onClick.AddListener(TakePhoto);
+        AcceptButton.onClick.AddListener(() => StartCoroutine(AcceptPhoto()));
+        RetakeButton.onClick.AddListener(RetakePhoto);
+        CancelTakePhotoButton.onClick.AddListener(StopCamera);
+        BrightnessSlider.onValueChanged.AddListener(OnBrightnessChanged);
+    }
 
-        currentUpdatePhotoJB = updatePhotoJB; // Lưu đối tượng nhận ảnh hiện tại
+    private void UnregisterUIEvents()
+    {
+        TakeButton.onClick.RemoveAllListeners();
+        AcceptButton.onClick.RemoveAllListeners();
+        RetakeButton.onClick.RemoveAllListeners();
+        CancelTakePhotoButton.onClick.RemoveAllListeners();
+        // FlashToggleButton.onClick.RemoveAllListeners();
+        BrightnessSlider.onValueChanged.RemoveAllListeners();
+    }
+
+    private void InitializeBrightnessSlider()
+    {
+        BrightnessSlider.maxValue = 3f;
+        BrightnessSlider.minValue = 0f;
+        BrightnessSlider.value = BrightnessValue;
+    }
+
+    public void SetUIElementsActive(bool isActive)
+    {
+        TakePhotoModule.SetActive(isActive);
+        PreviewPhotoModule.SetActive(isActive);
+    }
+
+    public void StartCameraToTakePhoto(PickPhotoFromCamera pickPhotoFromCamera)
+    {
+        this.pickPhotoFromCamera = pickPhotoFromCamera;
+        SetUIElementsActive(true);
 
         if (WebCamTexture.devices.Length > 0)
         {
-            WebCamDevice cameraDevice = WebCamTexture.devices[0];
-            webCamTexture = new WebCamTexture(cameraDevice.name);
-            Camera_Screen_For_Take_Photo.texture = webCamTexture;
+            WebCamDevice selectedDevice = SelectCameraDevice();
+            webCamTexture = new WebCamTexture(selectedDevice.name, 1440, 3088, 30);
+            CameraScreen.texture = webCamTexture;
             webCamTexture.Play();
-            //Debug"Camera detected: " + cameraDevice.name);
+            // StartCoroutine(AdjustAspectRatio());
         }
         else
         {
-            Debug.LogError("No camera detected!");
+            Debug.LogError("No camera found!");
         }
     }
 
-    public void Stop_Camera_To_Take_Photo()
+    private WebCamDevice SelectCameraDevice()
     {
-        SetActiveUIElements(false);
+        foreach (WebCamDevice device in WebCamTexture.devices)
+        {
+            if (!device.isFrontFacing)
+                return device;
+        }
+        return WebCamTexture.devices[0];
+    }
+
+    public void StopCamera()
+    {
+        SetUIElementsActive(false);
         if (webCamTexture != null)
         {
             webCamTexture.Stop();
+            webCamTexture = null;
         }
-        currentUpdatePhotoJB = null; // Xóa đối tượng nhận ảnh hiện tại
+        pickPhotoFromCamera = null;
     }
 
-    public void ReTakePhoto()
+    // private IEnumerator AdjustAspectRatio()
+    // {
+    //     yield return new WaitUntil(() => webCamTexture.width > 100);
+    //     float videoRatio = (float)webCamTexture.width / webCamTexture.height;
+    //     CaptureScreenAspectRatioFitter.aspectRatio = videoRatio;
+    //     PreviewImageAspectRatioFitter.aspectRatio = videoRatio;
+    // }
+
+    private void TakePhoto()
     {
-        preview_Image.gameObject.SetActive(false);
-        Camera_Screen_For_Take_Photo.gameObject.SetActive(true);
-        take_Photo_Button.gameObject.SetActive(true);
-        retake_Photo_Button.gameObject.SetActive(false);
-        save_Photo_Button.gameObject.SetActive(false);
+        StartCoroutine(CapturePhoto());
+        TakePhotoModule.SetActive(false);
+        PreviewPhotoModule.SetActive(true);
+    }
+
+    private IEnumerator CapturePhoto()
+    {
+        yield return new WaitForEndOfFrame();
+        capturedPhoto = new Texture2D(webCamTexture.width, webCamTexture.height);
+        capturedPhoto.SetPixels(webCamTexture.GetPixels());
+        capturedPhoto.Apply();
+        PreviewImage.texture = capturedPhoto;
+    }
+
+    public IEnumerator AcceptPhoto()
+    {
+        ShowProgressBar("Đang tải ảnh...", "...");
+
+        if (capturedPhoto != null && pickPhotoFromCamera != null)
+        {
+            ConfirmImageCanvas.SetActive(true);
+            pickPhotoFromCamera.UpdateConfirmImage(capturedPhoto);
+        }
+        yield return new WaitForSeconds(1f);
+
+        StopCamera();
+
+        yield return new WaitForSeconds(0.5f);
+        HideProgressBar();
+    }
+
+
+    private void ShowProgressBar(string title, string details)
+    {
+        Progress.Show(title, ProgressColor.Blue, true);
+        Progress.SetDetailsText(details);
+    }
+    private void HideProgressBar()
+    {
+        Progress.Hide();
+    }
+    public void RetakePhoto()
+    {
+        TakePhotoModule.SetActive(true);
+        PreviewPhotoModule.SetActive(false);
         webCamTexture.Play();
     }
 
-    public void Take_Photo_Button_OnClick()
+
+
+
+    private void UpdateFlashButtonUI()
     {
-        StartCoroutine(TakePhoto());
-        Camera_Screen_For_Take_Photo.gameObject.SetActive(false);
-        take_Photo_Button.gameObject.SetActive(false);
-        cancel_Take_Photo_Button.gameObject.SetActive(false);
+        // FlashToggleButton.GetComponent<Image>().sprite = isFlashOn ? FlashOnSprite : FlashOffSprite;
     }
 
-    private IEnumerator TakePhoto()
+
+
+    private void OnBrightnessChanged(float value)
     {
-        yield return new WaitForEndOfFrame();
-        Texture2D photo = new Texture2D(webCamTexture.width, webCamTexture.height);
-        photo.SetPixels(webCamTexture.GetPixels());
-        photo.Apply();
-        StartCoroutine(PreviewPhotoCoroutine(photo, preview_Image));
-    }
-
-    public void SavePhoto()
-    {
-        //Debug"Photo saved");
-
-        Texture2D savedPhoto = preview_Image.texture as Texture2D;
-
-        // Kiểm tra xem đối tượng hiện tại có tồn tại không và cập nhật ảnh
-        currentUpdatePhotoJB?.UpdateImage(savedPhoto);
-
-        preview_Image.gameObject.SetActive(false);
-        Camera_Screen_For_Take_Photo.gameObject.SetActive(false);
-        retake_Photo_Button.gameObject.SetActive(false);
-        save_Photo_Button.gameObject.SetActive(false);
-        Take_Photo_Module.SetActive(false);
-
-        if (webCamTexture != null)
+        BrightnessValue = value;
+        if (CameraScreen.material != null)
         {
-            webCamTexture.Stop();
+            CameraScreen.material.SetFloat("_Brightness", BrightnessValue);
         }
     }
 
-    private IEnumerator PreviewPhotoCoroutine(Texture2D photo, RawImage previewImage)
+    private void OnDestroy()
     {
-        yield return new WaitForEndOfFrame();
-        previewImage.texture = photo;
-        preview_Image.gameObject.SetActive(true);
-        save_Photo_Button.gameObject.SetActive(true);
-        retake_Photo_Button.gameObject.SetActive(true);
     }
 }

@@ -21,7 +21,7 @@ public class JBManager : MonoBehaviour
         //! Dependency Injection
         _IJBService = ServiceLocator.Instance.JBService;
     }
-    public async void GetListJBInformation(string grapperId)
+    public async void GetListJBInformation(int grapperId)
     {
         try
         {
@@ -31,32 +31,32 @@ public class JBManager : MonoBehaviour
                 foreach (var jb in jBGeneralDtos)
                 {
                     Debug.Log($"jBResponseDto: {jb.Name}, Location: {jb.Location}");
-                    if (jb.OutdoorImageResponseDto != null)
+                    if (jb.OutdoorImageBasicDto != null)
                     {
-                        Debug.Log($"OutdoorImage: {jb.OutdoorImageResponseDto.Id}, OutdoorImage: {jb.OutdoorImageResponseDto.Name}, OutdoorImage: {jb.OutdoorImageResponseDto.Url}");
+                        Debug.Log($"OutdoorImage: {jb.OutdoorImageBasicDto.Id}, OutdoorImage: {jb.OutdoorImageBasicDto.Name}");
 
                     }
                     else
                     {
                         Debug.Log("OutdoorImage is null");
                     }
-                    if (jb.ConnectionImageResponseDtos != null)
+                    if (jb.ConnectionImageBasicDtos != null)
                     {
-                        if (jb.ConnectionImageResponseDtos.Any())
+                        if (jb.ConnectionImageBasicDtos.Any())
                         {
-                            foreach (var connectionImage in jb.ConnectionImageResponseDtos)
+                            foreach (var connectionImage in jb.ConnectionImageBasicDtos)
                             {
-                                Debug.Log($"ConnectionImage: {connectionImage.Id}, ConnectionImage: {connectionImage.Name}, ConnectionImage: {connectionImage.Url}");
+                                Debug.Log($"ConnectionImage: {connectionImage.Id}, ConnectionImage: {connectionImage.Name}");
                             }
                         }
                         else
                         {
-                            Debug.Log("List ConnectionImage is empty");
+                            Debug.Log("list ConnectionImage is empty");
                         }
                     }
                     else
                     {
-                        Debug.Log("List ConnectionImage is null");
+                        Debug.Log("list ConnectionImage is null");
                     }
                 }
             }
@@ -85,7 +85,7 @@ public class JBManager : MonoBehaviour
         }
     }
 
-    public async void GetListJBGeneral(string grapperId)
+    public async void GetListJBGeneral(int grapperId)
     {
         try
         {
@@ -119,7 +119,7 @@ public class JBManager : MonoBehaviour
         }
     }
 
-    public async void GetJBById(string JBId)
+    public async void GetJBById(int JBId)
     {
         try
         {
@@ -138,12 +138,12 @@ public class JBManager : MonoBehaviour
                     }
                     else
                     {
-                        Debug.Log("List Device is empty");
+                        Debug.Log("list Device is empty");
                     }
                 }
                 else
                 {
-                    Debug.Log("List Device is null");
+                    Debug.Log("list Device is null");
                 }
 
                 if (jBResponseDto.ModuleBasicDtos != null)
@@ -157,18 +157,18 @@ public class JBManager : MonoBehaviour
                     }
                     else
                     {
-                        Debug.Log("List Module is empty");
+                        Debug.Log("list Module is empty");
                     }
                 }
                 else
                 {
-                    Debug.Log("List Module is null");
+                    Debug.Log("list Module is null");
                 }
 
 
-                if (jBResponseDto.OutdoorImageResponseDto != null)
+                if (jBResponseDto.OutdoorImageBasicDto != null)
                 {
-                    Debug.Log($"OutdoorImage: {jBResponseDto.OutdoorImageResponseDto.Id}, OutdoorImage: {jBResponseDto.OutdoorImageResponseDto.Name}, OutdoorImage: {jBResponseDto.OutdoorImageResponseDto.Url}");
+                    Debug.Log($"OutdoorImage: {jBResponseDto.OutdoorImageBasicDto.Id}, OutdoorImage: {jBResponseDto.OutdoorImageBasicDto.Name}");
                 }
                 else
                 {
@@ -176,24 +176,24 @@ public class JBManager : MonoBehaviour
                 }
 
 
-                if (jBResponseDto.ConnectionImageResponseDtos != null)
+                if (jBResponseDto.ConnectionImageBasicDtos != null)
                 {
-                    if (jBResponseDto.ConnectionImageResponseDtos.Any())
+                    if (jBResponseDto.ConnectionImageBasicDtos.Any())
                     {
-                        foreach (var connectionImage in jBResponseDto.ConnectionImageResponseDtos)
+                        foreach (var connectionImage in jBResponseDto.ConnectionImageBasicDtos)
                         {
-                            Debug.Log($"ConnectionImage: {connectionImage.Id}, ConnectionImage: {connectionImage.Name}, ConnectionImage: {connectionImage.Url}");
+                            Debug.Log($"ConnectionImage: {connectionImage.Id}, ConnectionImage: {connectionImage.Name}");
                         }
                     }
                     else
                     {
-                        Debug.Log("List ConnectionImage is empty");
+                        Debug.Log("list ConnectionImage is empty");
                     }
                 }
 
                 else
                 {
-                    Debug.Log("List ConnectionImage is null");
+                    Debug.Log("list ConnectionImage is null");
                 }
             }
             else
@@ -222,7 +222,7 @@ public class JBManager : MonoBehaviour
         }
     }
 
-    public async void CreateNewJB(string grapperId, JBRequestDto jBRequestDto)
+    public async void CreateNewJB(int grapperId, JBRequestDto jBRequestDto)
     {
         try
         {
@@ -251,7 +251,7 @@ public class JBManager : MonoBehaviour
 
         }
     }
-    public async void UpdateJB(string JBId, JBRequestDto jBRequestDto)
+    public async void UpdateJB(int JBId, JBRequestDto jBRequestDto)
     {
         JBId = GlobalVariable.JBId;
         try
@@ -279,7 +279,7 @@ public class JBManager : MonoBehaviour
 
         }
     }
-    public async void DeleteJB(string JBId)
+    public async void DeleteJB(int JBId)
     {
         JBId = GlobalVariable.JBId;
         try

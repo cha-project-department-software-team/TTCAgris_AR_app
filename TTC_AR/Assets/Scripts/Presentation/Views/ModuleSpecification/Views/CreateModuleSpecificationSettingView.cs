@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using EasyUI.Progress;
 using TMPro;
@@ -35,23 +36,25 @@ public class CreateModuleSpecificationSettingView : MonoBehaviour, IModuleSpecif
     public GameObject Update_ModuleSpecification_Canvas;
 
     public ScrollRect ScrollView;
-
     private ModuleSpecificationModel _ModuleSpecificationModel;
+    private int companyId;
 
-    // void Awake()
-    // {
-    //     ModuleSpecificationManager ModuleSpecificationManager = FindObjectOfType<ModuleSpecificationManager>();
-    //     _presenter = new ModuleSpecificationPresenter(this, ModuleSpecificationManager._IModuleSpecificationService);
-    // }
+    private Sprite successConfirmButtonSprite;
+
     void Awake()
     {
-        // var DeviceManager = FindObjectOfType<DeviceManager>();
-        _presenter = new ModuleSpecificationPresenter(this, ManagerLocator.Instance.ModuleSpecificationManager._IModuleSpecificationService);
-        // DeviceManager._IDeviceService
+        _presenter = new ModuleSpecificationPresenter(this,
+         ManagerLocator.Instance.ModuleSpecificationManager._IModuleSpecificationService);
     }
 
-
     void OnEnable()
+    {
+        successConfirmButtonSprite = Resources.Load<Sprite>("images/UIimages/Success_Back_Button_Background");
+        Debug.Log(successConfirmButtonSprite);
+        ReNewUI(); 
+        companyId = GlobalVariable.companyId;
+    }
+    private void ReNewUI()
     {
         ResetAllInputFields();
 
@@ -71,28 +74,26 @@ public class CreateModuleSpecificationSettingView : MonoBehaviour, IModuleSpecif
         }
         if (GlobalVariable.temp_Dictionary_DeviceInformationModel.ContainsKey(ModuleSpecificationCode_TextField.text))
         {
-            OpenErrorDialog("Tạo loại Module mới thất bại", "Mã loại Module này đã tồn tại");
+            OpenErrorDialog("Tạo loại Module mới thất bại", "Loại Module này đã tồn tại");
             return;
         }
         _ModuleSpecificationModel = new ModuleSpecificationModel(
             code: ModuleSpecificationCode_TextField.text,
-            type: Type_TextField.text,
-            numOfIO: NumOfIo_TextField.text,
-            signalType: SignalType_TextField.text,
-            compatibleTBUs: CompatibleTBUs_TextField.text,
-            operatingVoltage: OperatingVoltage_TextField.text,
-            operatingCurrent: OperatingCurrent_TextField.text,
-            flexbusCurrent: FlexbusCurrent_TextField.text,
-            alarm: Alarm_TextField.text,
-            note: Note_TextField.text,
-            pdfManual: PdfManual_TextField.text
+            type: string.IsNullOrEmpty(Type_TextField.text) ? "Chưa cập nhật" : Type_TextField.text,
+            numOfIO: string.IsNullOrEmpty(NumOfIo_TextField.text) ? "Chưa cập nhật" : NumOfIo_TextField.text,
+            signalType: string.IsNullOrEmpty(SignalType_TextField.text) ? "Chưa cập nhật" : SignalType_TextField.text,
+            compatibleTBUs: string.IsNullOrEmpty(CompatibleTBUs_TextField.text) ? "Chưa cập nhật" : CompatibleTBUs_TextField.text,
+            operatingVoltage: string.IsNullOrEmpty(OperatingVoltage_TextField.text) ? "Chưa cập nhật" : OperatingVoltage_TextField.text,
+            operatingCurrent: string.IsNullOrEmpty(OperatingCurrent_TextField.text) ? "Chưa cập nhật" : OperatingCurrent_TextField.text,
+            flexbusCurrent: string.IsNullOrEmpty(FlexbusCurrent_TextField.text) ? "Chưa cập nhật" : FlexbusCurrent_TextField.text,
+            alarm: string.IsNullOrEmpty(Alarm_TextField.text) ? "Chưa cập nhật" : Alarm_TextField.text,
+            note: string.IsNullOrEmpty(Note_TextField.text) ? "Chưa cập nhật" : Note_TextField.text,
+            pdfManual: string.IsNullOrEmpty(PdfManual_TextField.text) ? "Chưa cập nhật" : PdfManual_TextField.text
           );
         _presenter.CreateNewModuleSpecification(
-            GlobalVariable.companyId, _ModuleSpecificationModel
+            companyId, _ModuleSpecificationModel
        );
     }
-
-
 
     void OnDisable()
     {
@@ -128,32 +129,44 @@ public class CreateModuleSpecificationSettingView : MonoBehaviour, IModuleSpecif
         var horizontalGroupTransform = backgroundTransform.Find("Horizontal_Group");
 
         backgroundTransform.Find("Dialog_Status_Icon").GetComponent<Image>().sprite = Resources.Load<Sprite>("images/UIimages/Success_Icon_For_Dialog");
-        backgroundTransform.Find("Dialog_Content").GetComponent<TMP_Text>().text = $"Bạn đã thành công thêm loại Module <b><color =#004C8A>{model.Code}</b></color> vào hệ thống";
+        backgroundTransform.Find("Dialog_Content").GetComponent<TMP_Text>().text = $"Bạn đã thành công thêm loại Module <color=#004C8A><b>{model.Code}</b></color> vào hệ thống";
         backgroundTransform.Find("Dialog_Title").GetComponent<TMP_Text>().text = "Thêm loại Module mới thành công";
 
         var confirmButton = horizontalGroupTransform.Find("Confirm_Button").GetComponent<Button>();
         var backButton = horizontalGroupTransform.Find("Back_Button").GetComponent<Button>();
 
-        confirmButton.GetComponent<Image>().sprite = Resources.Load<Sprite>("images/UIimages/Success_Back_Button_Background");
-        confirmButton.transform.Find("Text").GetComponent<TMP_Text>().text = "Tiếp tục thêm mới";
-        backButton.transform.Find("Text").GetComponent<TMP_Text>().text = "Trở lại danh sách";
+
+        var confirmButtonSprite = confirmButton.GetComponent<Image>();
+        confirmButtonSprite.sprite = successConfirmButtonSprite;
+
+        var confirmButtonText = confirmButton.GetComponentInChildren<TMP_Text>();
+        var backButtonText = backButton.GetComponentInChildren<TMP_Text>();
+
+        // var colors = confirmButton.colors;
+        // colors.normalColor = new Color32(92, 237, 115, 255); // #5CED73 in RGB
+        // confirmButton.colors = colors;
+
+        confirmButtonText.text = "Tiếp tục thêm mới";
+        backButtonText.text = "Trở lại danh sách";
 
         confirmButton.onClick.RemoveAllListeners();
         backButton.onClick.RemoveAllListeners();
 
+        backButton.onClick.AddListener(() =>
+               {
+                   ReNewUI();
+                   DialogTwoButton.SetActive(false);
+                   CloseAddCanvas();
+               });
+
         confirmButton.onClick.AddListener(() =>
         {
-            ResetAllInputFields();
+            ReNewUI();
             DialogTwoButton.SetActive(false);
             ScrollView.verticalNormalizedPosition = 1;
         });
 
-        backButton.onClick.AddListener(() =>
-        {
-            ResetAllInputFields();
-            DialogTwoButton.SetActive(false);
-            CloseAddCanvas();
-        });
+
     }
     private void ResetAllInputFields()
     {
@@ -181,8 +194,6 @@ public class CreateModuleSpecificationSettingView : MonoBehaviour, IModuleSpecif
         Progress.Hide();
     }
 
-
-
     public void ShowLoading(string title) => ShowProgressBar(title, "Dữ liệu đang được tải...");
     public void HideLoading() => HideProgressBar();
     public void ShowError(string message)
@@ -194,13 +205,13 @@ public class CreateModuleSpecificationSettingView : MonoBehaviour, IModuleSpecif
         StartCoroutine(Show_Toast.Instance.Set_Instance_Status_False(1f));
     }
 
-    public void ShowSuccess()
+    public void ShowSuccess(string message)
     {
-        Show_Toast.Instance.Set_Instance_Status_True();
+
         if (GlobalVariable.APIRequestType.Contains("POST_ModuleSpecification"))
         {
 
-            Show_Toast.Instance.ShowToast("success", "Thêm loại Module mới thành công");
+            Show_Toast.Instance.ShowToast("success", message);
             OpenSuccessDialog(_ModuleSpecificationModel);
         }
         StartCoroutine(Show_Toast.Instance.Set_Instance_Status_False(1f));

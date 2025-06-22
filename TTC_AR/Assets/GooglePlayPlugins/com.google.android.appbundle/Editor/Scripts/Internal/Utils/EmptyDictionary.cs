@@ -20,7 +20,7 @@ using System.Linq;
 namespace Google.Android.AppBundle.Editor.Internal.Utils
 {
     /// <summary>
-    /// An empty <see cref="IDictionary"/> that cannot be added to.
+    /// An empty <see cref="idictionary"/> that cannot be added to.
     /// </summary>
     public class EmptyDictionary<TKey, TValue> : IDictionary<TKey, TValue>
     {

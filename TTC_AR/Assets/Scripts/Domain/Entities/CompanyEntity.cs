@@ -9,22 +9,22 @@ namespace Domain.Entities
   [Preserve]
   public class CompanyEntity
   {
-    [JsonProperty("Id")]
-    public string Id { get; set; } = string.Empty;
+    [JsonProperty("id")]
+    public int Id { get; set; }
 
-    [JsonProperty("Name")]
+    [JsonProperty("name")]
     public string Name { get; set; } = string.Empty;
 
-    // [JsonProperty("ListGrappers", NullValueHandling = NullValueHandling.Ignore)]
-    [JsonProperty("ListGrappers")]
+    // [JsonProperty("listGrappers", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonProperty("listGrappers")]
     public List<GrapperEntity>? GrapperEntities { get; set; }
 
-    // [JsonProperty("ListModuleSpecifications", NullValueHandling = NullValueHandling.Ignore)]
-    [JsonProperty("ListModuleSpecifications")]
+    // [JsonProperty("listModuleSpecifications", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonProperty("listModuleSpecifications")]
     public List<ModuleSpecificationEntity>? ModuleSpecificationEntities { get; set; }
 
-    // [JsonProperty("ListAdapterSpecifications", NullValueHandling = NullValueHandling.Ignore)]
-    [JsonProperty("ListAdapterSpecifications")]
+    // [JsonProperty("listAdapterSpecifications", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonProperty("listAdapterSpecifications")]
     public List<AdapterSpecificationEntity>? AdapterSpecificationEntities { get; set; }
 
     [Preserve]
@@ -36,7 +36,7 @@ namespace Domain.Entities
     }
 
     [Preserve]
-    public CompanyEntity(string id, string name, List<GrapperEntity>? grapperEntities, List<ModuleSpecificationEntity>? moduleSpecificationEntities, List<AdapterSpecificationEntity>? adapterSpecificationEntities)
+    public CompanyEntity(int id, string name, List<GrapperEntity>? grapperEntities, List<ModuleSpecificationEntity>? moduleSpecificationEntities, List<AdapterSpecificationEntity>? adapterSpecificationEntities)
     {
       Id = id;
       Name = string.IsNullOrEmpty(name) ? throw new ArgumentNullException(nameof(name)) : name;

@@ -17,135 +17,148 @@ namespace Infrastructure.Repositories
     {
         private readonly HttpClient _httpClient;
 
-        private const string BaseUrl = "https://677ba70820824100c07a4e9f.mockapi.io/api/v3/ModuleSpecification"; // URL server ngoài thực tế
-
         public ModuleSpecificationRepository(HttpClient httpClient)
         {
             _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
-            _httpClient.BaseAddress = new Uri(BaseUrl);
+            // _httpClient.BaseAddress = new Uri(GlobalVariable.baseUrl);
             _httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
         }
 
         //! Trả về Entity do kết quả server trả về hoàn toàn giống hoặc gần giống với Entity
-        public async Task<ModuleSpecificationEntity> GetModuleSpecificationByIdAsync(string ModuleSpecificationId)
+        public async Task<ModuleSpecificationEntity> GetModuleSpecificationByIdAsync(int moduleSpecificationId)
         {
             try
             {
-                // var response = await _httpClient.GetAsync($"/api/ModuleSpecification/{ModuleSpecificationId}");
-                var response = await _httpClient.GetAsync($"{BaseUrl}/{ModuleSpecificationId}");
-
+                // var response = await _httpClient.GetAsync($"/api/ModuleSpecification/{moduleSpecificationId}");
+                var response = await _httpClient.GetAsync($"{GlobalVariable.baseUrl}/ModuleSpecifications/{moduleSpecificationId}");
                 if (!response.IsSuccessStatusCode)
                 {
+                    UnityEngine.Debug.Log("ErrorStatus Code: " + response.StatusCode);
                     throw new HttpRequestException($"Failed to get ModuleSpecification. Status: {response.StatusCode}");
                 }
                 else
                 {
                     var content = await response.Content.ReadAsStringAsync();
-                    return JsonConvert.DeserializeObject<ModuleSpecificationEntity>(content);
+                    UnityEngine.Debug.Log(content);
+                    var entity = JsonConvert.DeserializeObject<ModuleSpecificationEntity>(content);
+                    UnityEngine.Debug.Log(entity.Id);
+                    return entity;
                 }
             }
             catch (HttpRequestException ex)
             {
-                throw ex; // Ném lỗi HTTP lên UseCase
+                UnityEngine.Debug.Log("Error: " + ex.Message);
+                throw new ApplicationException("Failed to fetch ModuleSpecification", ex); // Ném lỗi HTTP lên UseCase
             }
             catch (Exception ex)
             {
-                throw new Exception("Unexpected error during HTTP request", ex); // Bao bọc lỗi khác
+                UnityEngine.Debug.Log("Error: " + ex.Message);
+                throw new ApplicationException("Unexpected error during HTTP request", ex); // Bao bọc lỗi khác
             }
         }
 
         //! Trả về List<Entity> do kết quả server trả về hoàn toàn giống hoặc gần giống với Entity
-        public async Task<List<ModuleSpecificationEntity>> GetListModuleSpecificationAsync(string companyId)
+        public async Task<List<ModuleSpecificationEntity>> GetListModuleSpecificationAsync(int grapperId)
         {
             try
             {
                 // var response = await _httpClient.GetAsync($"/api/ModuleSpecification/grapper/{companyId}");
-                var response = await _httpClient.GetAsync($"{BaseUrl}");
+                var response = await _httpClient.GetAsync($"{GlobalVariable.baseUrl}/Grappers/{grapperId}/moduleSpecificationsGeneral");
 
                 if (!response.IsSuccessStatusCode)
                     throw new HttpRequestException($"Failed to get ModuleSpecification list. Status: {response.StatusCode}");
                 else
                 {
                     var content = await response.Content.ReadAsStringAsync();
-                    return JsonConvert.DeserializeObject<List<ModuleSpecificationEntity>>(content);
+                    var entities = JsonConvert.DeserializeObject<List<ModuleSpecificationEntity>>(content);
+                    return entities;
                 }
             }
             catch (HttpRequestException ex)
             {
-                throw ex;
+                UnityEngine.Debug.Log("Error: " + ex.Message);
+
+                throw new ApplicationException("Failed to fetch ModuleSpecification", ex); // Ném lỗi HTTP lên UseCase
             }
             catch (Exception ex)
             {
-                throw new Exception("Unexpected error during HTTP request", ex);
+                UnityEngine.Debug.Log("Error: " + ex.Message);
+
+                throw new ApplicationException("Unexpected error during HTTP request", ex); // Bao bọc lỗi khác
             }
         }
 
-        public async Task<bool> CreateNewModuleSpecificationAsync(string companyId, ModuleSpecificationEntity moduleSpecificationEntity)
-        {
-            try
-            {
-                //  var ModuleSpecificationEntity = ConvertModuleSpecificationEntity(ModuleSpecificationEntity);
-                var json = JsonConvert.SerializeObject(moduleSpecificationEntity);
-                var content = new StringContent(json, Encoding.UTF8, "application/json");
-                // var response = await _httpClient.PostAsync($"/api/ModuleSpecification/grapper/{companyId}", content);
-                var response = await _httpClient.PostAsync($"{BaseUrl}", content);
-
-                if (!response.IsSuccessStatusCode)
-                    throw new HttpRequestException($"Failed to create ModuleSpecification. Status: {response.StatusCode}");
-                else { return true; }
-            }
-            catch (HttpRequestException ex)
-            {
-                throw ex; // Ném lỗi HTTP lên UseCase
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Unexpected error during HTTP request", ex); // Bao bọc lỗi khác
-            }
-        }
-
-        public async Task<bool> UpdateModuleSpecificationAsync(string ModuleSpecificationId, ModuleSpecificationEntity moduleSpecificationEntity)
+        public async Task<bool> CreateNewModuleSpecificationAsync(int companyId, ModuleSpecificationEntity moduleSpecificationEntity)
         {
             try
             {
                 var json = JsonConvert.SerializeObject(moduleSpecificationEntity);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
-                // var response = await _httpClient.PutAsync($"/api/ModuleSpecification/{ModuleSpecificationId}", content);
-                var response = await _httpClient.PutAsync($"{BaseUrl}/{ModuleSpecificationId}", content);
-
-                if (!response.IsSuccessStatusCode)
-                    throw new HttpRequestException($"Failed to update ModuleSpecification. Status: {response.StatusCode}");
-                else { return true; }
-
+                var response = await _httpClient.PostAsync($"{GlobalVariable.baseUrl}/ModuleSpecifications/companyId?companyId={companyId}", content);
+                var temp = await response.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<bool>(temp);
+                UnityEngine.Debug.Log("Result: " + result);
+                return result;
             }
             catch (HttpRequestException ex)
             {
-                throw ex; // Ném lỗi HTTP lên UseCase
+                UnityEngine.Debug.Log("Error: " + ex.Message);
+
+                throw new ApplicationException("Failed to create ModuleSpecification", ex); // Ném lỗi HTTP lên UseCase
             }
             catch (Exception ex)
             {
-                throw new Exception("Unexpected error during HTTP request", ex); // Bao bọc lỗi khác
+                UnityEngine.Debug.Log("Error: " + ex.Message);
+
+                throw new ApplicationException("Unexpected error during HTTP request", ex); // Bao bọc lỗi khác
             }
         }
 
-        public async Task<bool> DeleteModuleSpecificationAsync(string ModuleSpecificationId)
+        public async Task<bool> UpdateModuleSpecificationAsync(int moduleSpecificationId, ModuleSpecificationEntity moduleSpecificationEntity)
         {
             try
             {
-                var response = await _httpClient.DeleteAsync($"{BaseUrl}/{ModuleSpecificationId}");
+                var json = JsonConvert.SerializeObject(moduleSpecificationEntity);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+                // var response = await _httpClient.PutAsync($"/api/ModuleSpecification/{moduleSpecificationId}", content);
+                var response = await _httpClient.PutAsync($"{GlobalVariable.baseUrl}/ModuleSpecifications/{moduleSpecificationId}", content);
 
-                if (!response.IsSuccessStatusCode)
-                    throw new HttpRequestException($"Failed to create ModuleSpecification. Status: {response.StatusCode}");
-                else return true;
-
+                var temp = await response.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<bool>(temp);
+                UnityEngine.Debug.Log("Result: " + result);
+                return result;
             }
             catch (HttpRequestException ex)
             {
-                throw ex; // Ném lỗi HTTP lên UseCase
+                UnityEngine.Debug.Log("Error: " + ex.Message);
+
+                throw new ApplicationException("Failed to update ModuleSpecification", ex); // Ném lỗi HTTP lên UseCase
             }
             catch (Exception ex)
             {
-                throw new Exception("Unexpected error during HTTP request", ex); // Bao bọc lỗi khác
+                UnityEngine.Debug.Log("Error: " + ex.Message);
+
+                throw new ApplicationException("Unexpected error during HTTP request", ex); // Bao bọc lỗi khác
+            }
+        }
+
+        public async Task<bool> DeleteModuleSpecificationAsync(int moduleSpecificationId)
+        {
+            try
+            {
+                var response = await _httpClient.DeleteAsync($"{GlobalVariable.baseUrl}/ModuleSpecifications/{moduleSpecificationId}");
+
+                var temp = await response.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<bool>(temp);
+                return result;
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new ApplicationException("Failed to delete ModuleSpecification", ex); // Ném lỗi HTTP lên UseCase
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Unexpected error during HTTP request", ex); // Bao bọc lỗi khác
             }
 
         }

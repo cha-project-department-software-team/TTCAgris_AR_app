@@ -12,10 +12,10 @@ namespace Domain.Interfaces
     {
         // Task<FieldDeviceResponseDto> GetFieldDeviceByIdAsync(int fieldDeviceId);
         // Task<List<FieldDeviceResponseDto>> GetListFieldDeviceAsync(int grapperId);
-        Task<FieldDeviceEntity> GetFieldDeviceByIdAsync(string fieldDeviceId);
-        Task<List<FieldDeviceEntity>> GetListFieldDeviceAsync(string grapperId);
-        Task<bool> CreateNewFieldDeviceAsync(string grapperId, FieldDeviceEntity fieldDeviceEntity);
-        Task<bool> UpdateFieldDeviceAsync(string fieldDeviceId, FieldDeviceEntity fieldDeviceEntity);
-        Task<bool> DeleteFieldDeviceAsync(string fieldDeviceId);
+        Task<FieldDeviceEntity> GetFieldDeviceByIdAsync(int fieldDeviceId);
+        Task<List<FieldDeviceEntity>> GetListFieldDeviceAsync(int grapperId);
+        Task<bool> CreateNewFieldDeviceAsync(int grapperId, FieldDeviceEntity fieldDeviceEntity);
+        Task<bool> UpdateFieldDeviceAsync(int fieldDeviceId, FieldDeviceEntity fieldDeviceEntity);
+        Task<bool> DeleteFieldDeviceAsync(int fieldDeviceId);
     }
 }

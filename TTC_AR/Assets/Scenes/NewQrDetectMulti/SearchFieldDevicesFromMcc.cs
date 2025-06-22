@@ -55,8 +55,8 @@ public class SearchFieldDevicesFromMcc : MonoBehaviour
                 dic_mccInformationModel_Button.Add(fieldDevice.Name, nav_Field_Device_Button);
 
                 var fieldDeviceInfor = nav_Field_Device_Button.GetComponent<FieldDeviceInfor>();
-                fieldDeviceInfor.SetFieldDeviceName(fieldDevice);
-                fieldDeviceInfor.nav_Btn.onClick.AddListener(() => NavigateGeneralPanel(fieldDevice));
+                fieldDeviceInfor.SetFieldDeviceName(fieldDevice.Name);
+                fieldDeviceInfor.button.onClick.AddListener(() => NavigateGeneralPanel(fieldDevice));
             }
             nav_Field_Device_Button_Prefab.SetActive(false);
             // gameObject_Empty.transform.SetAsLastSibling();

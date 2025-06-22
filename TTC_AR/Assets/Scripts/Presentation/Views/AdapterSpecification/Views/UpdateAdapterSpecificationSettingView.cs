@@ -50,7 +50,7 @@ public class UpdateAdapterSpecificationSettingView : MonoBehaviour, IAdapterSpec
         submitButton.onClick.RemoveAllListeners();
 
         backButton.onClick.AddListener(CloseUpdateCanvas);
-        _presenter.LoadDetailById(GlobalVariable.AdapterSpecificationId);
+        _presenter.LoadDetailById(GlobalVariable.adapterSpecificationId);
         submitButton.onClick.AddListener(OnSubmitButtonClick);
     }
 
@@ -82,18 +82,22 @@ public class UpdateAdapterSpecificationSettingView : MonoBehaviour, IAdapterSpec
                  PDFManual_TextField.text
              );
         _presenter.UpdateAdapterSpecification(
-                 GlobalVariable.AdapterSpecificationId, _adapterSpecificationModel
+                 GlobalVariable.adapterSpecificationId, _adapterSpecificationModel
             );
 
     }
 
 
-
+    public void PreloadDetailById()
+    {
+        _presenter.LoadDetailById(GlobalVariable.adapterSpecificationId);
+    }
 
     void OnDisable()
     {
         backButton.onClick.RemoveAllListeners();
         submitButton.onClick.RemoveAllListeners();
+        StopAllCoroutines();
     }
     public void CloseUpdateCanvas()
     {
@@ -194,9 +198,9 @@ public class UpdateAdapterSpecificationSettingView : MonoBehaviour, IAdapterSpec
             OpenErrorDialog(title: "Tải dữ liệu thất bại", message: "Đã có lỗi xảy ra khi tải dữ liệu loại Adapter. Vui lòng thử lại sau");
         }
     }
-    public void ShowSuccess()
+    public void ShowSuccess(string message)
     {
-        Show_Toast.Instance.Set_Instance_Status_True();
+
         if (GlobalVariable.APIRequestType.Contains("PUT_AdapterSpecification"))
         {
             Show_Toast.Instance.ShowToast("success", "Cập nhật dữ liệu thành công");

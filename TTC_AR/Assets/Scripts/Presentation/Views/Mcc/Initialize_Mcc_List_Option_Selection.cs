@@ -14,12 +14,10 @@ public class Initialize_Mcc_List_Option_Selection : MonoBehaviour
     [Header("Canvas")]
     public GameObject Selection_Option_Canvas;
 
-
-    [Header("List Selection Panels")]
+    [Header("list Selection Panels")]
     public GameObject selection_List_FieldDevices_Panel;
 
-
-    [Header("List Selection Option Contents")]
+    [Header("list Selection Option Contents")]
     public Transform FieldDevices_List_Selection_Option_Content_Transform;
 
     public Dictionary<string, GameObject> initialSelectionOptions = new Dictionary<string, GameObject>();
@@ -28,7 +26,7 @@ public class Initialize_Mcc_List_Option_Selection : MonoBehaviour
     private void Awake()
     {
         InitializeItemOptions();
-        fieldDeviceInformationModels = GlobalVariable.temp_List_FieldDeviceInformationModel;
+        fieldDeviceInformationModels = GlobalVariable.temp_ListFieldDeviceInformationModel;
     }
     private void Start()
     {
@@ -42,14 +40,18 @@ public class Initialize_Mcc_List_Option_Selection : MonoBehaviour
 
     void PopulateListSelection()
     {
-        PopulateSelectionPanel("FieldDevices", fieldDeviceInformationModels, selection_List_FieldDevices_Panel, FieldDevices_List_Selection_Option_Content_Transform);
+        PopulateSelectionPanel(
+        field: "FieldDevices",
+       fieldDeviceInformationModels: fieldDeviceInformationModels,
+       list_Option_Panel: selection_List_FieldDevices_Panel,
+       list_Option_Content_Transform: FieldDevices_List_Selection_Option_Content_Transform);
     }
     private void PopulateSelectionPanel(string field, List<FieldDeviceInformationModel> fieldDeviceInformationModels, GameObject list_Option_Panel, Transform list_Option_Content_Transform)
     {
         list_Option_Panel.SetActive(true);
         Debug.Log("FieldDevices: " + fieldDeviceInformationModels.Count);
 
-        if (fieldDeviceInformationModels != null && fieldDeviceInformationModels.Any())
+        if (fieldDeviceInformationModels.Any())
         {
             if (fieldDeviceInformationModels.Count == 1)
             {

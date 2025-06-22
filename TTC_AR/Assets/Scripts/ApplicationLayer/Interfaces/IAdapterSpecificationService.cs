@@ -8,10 +8,10 @@ namespace ApplicationLayer.Interfaces
     public interface IAdapterSpecificationService
     {
         //! Tham số là Dto, tả về Dto
-        Task<AdapterSpecificationResponseDto> GetAdapterSpecificationByIdAsync(string adapterSpecificationId);
-        Task<List<AdapterSpecificationBasicDto>> GetListAdapterSpecificationAsync(string companyId);
-        Task<bool> CreateNewAdapterSpecificationAsync(string companyId, AdapterSpecificationRequestDto adapterSpecificationRequestDto);
-        Task<bool> UpdateAdapterSpecificationAsync(string adapterSpecificationId, AdapterSpecificationRequestDto adapterSpecificationRequestDto);
-        Task<bool> DeleteAdapterSpecificationAsync(string adapterSpecificationId);
+        Task<AdapterSpecificationResponseDto> GetAdapterSpecificationByIdAsync(int adapterSpecificationId);
+        Task<List<AdapterSpecificationBasicDto>> GetListAdapterSpecificationAsync(int companyId);
+        Task<bool> CreateNewAdapterSpecificationAsync(int companyId, AdapterSpecificationRequestDto adapterSpecificationRequestDto);
+        Task<bool> UpdateAdapterSpecificationAsync(int adapterSpecificationId, AdapterSpecificationRequestDto adapterSpecificationRequestDto);
+        Task<bool> DeleteAdapterSpecificationAsync(int adapterSpecificationId);
     }
 }

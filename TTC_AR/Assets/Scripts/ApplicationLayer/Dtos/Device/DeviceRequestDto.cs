@@ -13,24 +13,24 @@ namespace ApplicationLayer.Dtos.Device
     [Preserve]
     public class DeviceRequestDto
     {
-        [JsonProperty("Code")] public string Code { get; set; }
-        [JsonProperty("Function")] public string Function { get; set; }
-        [JsonProperty("Range")] public string Range { get; set; }
-        [JsonProperty("Unit")] public string Unit { get; set; }
-        [JsonProperty("IOAddress")] public string IOAddress { get; set; }
-        [JsonProperty("Module")] public ModuleBasicDto? ModuleBasicDto { get; set; }
-        [JsonProperty("JBs")] public List<JBBasicDto>? JBBasicDtos { get; set; }
-        [JsonProperty("AdditionalConnectionImages")] public List<ImageBasicDto>? AdditionalImageBasicDtos { get; set; }
+        [JsonProperty("code")] public string Code { get; set; }
+        [JsonProperty("function")] public string Function { get; set; }
+        [JsonProperty("range")] public string Range { get; set; }
+        [JsonProperty("unit")] public string Unit { get; set; }
+        [JsonProperty("ioAddress")] public string IOAddress { get; set; }
+        [JsonProperty("module")] public ModuleBasicDto? ModuleBasicDto { get; set; }
+        [JsonProperty("jBs")] public List<JBBasicDto>? JBBasicDtos { get; set; }
+        [JsonProperty("additionalConnectionImages")] public List<ImageBasicDto>? AdditionalImageBasicDtos { get; set; }
 
         [Preserve]
 
         public DeviceRequestDto(string code, string function, string range, string unit, string ioAddress, ModuleBasicDto? moduleBasicDto, List<JBBasicDto>? jbBasicDtos, List<ImageBasicDto>? additionalImageBasicDtos)
         {
             Code = string.IsNullOrEmpty(code) ? throw new System.ArgumentException(nameof(code)) : code;
-            Function = function;
-            Range = range;
-            Unit = unit;
-            IOAddress = ioAddress;
+            Function = string.IsNullOrEmpty(function) ? "Chưa cập nhật" : function;
+            Range = string.IsNullOrEmpty(range) ? "Chưa cập nhật" : range;
+            Unit = string.IsNullOrEmpty(unit) ? "Chưa cập nhật" : unit;
+            IOAddress = string.IsNullOrEmpty(ioAddress) ? "Chưa cập nhật" : ioAddress;
             ModuleBasicDto = moduleBasicDto;
             JBBasicDtos = jbBasicDtos;
             AdditionalImageBasicDtos = additionalImageBasicDtos;

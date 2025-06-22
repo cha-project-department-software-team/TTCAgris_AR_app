@@ -19,7 +19,7 @@ namespace ApplicationLayer.Services
 
         //! Dữ liệu trả về là Dto
 
-        public async Task<CompanyResponseDto> GetCompanyByIdAsync(string CompanyId)
+        public async Task<CompanyResponseDto> GetCompanyByIdAsync(int CompanyId)
         {
             return await _CompanyUseCase.GetCompanyByIdAsync(CompanyId);
         }

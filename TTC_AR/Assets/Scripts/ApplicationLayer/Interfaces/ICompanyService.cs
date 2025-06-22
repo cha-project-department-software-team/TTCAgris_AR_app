@@ -8,7 +8,7 @@ namespace ApplicationLayer.Interfaces
 {
     public interface ICompanyService
     {
-        Task<CompanyResponseDto> GetCompanyByIdAsync(string CompanyId);
+        Task<CompanyResponseDto> GetCompanyByIdAsync(int CompanyId);
         Task<List<CompanyResponseDto>> GetListCompanyAsync();
     }
 }

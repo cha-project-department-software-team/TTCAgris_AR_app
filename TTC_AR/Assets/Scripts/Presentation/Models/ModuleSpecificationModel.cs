@@ -9,38 +9,38 @@ using UnityEngine.Scripting;
 public class ModuleSpecificationModel
 {
 
-  [JsonProperty("Id")]
-  public string Id { get; set; } = string.Empty;
-  [JsonProperty("Code")]
+  [JsonProperty("id")]
+  public int Id { get; set; }
+  [JsonProperty("code")]
   public string Code { get; set; } = string.Empty;
-  [JsonProperty("Type")]
+  [JsonProperty("type")]
   public string? Type { get; set; }
-  [JsonProperty("NumOfIO")]
+  [JsonProperty("numOfIO")]
   public string? NumOfIO { get; set; }
 
-  [JsonProperty("SignalType")]
+  [JsonProperty("signalType")]
   public string? SignalType { get; set; }
 
-  [JsonProperty("CompatibleTBUs")]
+  [JsonProperty("compatibleTBUs")]
   public string? CompatibleTBUs { get; set; }
 
-  [JsonProperty("OperatingVoltage")]
+  [JsonProperty("operatingVoltage")]
   public string? OperatingVoltage { get; set; }
-  [JsonProperty("OperatingCurrent")]
+  [JsonProperty("operatingCurrent")]
   public string? OperatingCurrent { get; set; }
 
-  [JsonProperty("FlexbusCurrent")]
+  [JsonProperty("flexbusCurrent")]
   public string? FlexbusCurrent { get; set; }
-  [JsonProperty("Alarm")]
+  [JsonProperty("alarm")]
   public string? Alarm { get; set; }
-  [JsonProperty("Note")]
+  [JsonProperty("note")]
   public string? Note { get; set; }
-  [JsonProperty("PdfManual")]
+  [JsonProperty("pdfManual")]
   public string? PdfManual { get; set; }
 
   [Preserve]
 
-  public ModuleSpecificationModel(string id, string code, string? type, string? numOfIO, string? signalType, string? compatibleTBUs, string? operatingVoltage, string? operatingCurrent, string? flexbusCurrent, string? alarm, string? note, string? pdfManual)
+  public ModuleSpecificationModel(int id, string code, string? type, string? numOfIO, string? signalType, string? compatibleTBUs, string? operatingVoltage, string? operatingCurrent, string? flexbusCurrent, string? alarm, string? note, string? pdfManual)
   {
     Id = id;
     Code = code;
@@ -55,7 +55,7 @@ public class ModuleSpecificationModel
     Note = note;
     PdfManual = pdfManual;
   }
-  public ModuleSpecificationModel(string id, string code)
+  public ModuleSpecificationModel(int id, string code)
   {
     Id = id;
     Code = code;
@@ -85,14 +85,14 @@ public class ModuleSpecificationModel
 [Preserve]
 public class ModuleSpecificationBasicModel
 {
-  [JsonProperty("Id")]
-  public string Id { get; set; }
+  [JsonProperty("id")]
+  public int Id { get; set; }
 
-  [JsonProperty("Code")]
+  [JsonProperty("code")]
   public string Code { get; set; }
   [Preserve]
 
-  public ModuleSpecificationBasicModel(string id, string code)
+  public ModuleSpecificationBasicModel(int id, string code)
   {
     Id = id;
     Code = code;

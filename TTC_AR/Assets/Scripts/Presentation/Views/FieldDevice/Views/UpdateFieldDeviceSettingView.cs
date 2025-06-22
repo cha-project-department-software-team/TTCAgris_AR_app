@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using EasyUI.Progress;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -15,7 +16,9 @@ public class UpdateFieldDeviceSettingView : MonoBehaviour, IFieldDeviceView
     [SerializeField] private FieldDeviceInformationModel fieldDeviceInformationModel;
 
     [Header("Input Fields")]
+    [SerializeField] private List<TMP_InputField> fieldDeviceInputFieldValues;
     [SerializeField] private TMP_InputField Name_TextField;
+    [SerializeField] private TMP_InputField MCC_TextField;
     [SerializeField] private TMP_InputField RatedPower_TextField;
     [SerializeField] private TMP_InputField RatedCurrent_TextField;
     [SerializeField] private TMP_InputField ActiveCurrent_TextField;
@@ -55,67 +58,71 @@ public class UpdateFieldDeviceSettingView : MonoBehaviour, IFieldDeviceView
     {
         { "Connection_Image", 0 }
     };
-
+    private int fieldDeviceId;
     void Awake()
     {
-        // var DeviceManager = FindObjectOfType<DeviceManager>();
         _presenter = new FieldDevicePresenter(this, ManagerLocator.Instance.FieldDeviceManager._IFieldDeviceService);
-        // DeviceManager._IDeviceService
     }
 
     void OnEnable()
     {
-        //! Clear all listeners
+        fieldDeviceId = GlobalVariable.fieldDeviceId;
+        Name_TextField.interactable = false;
+        MCC_TextField.interactable = false;
+
         backButton.onClick.RemoveAllListeners();
         submitButton.onClick.RemoveAllListeners();
         backButtonListSelection.onClick.RemoveAllListeners();
 
-        //! Add listeners
         backButtonListSelection.onClick.AddListener(CloseListSelectionFromBackButton);
         backButton.onClick.AddListener(CloseAddCanvas);
         submitButton.onClick.AddListener(OnSubmitButtonClick);
 
-        //! Load detail by id
-        _presenter.LoadDetailById(GlobalVariable.FieldDeviceId);
+        Debug.Log("FieldDeviceId: " + fieldDeviceId);
 
-        //! Reset scroll position
-        scrollRect.verticalNormalizedPosition = 1;
+        ReloadDetailById();
+
     }
-
     void OnDisable()
     {
         RenewView();
     }
+    public void ReloadDetailById()
+    {
+        Debug.Log("ReloadDetailById");
+        RenewView();
+        _presenter.LoadDetailById(fieldDeviceId);
+    }
+
 
     private void OnSubmitButtonClick()
     {
         fieldDeviceInformationModel = null;
-        fieldDeviceInformationModel = new FieldDeviceInformationModel(
-            name: Name_TextField.text,
-            ratedPower: RatedPower_TextField.text,
-            ratedCurrent: RatedCurrent_TextField.text,
-            activeCurrent: ActiveCurrent_TextField.text,
-            listConnectionImages: temp_Dictionary_ImageConnectionModel.Values.ToList(),
-            note: Note_TextField.text
-        );
-
-        if (string.IsNullOrEmpty(fieldDeviceInformationModel.Name))
+        if (string.IsNullOrEmpty(Name_TextField.text))
         {
             OpenErrorDialog(title: "Cập nhật thiết bị trường thất bại", message: "Vui lòng nhập tên thiết bị trường");
             return;
         }
 
-        _presenter.UpdateFieldDevice(GlobalVariable.FieldDeviceId, fieldDeviceInformationModel);
+        fieldDeviceInformationModel = new FieldDeviceInformationModel(
+            name: Name_TextField.text,
+            ratedPower: string.IsNullOrEmpty(RatedPower_TextField.text) ? "Chưa cập nhật" : RatedPower_TextField.text,
+            ratedCurrent: string.IsNullOrEmpty(RatedCurrent_TextField.text) ? "Chưa cập nhật" : RatedCurrent_TextField.text,
+            activeCurrent: string.IsNullOrEmpty(ActiveCurrent_TextField.text) ? "Chưa cập nhật" : ActiveCurrent_TextField.text,
+            listConnectionImages: temp_Dictionary_ImageConnectionModel.Any() ? temp_Dictionary_ImageConnectionModel.Values.ToList() : new List<ImageInformationModel>(),
+            note: string.IsNullOrEmpty(Note_TextField.text) ? "Chưa cập nhật" : Note_TextField.text
+        );
+        if (fieldDeviceInformationModel != null)
+        {
+            _presenter.UpdateFieldDevice(fieldDeviceId, fieldDeviceInformationModel);
+        }
     }
 
     private void RenewView()
     {
         ClearAllVerticalGroupChildren(Connection_Image_Parent_VerticalLayout_Group);
-
         temp_Dictionary_ImageConnectionModel.Clear();
-
         selectedGameObjects["Connection_Image"].Clear();
-
         selectedCounts["Connection_Image"] = 0;
     }
 
@@ -194,6 +201,7 @@ public class UpdateFieldDeviceSettingView : MonoBehaviour, IFieldDeviceView
             initialize_FieldDevice_List_Option_Selection.Selection_Option_Canvas.SetActive(true);
 
         var newItem = Instantiate(itemPrefab, parentGroup.transform);
+        newItem.SetActive(true);
         temp_Item_Transform = newItem.transform;
         temp_Item_Transform.gameObject.GetComponentInChildren<Button>().onClick.AddListener(() => DeselectItem(newItem.gameObject, field));
         GetSelectionPanel(field).SetActive(true);
@@ -281,16 +289,17 @@ public class UpdateFieldDeviceSettingView : MonoBehaviour, IFieldDeviceView
 
         DialogOneButton.transform.Find("Background/Dialog_Status_Icon").GetComponent<Image>().sprite = Resources.Load<Sprite>("images/UIimages/Success_Icon_For_Dialog");
 
-        DialogOneButton.transform.Find("Background/Dialog_Content").GetComponent<TMP_Text>().text = message + fieldDeviceInformationModel.Name;
+        DialogOneButton.transform.Find("Background/Dialog_Content").GetComponent<TMP_Text>().text = $"{message}: <color=#004C8A><b>{fieldDeviceInformationModel.Name}</b></color>";
 
         DialogOneButton.transform.Find("Background/Dialog_Title").GetComponent<TMP_Text>().text = title;
 
         backButton.onClick.RemoveAllListeners();
 
+
         backButton.onClick.AddListener(() =>
         {
             DialogOneButton.SetActive(false);
-            _presenter.LoadDetailById(GlobalVariable.FieldDeviceId);
+            _presenter.LoadDetailById(fieldDeviceId);
             scrollRect.verticalNormalizedPosition = 1;
         }
        );
@@ -310,11 +319,25 @@ public class UpdateFieldDeviceSettingView : MonoBehaviour, IFieldDeviceView
 
     private void SetInitialInputFields(FieldDeviceInformationModel model)
     {
-        Name_TextField.text = model.Name;
-        RatedPower_TextField.text = model.RatedPower;
-        RatedCurrent_TextField.text = model.RatedCurrent;
-        ActiveCurrent_TextField.text = model.ActiveCurrent;
-        Note_TextField.text = model.Note;
+        Name_TextField.text = string.IsNullOrEmpty(model.Name) ? throw new ArgumentNullException("Name") : model.Name;
+        MCC_TextField.text = model.Mcc == null ? "Chưa cập nhật" : model.Mcc.CabinetCode;
+        RatedPower_TextField.text = string.IsNullOrEmpty(model.RatedPower) ? "Chưa cập nhật" : model.RatedPower;
+        RatedCurrent_TextField.text = string.IsNullOrEmpty(model.RatedCurrent) ? "Chưa cập nhật" : model.RatedCurrent;
+        ActiveCurrent_TextField.text = string.IsNullOrEmpty(model.ActiveCurrent) ? "Chưa cập nhật" : model.ActiveCurrent;
+        Note_TextField.text = string.IsNullOrEmpty(model.Note) ? "Chưa cập nhật" : model.Note;
+        foreach (var textField in fieldDeviceInputFieldValues)
+        {
+            if (textField.text == "Chưa cập nhật" || string.IsNullOrEmpty(textField.text))
+            {
+                textField.textComponent.color = Color.red;
+                textField.textComponent.fontStyle = FontStyles.Bold;
+            }
+            else
+            {
+                textField.textComponent.color = Color.black;
+                textField.textComponent.fontStyle = FontStyles.Normal;
+            }
+        }
     }
 
     public void ShowLoading(string title) => ShowProgressBar(title, "Đang tải dữ liệu...");
@@ -336,14 +359,10 @@ public class UpdateFieldDeviceSettingView : MonoBehaviour, IFieldDeviceView
             );
         }
     }
-    public void ReloadDetailById()
-    {
-        RenewView();
-        _presenter.LoadDetailById(GlobalVariable.FieldDeviceId);
-    }
+
     public void ShowSuccess()
     {
-        Show_Toast.Instance.Set_Instance_Status_True();
+
         if (GlobalVariable.APIRequestType.Contains("PUT_FieldDevice"))
         {
 
@@ -364,13 +383,22 @@ public class UpdateFieldDeviceSettingView : MonoBehaviour, IFieldDeviceView
 
     public void DisplayDetail(FieldDeviceInformationModel model)
     {
-        SetInitialInputFields(model);
-        if (model.ListConnectionImages != null && model.ListConnectionImages.Any())
+        if (model != null)
         {
-            var temp_List_ConnectionImageNames = model.ListConnectionImages.Select(item => item.Name).ToList();
-            PopulateItems(temp_List_ConnectionImageNames, Connection_Image_Item_Prefab, Connection_Image_Parent_VerticalLayout_Group, "Connection_Image");
+            SetInitialInputFields(model);
+            if (model.ListConnectionImages.Any())
+            {
+                var temp_List_ConnectionImageNames = model.ListConnectionImages.Select(item => item.Name).ToList();
+                PopulateItems(
+                   listItems: temp_List_ConnectionImageNames,
+                    itemPrefab: Connection_Image_Item_Prefab,
+                     parentLayoutGroup: Connection_Image_Parent_VerticalLayout_Group,
+                      field: "Connection_Image");
+            }
+            AddButtonListeners(initialize_FieldDevice_List_Option_Selection.Connection_Image_List_Selection_Option_Content_Transform, "Connection_Image");
         }
-        AddButtonListeners(initialize_FieldDevice_List_Option_Selection.Connection_Image_List_Selection_Option_Content_Transform, "Connection_Image");
+        scrollRect.verticalNormalizedPosition = 1;
+
     }
 
     private void PopulateItems<T>(List<T> listItems, GameObject itemPrefab, GameObject parentLayoutGroup, string field)
@@ -379,6 +407,7 @@ public class UpdateFieldDeviceSettingView : MonoBehaviour, IFieldDeviceView
         foreach (var item in listItems)
         {
             var newItem = Instantiate(itemPrefab, parentTransform);
+            newItem.SetActive(true);
             SetItemTextValue(newItem.transform, item.ToString(), field);
             AddButtonListener(newItem.transform.Find("Deselect_Button"), () => DeselectItem(newItem, field));
             selectedGameObjects[field].Add(newItem);

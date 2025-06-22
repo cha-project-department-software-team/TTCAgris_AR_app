@@ -41,7 +41,7 @@ namespace OpenCVForUnity.UnityUtils.Helper
         [OpenCVForUnityRuntimeDisable]
 #endif
         [SerializeField, FormerlySerializedAs("requestedMatUpdateFPS"), TooltipAttribute("Set the frame rate of camera.")]
-        protected float _requestedMatUpdateFPS = 30f;
+        protected float _requestedMatUpdateFPS = 60f;
 
         /// <summary>
         /// Sets the frame rate at which the Mat is updated. (interval at which the DidUpdateThisFrame() method becomes true).

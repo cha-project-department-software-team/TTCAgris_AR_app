@@ -12,29 +12,27 @@ namespace ApplicationLayer.Dtos.JB
     [Preserve]
     public class JBGeneralDto : JBBasicDto
     {
-        [JsonProperty("Location")] public string? Location { get; set; }
-        [JsonProperty("OutdoorImage")] public ImageResponseDto? OutdoorImageResponseDto { get; set; }
-        [JsonProperty("ListConnectionImages")] public List<ImageResponseDto>? ConnectionImageResponseDtos { get; set; }
+        [JsonProperty("location")] public string? Location { get; set; }
+        [JsonProperty("outdoorImage")] public ImageBasicDto? OutdoorImageBasicDto { get; set; }
+        [JsonProperty("listConnectionImages")] public List<ImageBasicDto>? ConnectionImageBasicDtos { get; set; }
 
         [Preserve]
 
-        public JBGeneralDto(string id, string name, string? location, ImageResponseDto? outdoorImageResponseDto, List<ImageResponseDto>? connectionImageResponseDtos) : base(id, name)
+        public JBGeneralDto(int id, string name, string? location, ImageBasicDto? outdoorImageBasicDto, List<ImageBasicDto>? connectionImageBasicDtos) : base(id, name)
         {
-            Id = id;
-            Name = string.IsNullOrEmpty(name) ? throw new ArgumentNullException(nameof(name)) : name;
-            Location = location;
-            OutdoorImageResponseDto = outdoorImageResponseDto;
-            ConnectionImageResponseDtos = connectionImageResponseDtos;
+            Location = string.IsNullOrEmpty(location) ? "Được ghi chú trên sơ đồ" : location;
+            OutdoorImageBasicDto = outdoorImageBasicDto != null ? outdoorImageBasicDto : null;
+            ConnectionImageBasicDtos = connectionImageBasicDtos.Any() ? connectionImageBasicDtos : new List<ImageBasicDto>();
         }
 
         // [Preserve]
         // 
-        // public JBGeneralDto(string id, string name, string location, ImageResponseDto outdoorImageResponseDto, List<ImageResponseDto> connectionImageResponseDtos) : base(id, name)
+        // public JBGeneralDto(int id, string name, string location, ImageBasicDto outdoorImageBasicDto, List<ImageBasicDto> connectionImageBasicDtos) : base(id, name)
         // {
         //     Id = id;
         //     Location = location == "" ? string.Empty : location;
-        //     OutdoorImageResponseDto = outdoorImageResponseDto;
-        //     ConnectionImageResponseDtos = connectionImageResponseDtos.Any() ? connectionImageResponseDtos : new List<ImageResponseDto>();
+        //     OutdoorImageBasicDto = outdoorImageBasicDto;
+        //     ConnectionImageBasicDtos = connectionImageBasicDtos.Any() ? connectionImageBasicDtos : new List<ImageBasicDto>();
         // }
     }
 }

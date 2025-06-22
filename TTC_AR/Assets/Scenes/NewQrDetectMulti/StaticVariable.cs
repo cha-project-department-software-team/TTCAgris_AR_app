@@ -19,7 +19,7 @@ public class StaticVariable
 
 
     public static List<ModuleInformationModel> temp_ListModuleInformationModel = new List<ModuleInformationModel>();
-    public static List<MccInformationModel> temp_ListMccInformationModel = new List<MccInformationModel>();
+    public static List<MccInformationModel> temp_ListMCCInformationModel = new List<MccInformationModel>();
     public static List<GrapperInformationModel> temp_ListGrapperInformationModel = new List<GrapperInformationModel>();
     public static Dictionary<string, ModuleInformationModel> Dic_ModuleInformationModel = new Dictionary<string, ModuleInformationModel>();
     public static Dictionary<string, MccInformationModel> Dic_MccInformationModel = new Dictionary<string, MccInformationModel>();

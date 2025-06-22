@@ -2,6 +2,12 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+// OpenCVForUnity.UnityUtils là thư viện cầu nối giữa Unity và OpenCV. Nó chứa các hàm tiện ích hỗ trợ:
+// Chuyển đổi hình ảnh giữa Texture2D (Unity) và Mat (OpenCV).
+// Vẽ ảnh OpenCV (Mat) ra texture Unity để hiển thị.
+// Ghi log, quản lý file, hoặc các tác vụ tiện ích khác phục vụ tích hợp giữa hai hệ thống.
+
 namespace OpenCVForUnity.UnityUtils
 {
     public struct PoseData
@@ -20,6 +26,8 @@ namespace OpenCVForUnity.UnityUtils
         /// </summary>
         /// <param name="tvec">Rvec.</param>
         /// <returns>Rotation.</returns>
+
+        //? Chuyển đổi rvec (vector quay) từ OpenCV sang Unity
         public static Quaternion ConvertRvecToRot(IList<double> rvec)
         {
             if (rvec == null)
@@ -40,6 +48,8 @@ namespace OpenCVForUnity.UnityUtils
         /// </summary>
         /// <param name="tvec">Tvec.</param>
         /// <returns>Position.</returns>
+
+        //? Chuyển đổi tvec (vector dịch chuyển) từ OpenCV sang Unity
         public static Vector3 ConvertTvecToPos(IList<double> tvec)
         {
             if (tvec == null)
@@ -59,6 +69,9 @@ namespace OpenCVForUnity.UnityUtils
         /// <param name="tvec">Rvec.</param>
         /// <param name="tvec">Tvec.</param>
         /// <returns>PoseData.</returns>
+
+        //? Chuyển đổi rvec và tvec từ OpenCV sang PoseData (dữ liệu vị trí và góc quay)
+        //? => Gộp 2 bước trên
         public static PoseData ConvertRvecTvecToPoseData(IList<double> rvec, IList<double> tvec)
         {
             PoseData data = new PoseData();
@@ -77,6 +90,10 @@ namespace OpenCVForUnity.UnityUtils
         /// <param name="posedata">PoseData.</param>
         /// <param name="toLeftHandCoordinateSystem">Determines if convert the transformation matrix to the left-hand coordinate system.</param>
         /// <returns>Transform matrix.</returns>
+
+        //? Chuyển đổi PoseData (dữ liệu vị trí và góc quay) sang ma trận biến đổi 4x4 TRS
+        //? => TRS là view tắt của Translation (dịch chuyển), Rotation (quay) và Scale (tỷ lệ)
+        //? => Để sử dụng trong Unity 
         public static Matrix4x4 ConvertPoseDataToMatrix(ref PoseData poseData, bool toLeftHandCoordinateSystem = false)
         {
             Matrix4x4 matrix = Matrix4x4.TRS(poseData.pos, poseData.rot, vector_one);
@@ -94,6 +111,10 @@ namespace OpenCVForUnity.UnityUtils
         /// </summary>
         /// <param name="matrix">Transform matrix.</param>
         /// <returns>PoseData.</returns>
+
+
+        //? Chuyển đổi ma trận biến đổi 4x4 TRS sang PoseData (dữ liệu vị trí và góc quay)
+        //? => Để sử dụng trong OpenCV
         public static PoseData ConvertMatrixToPoseData(ref Matrix4x4 matrix)
         {
             PoseData data = new PoseData();
@@ -110,6 +131,7 @@ namespace OpenCVForUnity.UnityUtils
         /// <param name="rvecs">Rvecs.</param>
         /// <param name="tvecs">Tvecs.</param>
         /// <returns>PoseData dictionary.</returns>
+
         public static Dictionary<int, PoseData> CreatePoseDataDict(IList<int> ids, IList<double> rvecs, IList<double> tvecs)
         {
             if (ids == null)
@@ -146,7 +168,12 @@ namespace OpenCVForUnity.UnityUtils
         /// <param name="newPose">New PoseData.</param>
         /// <param name="posThreshold">Positon threshold.</param>
         /// <param name="rotThreshold">Rotation threshold.</param>
-        public static void LowpassPoseData(ref PoseData oldPose, ref PoseData newPose, float posThreshold, float rotThreshold)
+
+        //? Bộ lọc thông thấp => Làm mượt mà dữ liệu vị trí và góc quay của PoseData
+        //? => Nếu vị trí và góc quay mới không thay đổi nhiều so với cũ thì giữ nguyên giá trị cũ
+        //? => Nếu thay đổi nhiều thì giữ nguyên giá trị mới
+        //? => Để sử dụng trong OpenCV
+        public static void LowPassPoseData(ref PoseData oldPose, ref PoseData newPose, float posThreshold, float rotThreshold)
         {
             posThreshold *= posThreshold;
 
@@ -171,7 +198,13 @@ namespace OpenCVForUnity.UnityUtils
         /// <param name="newDict">New dictionary.</param>
         /// <param name="posThreshold">Positon threshold.</param>
         /// <param name="rotThreshold">Rotation threshold.</param>
-        public static void LowpassPoseDataDict(Dictionary<int, PoseData> oldDict, Dictionary<int, PoseData> newDict, float posThreshold, float rotThreshold)
+
+        //? Dùng trong trường hợp nhiều marker (nhiều mã QR)
+        //  Bộ lọc thông thấp => Làm mượt mà dữ liệu vị trí và góc quay của PoseData
+        //? => Nếu vị trí và góc quay mới không thay đổi nhiều so với cũ thì giữ nguyên giá trị cũ
+        //? => Nếu thay đổi nhiều thì giữ nguyên giá trị mới
+        //? => Để sử dụng trong OpenCV
+        public static void LowPassPoseDataDict(Dictionary<int, PoseData> oldDict, Dictionary<int, PoseData> newDict, float posThreshold, float rotThreshold)
         {
             if (oldDict == null)
                 throw new ArgumentNullException("oldDict");
@@ -215,6 +248,9 @@ namespace OpenCVForUnity.UnityUtils
         /// <returns>
         /// Translation offset.
         /// </returns>
+
+        //? Trích xuất vị trí từ ma trận biến đổi 4x4 TRS
+        //? => Để sử dụng trong OpenCV
         public static Vector3 ExtractTranslationFromMatrix(ref Matrix4x4 matrix)
         {
             Vector3 translate;
@@ -232,6 +268,10 @@ namespace OpenCVForUnity.UnityUtils
         /// <returns>
         /// Quaternion representation of rotation transform.
         /// </returns>
+
+        //? Trích xuất góc quay từ ma trận biến đổi 4x4 TRS
+        //? => Để sử dụng trong OpenCV
+
         public static Quaternion ExtractRotationFromMatrix(ref Matrix4x4 matrix)
         {
             Vector3 forward;
@@ -255,6 +295,9 @@ namespace OpenCVForUnity.UnityUtils
         /// <returns>
         /// Scale vector.
         /// </returns>
+
+        //? Trích xuất tỷ lệ (Scale) từ ma trận biến đổi 4x4 TRS
+        //? => Để sử dụng trong OpenCV
         public static Vector3 ExtractScaleFromMatrix(ref Matrix4x4 matrix)
         {
             Vector3 scale;
@@ -303,6 +346,11 @@ namespace OpenCVForUnity.UnityUtils
         /// <param name="transform">Transform component.</param>
         /// <param name="matrix">Transform matrix. This parameter is passed by reference
         /// to improve performance; no changes will be made to it.</param>
+
+        // ? Thiết lập vị trí, góc quay và tỷ lệ của GameObject từ ma trận biến đổi 4x4 TRS
+        //? Đặt transform từ ma trận
+        // ? => Để sử dụng trong OpenCV
+        //? Dùng trong QrMarker.UpdateTransform()
         public static void SetTransformFromMatrix(Transform transform, ref Matrix4x4 matrix)
         {
             transform.localPosition = ExtractTranslationFromMatrix(ref matrix);
@@ -324,6 +372,14 @@ namespace OpenCVForUnity.UnityUtils
         /// <returns>
         /// Projection matrix.
         /// </returns>
+
+        ///? Tính toán ma trận chiếu từ các giá trị ma trận camera
+        /// //? => Để sử dụng trong OpenCV
+        /// //? => fx, fy là tiêu cự của camera
+        /// //? => cx, cy là điểm chính của camera
+        /// //? => width, height là kích thước của ảnh
+        /// //? => near, far là khoảng cách gần và xa của mặt phẳng cắt
+        /// //? => Để sử dụng trong OpenGL
         public static Matrix4x4 CalculateProjectionMatrixFromCameraMatrixValues(float fx, float fy, float cx, float cy, float width, float height, float near, float far)
         {
             Matrix4x4 projectionMatrix = new Matrix4x4();
@@ -348,6 +404,14 @@ namespace OpenCVForUnity.UnityUtils
         /// <returns>
         /// Camera matrix values. (fx = matrx.m00, fy = matrx.m11, cx = matrx.m02, cy = matrx.m12)
         /// </returns>
+
+        ///? Tính toán các giá trị ma trận camera từ ma trận chiếu
+        /// //? => Để sử dụng trong OpenCV
+        /// //? => matrx.m00, matrx.m11 là tiêu cự của camera
+        /// //? => matrx.m02, matrx.m12 là điểm chính của camera
+        /// //? => width, height là kích thước của ảnh
+        /// //? => fovV là góc nhìn dọc của camera
+        /// //? => Để sử dụng trong OpenGL
         public static Matrix4x4 CameraMatrixValuesFromCalculateProjectionMatrix(Matrix4x4 projectionMatrix, float width, float height, float fovV)
         {
             float fovH = 2.0f * Mathf.Atan(width / height * Mathf.Tan(fovV * Mathf.Deg2Rad / 2.0f)) * Mathf.Rad2Deg;
