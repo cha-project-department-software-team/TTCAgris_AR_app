@@ -63,7 +63,7 @@ namespace Infrastructure.Repositories
             try
             {
                 // var response = await _httpClient.GetAsync($"{GlobalVariable.baseUrl}/{companyId}");
-                var response = await _httpClient.GetAsync($"{GlobalVariable.baseUrl}/Grappers/{companyId}/adapterSpecificationsGeneral");
+                var response = await _httpClient.GetAsync($"{GlobalVariable.baseUrl}/Companies/{companyId}/adapterSpecificationsGeneral");
 
                 if (!response.IsSuccessStatusCode)
                     throw new HttpRequestException($"Failed to get AdapterSpecification list. Status: {response.StatusCode}");

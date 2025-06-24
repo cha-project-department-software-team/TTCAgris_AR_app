@@ -64142,47 +64142,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 481d4b49b712f1444ba410e22a857e5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  imageTargets:
-  - {fileID: 105912775}
-  - {fileID: 1881012593}
-  - {fileID: 1510841385}
-  - {fileID: 825987643}
-  - {fileID: 898881993}
-  - {fileID: 943433579}
-  - {fileID: 1210186990}
-  - {fileID: 206422879}
-  - {fileID: 1291487969}
-  - {fileID: 1936899535}
-  - {fileID: 998575476}
-  - {fileID: 639289280}
-  - {fileID: 699848814}
-  - {fileID: 1585224223}
-  - {fileID: 2142267540}
-  - {fileID: 1455856524}
-  - {fileID: 729392275}
-  - {fileID: 2077868379}
-  - {fileID: 938861890}
-  - {fileID: 1243172637}
-  - {fileID: 11876653}
-  - {fileID: 718173854}
-  - {fileID: 345868359}
-  - {fileID: 1321300881}
-  - {fileID: 1109876639}
-  - {fileID: 184376179}
-  - {fileID: 829146129}
-  - {fileID: 969345788}
-  - {fileID: 1729172098}
-  - {fileID: 1554282991}
-  - {fileID: 427545247}
-  - {fileID: 783731968}
-  - {fileID: 805694723}
-  - {fileID: 1426779989}
-  - {fileID: 1968520715}
-  - {fileID: 1448583025}
   content: {fileID: 1859037649}
   scroll_Area: {fileID: 429215311}
-  mainButton: {fileID: 836101759}
-  get_List_MCCs: {fileID: 0}
+  item: {fileID: 0}
+  eventPublisher: {fileID: 0}
+  mainButton: {fileID: 0}
 --- !u!1 &848168069
 GameObject:
   m_ObjectHideFlags: 0
@@ -64500,7 +64464,7 @@ MonoBehaviour:
   m_text: 'Request error: HTTP/1.1 429 Too Many Requests'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d42468020d4f1cf43bb13b7447e2e66a, type: 2}
-  m_sharedMaterial: {fileID: 5261312278513716158, guid: d42468020d4f1cf43bb13b7447e2e66a,
+  m_sharedMaterial: {fileID: -1870415040321534674, guid: d42468020d4f1cf43bb13b7447e2e66a,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -64915,7 +64879,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   previousSceneName: GrapperAScanScene
   recentSceneName: PLCBoxGrapA
-  isOrientation: 0
   detail_Image: {fileID: 0}
 --- !u!114 &878477618
 MonoBehaviour:
@@ -64963,7 +64926,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   active_ARCamera_Button: {fileID: 1432415213}
-  deactive_ARCamera_Button: {fileID: 2133724988}
+  deActive_ARCamera_Button: {fileID: 0}
 --- !u!114 &878477621
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -171900,7 +171863,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1803742725}
   - component: {fileID: 1803742724}
-  - component: {fileID: 1803742726}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -171985,18 +171947,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
---- !u!114 &1803742726
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1803742723}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1815417440
 GameObject:
   m_ObjectHideFlags: 0
@@ -200822,6 +200772,16 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6521303905494732629, guid: 2e4f3f2def0b0fd4c81a3e6a580b58df,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -1.8000183
+      objectReference: {fileID: 0}
+    - target: {fileID: 6521303905642208479, guid: 2e4f3f2def0b0fd4c81a3e6a580b58df,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -1761.6136
+      objectReference: {fileID: 0}
     - target: {fileID: 6521303905668322190, guid: 2e4f3f2def0b0fd4c81a3e6a580b58df,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -200857,6 +200817,11 @@ PrefabInstance:
       propertyPath: destinationScreens.Array.data[2]
       value: 
       objectReference: {fileID: 334691716}
+    - target: {fileID: 6521303906236721556, guid: 2e4f3f2def0b0fd4c81a3e6a580b58df,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -75.486176
+      objectReference: {fileID: 0}
     - target: {fileID: 6845257292993163659, guid: 2e4f3f2def0b0fd4c81a3e6a580b58df,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -200961,6 +200926,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 4.241577
+      objectReference: {fileID: 0}
+    - target: {fileID: 6845257294641679822, guid: 2e4f3f2def0b0fd4c81a3e6a580b58df,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 12.596497
       objectReference: {fileID: 0}
     - target: {fileID: 6845257294778965995, guid: 2e4f3f2def0b0fd4c81a3e6a580b58df,
         type: 3}

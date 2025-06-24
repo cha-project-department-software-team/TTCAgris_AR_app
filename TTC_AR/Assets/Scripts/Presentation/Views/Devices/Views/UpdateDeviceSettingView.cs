@@ -301,6 +301,8 @@ public class UpdateDeviceSettingView : MonoBehaviour, IDeviceView
         }
         else
         {
+            selectedCounts[field]--;
+            selectedGameObjects[field].Remove(item);
             item.SetActive(false);
             addModuleItem.SetActive(true);
         }

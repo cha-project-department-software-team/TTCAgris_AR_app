@@ -58,12 +58,12 @@ namespace Infrastructure.Repositories
         }
 
         //! Trả về List<Entity> do kết quả server trả về hoàn toàn giống hoặc gần giống với Entity
-        public async Task<List<ModuleSpecificationEntity>> GetListModuleSpecificationAsync(int grapperId)
+        public async Task<List<ModuleSpecificationEntity>> GetListModuleSpecificationAsync(int companyId)
         {
             try
             {
                 // var response = await _httpClient.GetAsync($"/api/ModuleSpecification/grapper/{companyId}");
-                var response = await _httpClient.GetAsync($"{GlobalVariable.baseUrl}/Grappers/{grapperId}/moduleSpecificationsGeneral");
+                var response = await _httpClient.GetAsync($"{GlobalVariable.baseUrl}/Companies/{companyId}/moduleSpecificationsGeneral");
 
                 if (!response.IsSuccessStatusCode)
                     throw new HttpRequestException($"Failed to get ModuleSpecification list. Status: {response.StatusCode}");
@@ -119,6 +119,7 @@ namespace Infrastructure.Repositories
             try
             {
                 var json = JsonConvert.SerializeObject(moduleSpecificationEntity);
+                UnityEngine.Debug.Log("Json: " + json);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
                 // var response = await _httpClient.PutAsync($"/api/ModuleSpecification/{moduleSpecificationId}", content);
                 var response = await _httpClient.PutAsync($"{GlobalVariable.baseUrl}/ModuleSpecifications/{moduleSpecificationId}", content);

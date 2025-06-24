@@ -153,7 +153,6 @@ public class Update_JB_TSD_Detail_UI : MonoBehaviour, IJBView
                     StartCoroutine(Resize_GameObject_Function.Set_NativeSize_For_GameObject(img));
             }
             emptySpace.transform.SetAsLastSibling();
-            scroll_Area.verticalNormalizedPosition = 1f;
             jb_connection_imagePrefab.gameObject.SetActive(false);
 
         }
@@ -164,6 +163,10 @@ public class Update_JB_TSD_Detail_UI : MonoBehaviour, IJBView
         }
         finally
         {
+            content.SetActive(false);
+            await Task.Delay(2500);
+            content.SetActive(true);
+            scroll_Area.verticalNormalizedPosition = 1f;
             HideLoading();
         }
     }

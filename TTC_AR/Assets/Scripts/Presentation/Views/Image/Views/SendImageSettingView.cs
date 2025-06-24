@@ -106,8 +106,7 @@ public class SendImageSettingView : MonoBehaviour, IImageView
 
         finalImageName = $"{grapperName}_{imageType}_{imageObjectName}";
 
-        Debug.Log(finalImageName);
-
+        Debug.Log("Final Image Name: " + finalImageName);
         if (imageType == "Connection")
         {
             if (GlobalVariable.temp_ListImage_Name.Any(imageName => imageName.Contains(finalImageName)))
@@ -132,6 +131,18 @@ public class SendImageSettingView : MonoBehaviour, IImageView
     public void SendImageRequestFromGallery()
     {
         Debug.Log(pickPhotoFromGallery.imagePath);
+
+        if (imageType == "Location")
+        {
+            if (GlobalVariable.temp_ListImage_Name.Any(imageName => imageName == imageNameText.text))
+            {
+
+                OpenErrorDialog(message: $"Hình ảnh <color=#004C8A><b>{imageNameText.text}</b></color> đã tồn tại. Hãy xóa hình ảnh cũ trước khi thêm mới.");
+                return;
+
+            }
+        }
+
         _presenter.UploadImageFromGallery(
             grapperId: grapperId,
             image: (Texture2D)finalImage.texture,
@@ -141,7 +152,15 @@ public class SendImageSettingView : MonoBehaviour, IImageView
     }
     public void SendImageRequestFromCamera()
     {
+        if (imageType == "Location")
+        {
+            if (GlobalVariable.temp_ListImage_Name.Any(imageName => imageName == imageNameText.text))
+            {
+                OpenErrorDialog(message: $"Hình ảnh <color=#004C8A><b>{imageNameText.text}</b></color> đã tồn tại. Hãy xóa hình ảnh cũ trước khi thêm mới.");
+                return;
 
+            }
+        }
         _presenter.UploadImageFromCamera(
             grapperId: grapperId,
             image: (Texture2D)finalImage.texture,
@@ -179,7 +198,7 @@ public class SendImageSettingView : MonoBehaviour, IImageView
 
         DialogOneButton.transform.Find("Background/Dialog_Status_Icon").GetComponent<Image>().sprite = Resources.Load<Sprite>("images/UIimages/Success_Icon_For_Dialog");
 
-        DialogOneButton.transform.Find("Background/Dialog_Content").GetComponent<TMP_Text>().text = $"Bạn đã thành công thêm hình ảnh <b><color=#004C8A>{finalImageName}</b></color> vào hệ thống";
+        DialogOneButton.transform.Find("Background/Dialog_Content").GetComponent<TMP_Text>().text = $"Bạn đã thành công thêm hình ảnh <b><color=#004C8A>{imageNameText.text}</b></color> vào hệ thống";
 
         DialogOneButton.transform.Find("Background/Dialog_Title").GetComponent<TMP_Text>().text = "Thêm hình ảnh mới thành công";
 

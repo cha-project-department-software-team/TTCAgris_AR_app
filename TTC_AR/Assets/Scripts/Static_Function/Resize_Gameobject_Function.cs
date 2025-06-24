@@ -26,9 +26,9 @@ public class Resize_GameObject_Function : MonoBehaviour
     contentTransform.sizeDelta = new Vector2(contentTransform.sizeDelta.x, totalHeight * Multiply);
   }
 
-  public static IEnumerator Set_NativeSize_For_GameObject(Image imageComponent)
+  public static IEnumerator Set_NativeSize_For_GameObject(Image imageComponent, bool forceUpdate = true, bool forceRebuild = true)
   {
-    Canvas.ForceUpdateCanvases();
+    if (forceUpdate) { Canvas.ForceUpdateCanvases(); }
 
     if (imageComponent.sprite == null)
     {
@@ -44,7 +44,12 @@ public class Resize_GameObject_Function : MonoBehaviour
     RectTransform rectTransform = imageComponent.rectTransform;
     float aspectRatio = originalWidth / originalHeight;
     rectTransform.sizeDelta = new Vector2(rectTransform.sizeDelta.x, rectTransform.sizeDelta.x / aspectRatio);
-    LayoutRebuilder.ForceRebuildLayoutImmediate(imageComponent.rectTransform);
+
+    if (forceRebuild)
+    {
+      LayoutRebuilder.ForceRebuildLayoutImmediate(imageComponent.rectTransform);
+    }
+
 
   }
   public static IEnumerator Set_NativeSize_For_GameObject(RawImage imageComponent)

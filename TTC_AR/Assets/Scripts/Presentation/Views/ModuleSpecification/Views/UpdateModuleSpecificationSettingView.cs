@@ -92,6 +92,7 @@ public class UpdateModuleSpecificationSettingView : MonoBehaviour, IModuleSpecif
 
     public void PreloadDetailById()
     {
+        ResetAllInputFields();
         _presenter.LoadDetailById(moduleSpecificationId);
     }
 
@@ -130,14 +131,15 @@ public class UpdateModuleSpecificationSettingView : MonoBehaviour, IModuleSpecif
         var backButton = DialogOneButton.transform.Find("Background/Back_Button").GetComponent<Button>();
         backButton.gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("images/UIimages/Success_Back_Button_Background");
         var dialog_Icon = DialogOneButton.transform.Find("Background/Dialog_Status_Icon").GetComponent<Image>().sprite = Resources.Load<Sprite>("images/UIimages/Success_Icon_For_Dialog");
-        var dialog_Content = DialogOneButton.transform.Find("Background/Dialog_Content").GetComponent<TMP_Text>().text = $"Bạn đã thành công cập nhật loại Module <b><color =#004C8A>{model.Code}</b></color>"; ;
+        var dialog_Content = DialogOneButton.transform.Find("Background/Dialog_Content").GetComponent<TMP_Text>().text = $"Bạn đã thành công cập nhật loại Module <b><color=#004C8A>{model.Code}</b></color>";
         var dialog_Title = DialogOneButton.transform.Find("Background/Dialog_Title").GetComponent<TMP_Text>().text = "Cập nhật loại Module thành công";
         backButton.onClick.RemoveAllListeners();
         backButton.onClick.AddListener(() =>
         {
             DialogOneButton.SetActive(false);
             ResetAllInputFields();
-            CloseUpdateCanvas();
+            PreloadDetailById();
+            // CloseUpdateCanvas();
         });
     }
 

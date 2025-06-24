@@ -10,6 +10,7 @@ public class UpdateAdapterSpecificationSettingView : MonoBehaviour, IAdapterSpec
 
     // Input Fields
     [Header("Input Fields")]
+    [SerializeField] private List<TMP_InputField> adapterSpecificationTextFieldValues;
     [SerializeField] private TMP_InputField AdapterSpecificationCode_TextField;
     [SerializeField] private TMP_InputField Type_TextField;
     [SerializeField] private TMP_InputField Communication_TextField;
@@ -37,6 +38,7 @@ public class UpdateAdapterSpecificationSettingView : MonoBehaviour, IAdapterSpec
     public ScrollRect ScrollView;
 
     private AdapterSpecificationModel _adapterSpecificationModel;
+    private int _adapterSpecificationId;
 
     void Awake()
     {
@@ -46,12 +48,16 @@ public class UpdateAdapterSpecificationSettingView : MonoBehaviour, IAdapterSpec
     }
     void OnEnable()
     {
+        _adapterSpecificationId = GlobalVariable.adapterSpecificationId;
+        AdapterSpecificationCode_TextField.interactable = false;
+
         backButton.onClick.RemoveAllListeners();
         submitButton.onClick.RemoveAllListeners();
 
+        PreloadDetailById();
         backButton.onClick.AddListener(CloseUpdateCanvas);
-        _presenter.LoadDetailById(GlobalVariable.adapterSpecificationId);
         submitButton.onClick.AddListener(OnSubmitButtonClick);
+
     }
 
 
@@ -65,24 +71,25 @@ public class UpdateAdapterSpecificationSettingView : MonoBehaviour, IAdapterSpec
         }
         if (GlobalVariable.temp_Dictionary_DeviceInformationModel.ContainsKey(AdapterSpecificationCode_TextField.text))
         {
-            OpenErrorDialog("Tạo loại Adapter mới thất bại", "Mã loại Adapter này đã tồn tại");
+            OpenErrorDialog("Tạo loại Adapter mới thất bại", "Loại Adapter này đã tồn tại trong hệ thống");
             return;
         }
+
         _adapterSpecificationModel = new AdapterSpecificationModel(
-                 AdapterSpecificationCode_TextField.text,
-                 Type_TextField.text,
-                 Communication_TextField.text,
-                 NumOfAdapterAllowed_TextField.text,
-                 CommSpeed_TextField.text,
-                 InputSupply_TextField.text,
-                 OutputSupply_TextField.text,
-                 InrushCurrent_TextField.text,
-                 Alarm_TextField.text,
-                 Note_TextField.text,
-                 PDFManual_TextField.text
+               code: string.IsNullOrEmpty(AdapterSpecificationCode_TextField.text) ? "Chưa cập nhật" : AdapterSpecificationCode_TextField.text,
+               type: string.IsNullOrEmpty(Type_TextField.text) ? "Chưa cập nhật" : Type_TextField.text,
+               communication: string.IsNullOrEmpty(Communication_TextField.text) ? "Chưa cập nhật" : Communication_TextField.text,
+               numOfModulesAllowed: string.IsNullOrEmpty(NumOfAdapterAllowed_TextField.text) ? "Chưa cập nhật" : NumOfAdapterAllowed_TextField.text,
+               commSpeed: string.IsNullOrEmpty(CommSpeed_TextField.text) ? "Chưa cập nhật" : CommSpeed_TextField.text,
+               inputSupply: string.IsNullOrEmpty(InputSupply_TextField.text) ? "Chưa cập nhật" : InputSupply_TextField.text,
+               outputSupply: string.IsNullOrEmpty(OutputSupply_TextField.text) ? "Chưa cập nhật" : OutputSupply_TextField.text,
+               inrushCurrent: string.IsNullOrEmpty(InrushCurrent_TextField.text) ? "Chưa cập nhật" : InrushCurrent_TextField.text,
+               alarm: string.IsNullOrEmpty(Alarm_TextField.text) ? "Chưa cập nhật" : Alarm_TextField.text,
+               note: string.IsNullOrEmpty(Note_TextField.text) ? "Chưa cập nhật" : Note_TextField.text,
+               pdfManual: string.IsNullOrEmpty(PDFManual_TextField.text) ? "Chưa cập nhật" : PDFManual_TextField.text
              );
         _presenter.UpdateAdapterSpecification(
-                 GlobalVariable.adapterSpecificationId, _adapterSpecificationModel
+                 _adapterSpecificationId, _adapterSpecificationModel
             );
 
     }
@@ -90,7 +97,8 @@ public class UpdateAdapterSpecificationSettingView : MonoBehaviour, IAdapterSpec
 
     public void PreloadDetailById()
     {
-        _presenter.LoadDetailById(GlobalVariable.adapterSpecificationId);
+        ResetAllInputFields();
+        _presenter.LoadDetailById(_adapterSpecificationId);
     }
 
     void OnDisable()
@@ -131,14 +139,15 @@ public class UpdateAdapterSpecificationSettingView : MonoBehaviour, IAdapterSpec
         var backButton = DialogOneButton.transform.Find("Background/Back_Button").GetComponent<Button>();
         backButton.gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("images/UIimages/Success_Back_Button_Background");
         var dialog_Icon = DialogOneButton.transform.Find("Background/Dialog_Status_Icon").GetComponent<Image>().sprite = Resources.Load<Sprite>("images/UIimages/Success_Icon_For_Dialog");
-        var dialog_Content = DialogOneButton.transform.Find("Background/Dialog_Content").GetComponent<TMP_Text>().text = $"Bạn đã thành công cập nhật loại Adapter <b><color =#004C8A>{model.Code}</b></color>"; ;
+        var dialog_Content = DialogOneButton.transform.Find("Background/Dialog_Content").GetComponent<TMP_Text>().text = $"Bạn đã thành công cập nhật loại Adapter <b><color=#004C8A>{model.Code}</b></color>";
         var dialog_Title = DialogOneButton.transform.Find("Background/Dialog_Title").GetComponent<TMP_Text>().text = "Cập nhật loại Adapter thành công";
         backButton.onClick.RemoveAllListeners();
         backButton.onClick.AddListener(() =>
         {
             DialogOneButton.SetActive(false);
             ResetAllInputFields();
-            CloseUpdateCanvas();
+            PreloadDetailById();
+            // CloseUpdateCanvas();
         });
     }
 
@@ -156,19 +165,48 @@ public class UpdateAdapterSpecificationSettingView : MonoBehaviour, IAdapterSpec
         Note_TextField.text = "";
         PDFManual_TextField.text = "";
     }
+    // private void SetInitialInputFields(AdapterSpecificationModel model)
+    // {
+    //     AdapterSpecificationCode_TextField.text = model.Code;
+    //     Type_TextField.text = model.Type;
+    //     Communication_TextField.text = model.Communication;
+    //     NumOfAdapterAllowed_TextField.text = model.NumOfModulesAllowed;
+    //     CommSpeed_TextField.text = model.CommSpeed;
+    //     InputSupply_TextField.text = model.InputSupply;
+    //     OutputSupply_TextField.text = model.OutputSupply;
+    //     InrushCurrent_TextField.text = model.InrushCurrent;
+    //     Alarm_TextField.text = model.Alarm;
+    //     Note_TextField.text = model.Note;
+    //     PDFManual_TextField.text = model.PdfManual;
+    // }
+
     private void SetInitialInputFields(AdapterSpecificationModel model)
     {
-        AdapterSpecificationCode_TextField.text = model.Code;
-        Type_TextField.text = model.Type;
-        Communication_TextField.text = model.Communication;
-        NumOfAdapterAllowed_TextField.text = model.NumOfModulesAllowed;
-        CommSpeed_TextField.text = model.CommSpeed;
-        InputSupply_TextField.text = model.InputSupply;
-        OutputSupply_TextField.text = model.OutputSupply;
-        InrushCurrent_TextField.text = model.InrushCurrent;
-        Alarm_TextField.text = model.Alarm;
-        Note_TextField.text = model.Note;
-        PDFManual_TextField.text = model.PdfManual;
+        AdapterSpecificationCode_TextField.text = string.IsNullOrEmpty(model.Code) ? "Chưa cập nhật" : model.Code;
+        Type_TextField.text = string.IsNullOrEmpty(model.Type) ? "Chưa cập nhật" : model.Type;
+        Communication_TextField.text = string.IsNullOrEmpty(model.Communication) ? "Chưa cập nhật" : model.Communication;
+        NumOfAdapterAllowed_TextField.text = string.IsNullOrEmpty(model.NumOfModulesAllowed) ? "Chưa cập nhật" : model.NumOfModulesAllowed;
+        CommSpeed_TextField.text = string.IsNullOrEmpty(model.CommSpeed) ? "Chưa cập nhật" : model.CommSpeed;
+        InputSupply_TextField.text = string.IsNullOrEmpty(model.InputSupply) ? "Chưa cập nhật" : model.InputSupply;
+        OutputSupply_TextField.text = string.IsNullOrEmpty(model.OutputSupply) ? "Chưa cập nhật" : model.OutputSupply;
+        InrushCurrent_TextField.text = string.IsNullOrEmpty(model.InrushCurrent) ? "Chưa cập nhật" : model.InrushCurrent;
+        Alarm_TextField.text = string.IsNullOrEmpty(model.Alarm) ? "Chưa cập nhật" : model.Alarm;
+        Note_TextField.text = string.IsNullOrEmpty(model.Note) ? "Chưa cập nhật" : model.Note;
+        PDFManual_TextField.text = string.IsNullOrEmpty(model.PdfManual) ? "Chưa cập nhật" : model.PdfManual;
+
+        foreach (var textField in adapterSpecificationTextFieldValues)
+        {
+            if (textField.text == "Chưa cập nhật" || string.IsNullOrEmpty(textField.text))
+            {
+                textField.textComponent.color = Color.red;
+                textField.textComponent.fontStyle = FontStyles.Bold;
+            }
+            else
+            {
+                textField.textComponent.color = Color.black;
+                textField.textComponent.fontStyle = FontStyles.Normal;
+            }
+        }
     }
 
 

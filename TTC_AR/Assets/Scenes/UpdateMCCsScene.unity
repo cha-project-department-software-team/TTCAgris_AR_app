@@ -6326,7 +6326,6 @@ GameObject:
   - component: {fileID: 829753169}
   - component: {fileID: 829753168}
   - component: {fileID: 829753167}
-  - component: {fileID: 829753166}
   m_Layer: 0
   m_Name: Camera
   m_TagString: MainCamera
@@ -6334,18 +6333,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &829753166
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 829753165}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!81 &829753167
 AudioListener:
   m_ObjectHideFlags: 0
@@ -7198,7 +7185,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   previousSceneName: UpdateJBScene
   recentSceneName: UpdateMenuScene
-  isOrientation: 0
   detail_Image: {fileID: 0}
 --- !u!224 &908920697
 RectTransform:
@@ -12404,7 +12390,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1803742725}
   - component: {fileID: 1803742724}
-  - component: {fileID: 1803742726}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -12489,18 +12474,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
---- !u!114 &1803742726
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1803742723}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1803773072
 GameObject:
   m_ObjectHideFlags: 0

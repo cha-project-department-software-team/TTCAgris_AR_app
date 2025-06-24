@@ -43,19 +43,17 @@ public class LoginView : MonoBehaviour, ILoginView
             new WaitUntil(() => ManagerLocator.Instance.CompanyManager != null &&
             ManagerLocator.Instance.GrapperManager != null);
         _presenter = new LoginPresenter(this,
-
-             ManagerLocator.Instance.CompanyManager._ICompanyService,
-             ManagerLocator.Instance.GrapperManager._IGrapperService
-                , ManagerLocator.Instance.JBManager._IJBService,
+            ManagerLocator.Instance.CompanyManager._ICompanyService,
+            ManagerLocator.Instance.GrapperManager._IGrapperService
+            , ManagerLocator.Instance.JBManager._IJBService,
              ManagerLocator.Instance.ImageManager._IImageService
-                , ManagerLocator.Instance.ModuleManager._IModuleService,
-                ManagerLocator.Instance.MccManager._IMccService,
-                ManagerLocator.Instance.FieldDeviceManager._IFieldDeviceService,
-                ManagerLocator.Instance.DeviceManager._IDeviceService,
-                ManagerLocator.Instance.ModuleSpecificationManager._IModuleSpecificationService,
-                ManagerLocator.Instance.AdapterSpecificationManager._IAdapterSpecificationService,
-                ManagerLocator.Instance.RackManager._IRackService
-
+            , ManagerLocator.Instance.ModuleManager._IModuleService,
+            ManagerLocator.Instance.MccManager._IMccService,
+            ManagerLocator.Instance.FieldDeviceManager._IFieldDeviceService,
+            ManagerLocator.Instance.DeviceManager._IDeviceService,
+            ManagerLocator.Instance.ModuleSpecificationManager._IModuleSpecificationService,
+            ManagerLocator.Instance.AdapterSpecificationManager._IAdapterSpecificationService,
+            ManagerLocator.Instance.RackManager._IRackService
              );
     }
 

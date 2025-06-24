@@ -44,6 +44,7 @@ public class CreateAdapterSpecificationSettingView : MonoBehaviour, IAdapterSpec
     //     _presenter = new AdapterSpecificationPresenter(this, AdapterSpecificationManager._IAdapterSpecificationService);
     // }
     private Sprite successConfirmButtonSprite;
+    private int companyId;
 
     void Awake()
     {
@@ -54,6 +55,7 @@ public class CreateAdapterSpecificationSettingView : MonoBehaviour, IAdapterSpec
 
     void OnEnable()
     {
+        companyId = GlobalVariable.companyId;
         successConfirmButtonSprite = Resources.Load<Sprite>("images/UIimages/Success_Back_Button_Background");
         Debug.Log(successConfirmButtonSprite);
 
@@ -89,20 +91,20 @@ public class CreateAdapterSpecificationSettingView : MonoBehaviour, IAdapterSpec
             return;
         }
         _adapterSpecificationModel = new AdapterSpecificationModel(
-                 AdapterSpecificationCode_TextField.text,
-                 Type_TextField.text,
-                 Communication_TextField.text,
-                 NumOfAdapterAllowed_TextField.text,
-                 CommSpeed_TextField.text,
-                 InputSupply_TextField.text,
-                 OutputSupply_TextField.text,
-                 InrushCurrent_TextField.text,
-                 Alarm_TextField.text,
-                 Note_TextField.text,
-                 PDFManual_TextField.text
+              code: string.IsNullOrEmpty(AdapterSpecificationCode_TextField.text) ? "Chưa cập nhật" : AdapterSpecificationCode_TextField.text,
+               type: string.IsNullOrEmpty(Type_TextField.text) ? "Chưa cập nhật" : Type_TextField.text,
+               communication: string.IsNullOrEmpty(Communication_TextField.text) ? "Chưa cập nhật" : Communication_TextField.text,
+               numOfModulesAllowed: string.IsNullOrEmpty(NumOfAdapterAllowed_TextField.text) ? "Chưa cập nhật" : NumOfAdapterAllowed_TextField.text,
+               commSpeed: string.IsNullOrEmpty(CommSpeed_TextField.text) ? "Chưa cập nhật" : CommSpeed_TextField.text,
+               inputSupply: string.IsNullOrEmpty(InputSupply_TextField.text) ? "Chưa cập nhật" : InputSupply_TextField.text,
+               outputSupply: string.IsNullOrEmpty(OutputSupply_TextField.text) ? "Chưa cập nhật" : OutputSupply_TextField.text,
+               inrushCurrent: string.IsNullOrEmpty(InrushCurrent_TextField.text) ? "Chưa cập nhật" : InrushCurrent_TextField.text,
+               alarm: string.IsNullOrEmpty(Alarm_TextField.text) ? "Chưa cập nhật" : Alarm_TextField.text,
+               note: string.IsNullOrEmpty(Note_TextField.text) ? "Chưa cập nhật" : Note_TextField.text,
+               pdfManual: string.IsNullOrEmpty(PDFManual_TextField.text) ? "Chưa cập nhật" : PDFManual_TextField.text
              );
         _presenter.CreateNewAdapterSpecification(
-            GlobalVariable.companyId, _adapterSpecificationModel
+           companyId, _adapterSpecificationModel
        );
 
     }

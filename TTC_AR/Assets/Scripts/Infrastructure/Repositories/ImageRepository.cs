@@ -11,6 +11,7 @@ using UnityEngine.Networking;
 using System.IO;
 using UnityEngine;
 using Unity.VisualScripting;
+using UnityEngine.Purchasing;
 
 
 namespace Infrastructure.Repositories
@@ -101,7 +102,7 @@ namespace Infrastructure.Repositories
 
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-                var response = await _httpClient.PostAsync($"{GlobalVariable.baseUrl}/Images/grapperId?grapperId={grapperId}&fileName={ImageEntity.Name}", content);
+                var response = await _httpClient.PostAsync($"{GlobalVariable.baseUrl}/Images/{grapperId}?fileName={ImageEntity.Name}", content);
 
                 var temp = await response.Content.ReadAsStringAsync();
                 Debug.Log(temp);
@@ -197,7 +198,8 @@ namespace Infrastructure.Repositories
                 Debug.Log($"imageSize: {resizedTexture.width} x {resizedTexture.height}");
 
                 {
-                    using (UnityWebRequest request = UnityWebRequest.Post($"{GlobalVariable.baseUrl}/Images/grapperId?grapperId={grapperId}&fileName={fileName}", form))
+
+                    using (UnityWebRequest request = UnityWebRequest.Post($"{GlobalVariable.baseUrl}/Images/{grapperId}?fileName={fileName}", form))
                     {
                         Debug.Log("Run Repository 6");
                         request.SendWebRequest();
@@ -208,13 +210,15 @@ namespace Infrastructure.Repositories
 
                         if (request.result != UnityWebRequest.Result.Success)
                         {
+                            Debug.LogError($"❌ Lỗi upload ảnh: {request.error}");
                             throw new Exception($"Lỗi upload ảnh: {request.error}");
                         }
-                        else
-                        {
 
-                            return true;
-                        }
+                        // Deserialize the response to check success
+                        string responseText = request.downloadHandler.text;
+                        Debug.Log($"Response: {responseText}");
+                        bool Result = JsonConvert.DeserializeObject<bool>(responseText);
+                        return Result;
                     }
                 }
             }
@@ -281,9 +285,7 @@ namespace Infrastructure.Repositories
                 Debug.Log($"UploadNewImageFromCamera: {grapperId} + {fileName}");
                 Debug.Log($"imageSize: {resizedTexture.width} x {resizedTexture.height}");
 
-                using (UnityWebRequest request = UnityWebRequest.Post(
-                    $"{GlobalVariable.baseUrl}/Images/grapperId?grapperId={grapperId}&fileName={fileName}",
-                    form))
+                using (UnityWebRequest request = UnityWebRequest.Post($"{GlobalVariable.baseUrl}/Images/{grapperId}?fileName={fileName}", form))
                 {
                     request.SendWebRequest();
 
@@ -294,12 +296,15 @@ namespace Infrastructure.Repositories
 
                     if (request.result != UnityWebRequest.Result.Success)
                     {
-                        throw new ApplicationException($"Lỗi upload ảnh: {request.error}");
+                        Debug.LogError($"❌ Lỗi upload ảnh: {request.error}");
+                        throw new Exception($"Lỗi upload ảnh: {request.error}");
                     }
-                    else
-                    {
-                        return true;
-                    }
+
+                    // Deserialize the response to check success
+                    string responseText = request.downloadHandler.text;
+                    Debug.Log($"Response: {responseText}");
+                    bool Result = JsonConvert.DeserializeObject<bool>(responseText);
+                    return Result;
                 }
             }
             catch (HttpRequestException ex)

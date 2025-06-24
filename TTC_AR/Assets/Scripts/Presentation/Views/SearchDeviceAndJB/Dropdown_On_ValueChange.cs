@@ -150,18 +150,19 @@ public class Dropdown_On_ValueChange : MonoBehaviour
                 }
                 break;
         }
+
     }
 
     private void ClearWiringGroupAndCache()
     {
-        foreach (Transform child in JB_Connection_Group.transform)
+        foreach (Transform child in List_JB_Group.transform)
         {
-            if (child.gameObject != JB_Connection_Wiring_Image_Prefab && child.gameObject.name.Contains("(Clone)"))
+            if (child.gameObject != JB_Connection_Group && child.gameObject.name.Contains("(Clone)"))
             {
                 Destroy(child.gameObject);
             }
         }
-        foreach (Transform child in List_JB_Group.transform)
+        foreach (Transform child in JB_Connection_Group.transform)
         {
             if (child.gameObject != JB_Connection_Wiring_Image_Prefab && child.gameObject.name.Contains("(Clone)"))
             {
@@ -181,7 +182,7 @@ public class Dropdown_On_ValueChange : MonoBehaviour
 
         if (device.JBInformationModels.Any())
         {
-            ShowProgressBar("Đang tải hình ảnh...", "...");
+            ShowProgressBar("Đang tải hình ảnh...");
 
             if (device.JBInformationModels.Count == 1)
             {
@@ -202,8 +203,8 @@ public class Dropdown_On_ValueChange : MonoBehaviour
                            LocationImage: JB_Location_Image_Prefab,
                            ConnectionImage: JB_Connection_Wiring_Image_Prefab,
                            JB_List_Connection_Group: JB_Connection_Group.transform);
-                    Canvas.ForceUpdateCanvases();
-                    LayoutRebuilder.ForceRebuildLayoutImmediate(contentTransform);
+                    // Canvas.ForceUpdateCanvases();
+                    // LayoutRebuilder.ForceRebuildLayoutImmediate(contentTransform);
                 }
             }
             else
@@ -232,11 +233,23 @@ public class Dropdown_On_ValueChange : MonoBehaviour
                              JB_List_Connection_Group: newJB.transform);
                     }
                 }
-                Canvas.ForceUpdateCanvases();
-                LayoutRebuilder.ForceRebuildLayoutImmediate(contentTransform);
+                // Canvas.ForceUpdateCanvases();
+                // LayoutRebuilder.ForceRebuildLayoutImmediate(contentTransform);
                 JBPrefab.SetActive(false);
             }
+            Canvas.ForceUpdateCanvases();
+            LayoutRebuilder.ForceRebuildLayoutImmediate(JB_Connection_Group.transform as RectTransform);
+            LayoutRebuilder.ForceRebuildLayoutImmediate(List_JB_Group.transform as RectTransform);
+            LayoutRebuilder.ForceRebuildLayoutImmediate(prefab_Infor.transform as RectTransform);
+            prefab_Infor.transform.Find("Content").gameObject.SetActive(false);
+            await Task.Delay(1000);
+            // prefab_Infor.SetActive(true);
+            // await Task.Delay(300);
+            // prefab_Infor.SetActive(false);
+            // await Task.Delay(300);
+            prefab_Infor.transform.Find("Content").gameObject.SetActive(true);
             HideProgressBar();
+
         }
         else
         {
@@ -246,7 +259,7 @@ public class Dropdown_On_ValueChange : MonoBehaviour
 
     private async void UpdateJBInformation(JBInformationModel jB)
     {
-        ShowProgressBar("Đang tải hình ảnh...", "...");
+        ShowProgressBar("Đang tải hình ảnh...");
         if (deviceInfo.gameObject.activeSelf) deviceInfo.gameObject.SetActive(false);
         var JBName = JBPrefab.transform.Find("JB_Connection_text_group/JB_Connection_value").GetComponent<TMP_Text>();
         var JBLocation = JBPrefab.transform.Find("JB_Connection_text_group/JB_Connection_location").GetComponent<TMP_Text>();
@@ -265,9 +278,21 @@ public class Dropdown_On_ValueChange : MonoBehaviour
              ConnectionImage: JB_Connection_Wiring_Image_Prefab,
              JB_List_Connection_Group: JB_Connection_Group.transform);
         }
+        // Canvas.ForceUpdateCanvases();
+        // LayoutRebuilder.ForceRebuildLayoutImmediate(List_JB_Group.transform as RectTransform);
         Canvas.ForceUpdateCanvases();
+        LayoutRebuilder.ForceRebuildLayoutImmediate(JB_Connection_Group.transform as RectTransform);
         LayoutRebuilder.ForceRebuildLayoutImmediate(List_JB_Group.transform as RectTransform);
+        LayoutRebuilder.ForceRebuildLayoutImmediate(prefab_Infor.transform as RectTransform);
+        prefab_Infor.transform.Find("Content").gameObject.SetActive(false);
+        await Task.Delay(1000);
+        // prefab_Infor.transform.Find("Content").gameObject.SetActive(true);
+        // await Task.Delay(300);
+        // prefab_Infor.transform.Find("Content").gameObject.SetActive(false);
+        // await Task.Delay(300);
+        prefab_Infor.transform.Find("Content").gameObject.SetActive(true);
         HideProgressBar();
+
     }
 
     private async Task LoadDeviceSprites(List<ImageInformationModel> list_Additional_Images, JBInformationModel jbInformationModel, Image LocationImage, Image ConnectionImage, Transform JB_List_Connection_Group)
@@ -312,7 +337,6 @@ public class Dropdown_On_ValueChange : MonoBehaviour
                 tasks.Add(searchableDropDownView._presenter.LoadImageAsync(outdoorImage.Name, JB_Location_Image));
                 var buttonComponent = JB_Location_Image.gameObject.GetComponent<Button>();
                 AddButtonListener(buttonComponent, () => open_Detail_Image.Open_Detail_Canvas(JB_Location_Image));
-
             }
         }
         else
@@ -359,10 +383,9 @@ public class Dropdown_On_ValueChange : MonoBehaviour
         });
     }
 
-    private void ShowProgressBar(string title, string details)
+    private void ShowProgressBar(string title)
     {
         Progress.Show(title, ProgressColor.Blue, true);
-        Progress.SetDetailsText(details);
     }
 
     private void HideProgressBar()
@@ -372,12 +395,12 @@ public class Dropdown_On_ValueChange : MonoBehaviour
 
     private void ResizeImages(Image locationImage, Transform JB_List_Connection_Group)
     {
-        StartCoroutine(Resize_GameObject_Function.Set_NativeSize_For_GameObject(locationImage));
+        StartCoroutine(Resize_GameObject_Function.Set_NativeSize_For_GameObject(locationImage, forceUpdate: false));
 
         foreach (var connectionImage in JB_List_Connection_Group.GetComponentsInChildren<Image>())
         {
-            if (connectionImage.gameObject.activeSelf && connectionImage.name.Contains("(Clone)") || connectionImage.name.Contains("Location"))
-                StartCoroutine(Resize_GameObject_Function.Set_NativeSize_For_GameObject(connectionImage));
+            if (connectionImage.gameObject.activeSelf && (connectionImage.name.Contains("(Clone)") || connectionImage.name.Contains("Location")))
+                StartCoroutine(Resize_GameObject_Function.Set_NativeSize_For_GameObject(connectionImage, forceUpdate: false));
         }
     }
 

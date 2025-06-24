@@ -37,7 +37,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: 204}
-  m_SizeDelta: {x: 961.9861, y: 167.1432}
+  m_SizeDelta: {x: 1058.1847, y: 183.85751}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2179517765338965966
 CanvasRenderer:
@@ -193,7 +193,7 @@ MonoBehaviour:
   m_text: "\u0110ang t\u1EA3i d\u1EEF li\u1EC7u..."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d42468020d4f1cf43bb13b7447e2e66a, type: 2}
-  m_sharedMaterial: {fileID: 5261312278513716158, guid: d42468020d4f1cf43bb13b7447e2e66a,
+  m_sharedMaterial: {fileID: -1870415040321534674, guid: d42468020d4f1cf43bb13b7447e2e66a,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -295,7 +295,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.000030517578, y: 0.027191162}
+  m_AnchoredPosition: {x: 0.000061035156, y: 0.027191162}
   m_SizeDelta: {x: 201.0439, y: 34.931}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1685662171718035931

@@ -49,10 +49,10 @@ public class CreateModuleSpecificationSettingView : MonoBehaviour, IModuleSpecif
 
     void OnEnable()
     {
+        companyId = GlobalVariable.companyId;
         successConfirmButtonSprite = Resources.Load<Sprite>("images/UIimages/Success_Back_Button_Background");
         Debug.Log(successConfirmButtonSprite);
-        ReNewUI(); 
-        companyId = GlobalVariable.companyId;
+        ReNewUI();
     }
     private void ReNewUI()
     {

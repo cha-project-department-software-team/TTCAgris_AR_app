@@ -88,7 +88,12 @@ public class LoginPresenter
             var adapterSpecificationTask = _adapterSpecificationService.GetListAdapterSpecificationAsync(1);
             var rackTask = _rackService.GetListRackAsync(1);
 
-            await Task.WhenAll(companyTask, grapperTask, jbTask, imageTask, moduleTask, mccTask, fieldDeviceTask, deviceTask, moduleSpecificationTask, adapterSpecificationTask, rackTask);
+
+            await Task.WhenAll(
+                companyTask,
+                grapperTask, jbTask, imageTask, moduleTask, mccTask, fieldDeviceTask, deviceTask,
+                 moduleSpecificationTask, adapterSpecificationTask,
+                 rackTask);
 
             var companyDto = companyTask.Result;
             var grapperDtos = grapperTask.Result;
@@ -102,7 +107,9 @@ public class LoginPresenter
             var adapterSpecificationDtos = adapterSpecificationTask.Result;
             var rackDtos = rackTask.Result;
 
-            if (companyDto == null || grapperDtos == null
+            if (
+            companyDto == null ||
+            grapperDtos == null
             || jbDtos == null || imageDtos == null
             || moduleDtos == null
             || fieldDeviceDtos == null

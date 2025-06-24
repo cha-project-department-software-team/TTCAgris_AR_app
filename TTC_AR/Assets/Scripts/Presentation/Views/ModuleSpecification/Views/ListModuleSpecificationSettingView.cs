@@ -82,14 +82,14 @@ public class ListModuleSpecificationSettingView : MonoBehaviour, IModuleSpecific
                 listModuleSpecificationItems.Add(newModuleSpecificationItem);
 
                 var editButton = newModuleSpecificationItemPreviewButtonGroup.Find("Group/Edit_Button").GetComponent<Button>();
-                var deleteButton = newModuleSpecificationItemPreviewButtonGroup.Find("Group/Delete_Button").GetComponent<Button>();
+                // var deleteButton = newModuleSpecificationItemPreviewButtonGroup.Find("Group/Delete_Button").GetComponent<Button>();
 
                 editButton.onClick.RemoveAllListeners();
-                deleteButton.onClick.RemoveAllListeners();
+                // deleteButton.onClick.RemoveAllListeners();
 
                 editButton.onClick.AddListener(() => EditModuleSpecificationItem(model.Id));
 
-                deleteButton.onClick.AddListener(() => DeleModuleSpecificationItem(newModuleSpecificationItem, model));
+                // deleteButton.onClick.AddListener(() => DeleModuleSpecificationItem(newModuleSpecificationItem, model));
             }
         }
         else

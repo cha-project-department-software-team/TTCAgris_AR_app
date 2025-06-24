@@ -2070,7 +2070,7 @@ MonoBehaviour:
   m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 1440, y: 3088}
+  m_ReferenceResolution: {x: 1600, y: 2560}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
@@ -2986,7 +2986,7 @@ PrefabInstance:
     - target: {fileID: 5258710891560164409, guid: adecf6ceef6bb3a41a9dab5412dbdcc0,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -831.8449
+      value: -1575.845
       objectReference: {fileID: 0}
     - target: {fileID: 5325798340032092134, guid: adecf6ceef6bb3a41a9dab5412dbdcc0,
         type: 3}
@@ -3711,12 +3711,12 @@ PrefabInstance:
     - target: {fileID: 7134245868378140965, guid: adecf6ceef6bb3a41a9dab5412dbdcc0,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 720
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 7134245868378140965, guid: adecf6ceef6bb3a41a9dab5412dbdcc0,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -1816.2659
+      value: -2634.7659
       objectReference: {fileID: 0}
     - target: {fileID: 7137047061583984358, guid: adecf6ceef6bb3a41a9dab5412dbdcc0,
         type: 3}
@@ -5290,7 +5290,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: -128}
-  m_SizeDelta: {x: 588.7464, y: 147.1866}
+  m_SizeDelta: {x: 1103.0638, y: 147.1866}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1562885923
 MonoBehaviour:
@@ -5340,12 +5340,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 56.75
+  m_fontSize: 80
   m_fontSizeBase: 1
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 1
-  m_fontSizeMax: 100
+  m_fontSizeMin: 60
+  m_fontSizeMax: 80
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -5913,7 +5913,7 @@ MonoBehaviour:
   m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 1440, y: 3088}
+  m_ReferenceResolution: {x: 1600, y: 2560}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3

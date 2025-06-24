@@ -78,7 +78,7 @@ public class ListAdapterSpecificationSettingView : MonoBehaviour, IAdapterSpecif
                 Transform newAdapterSpecificationItemPreviewButtonGroup = newAdapterSpecificationItemTransform.GetChild(1);
                 listAdapterSpecificationItems.Add(newAdapterSpecificationItem);
                 newAdapterSpecificationItemPreviewButtonGroup.Find("Group/Edit_Button").GetComponent<Button>().onClick.AddListener(() => EditAdapterSpecificationItem(model.Id));
-                newAdapterSpecificationItemPreviewButtonGroup.Find("Group/Delete_Button").GetComponent<Button>().onClick.AddListener(() => DeleAdapterSpecificationItem(newAdapterSpecificationItem, model));
+                // newAdapterSpecificationItemPreviewButtonGroup.Find("Group/Delete_Button").GetComponent<Button>().onClick.AddListener(() => DeleAdapterSpecificationItem(newAdapterSpecificationItem, model));
             }
         }
         else

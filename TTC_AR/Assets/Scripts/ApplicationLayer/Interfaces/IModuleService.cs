@@ -8,7 +8,7 @@ using Domain.Entities;
 
 namespace ApplicationLayer.Interfaces
 {
-    public interface IModuleService
+    public interface IModuleService 
     {
         Task<ModuleResponseDto> GetModuleByIdAsync(int moduleId);
         Task<List<ModuleBasicDto>> GetListModuleAsync(int grapperId);

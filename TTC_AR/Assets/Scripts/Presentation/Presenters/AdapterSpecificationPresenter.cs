@@ -30,16 +30,18 @@ public class AdapterSpecificationPresenter
                 if (adapterSpecificationBasicDto.Any())
                 {
                     var models = adapterSpecificationBasicDto.Select(dto => ConvertFromBasicDto(dto)).ToList();
-
                     _view.DisplayList(models);
+                    _view.ShowSuccess(message: "Tải danh sách thành công");
+
 
                 }
                 else
                 {
                     var models = new List<AdapterSpecificationModel>();
                     _view.DisplayList(models);
+                    _view.ShowSuccess(message: "Tải danh sách thành công nhưng danh sách trống");
+
                 }
-                _view.ShowSuccess(message: "Tải danh sách thành công");
 
             }
             else

@@ -32,6 +32,7 @@ public class ListImageSettingView : MonoBehaviour, IImageView
     private Sprite warningConfirmButtonSprite;
     private int grapperId;
     private GameObject _imageItem;
+    private string _imageName;
 
     void Awake()
     {
@@ -166,6 +167,7 @@ public class ListImageSettingView : MonoBehaviour, IImageView
         confirmButton.onClick.AddListener(() =>
         {
             _imageItem = ImageItem;
+            _imageName = model.Name;
             Debug.Log(model.Id);
             _presenter.DeleteImage(model.Id);
             DialogTwoButton.SetActive(false);
@@ -231,6 +233,7 @@ public class ListImageSettingView : MonoBehaviour, IImageView
         {
             listImageItems.Remove(_imageItem);
             Destroy(_imageItem);
+            GlobalVariable.temp_ListImage_Name.Remove(_imageName);
             Show_Toast.Instance.ShowToast("success", "Xóa hình ảnh thành công");
         }
 

@@ -79,7 +79,7 @@ public class WebCamPhotoCamera : MonoBehaviour
     private void InitializeBrightnessSlider()
     {
         BrightnessSlider.maxValue = 3f;
-        BrightnessSlider.minValue = 0f;
+        BrightnessSlider.minValue = 0.5f;
         BrightnessSlider.value = BrightnessValue;
     }
 
@@ -97,7 +97,7 @@ public class WebCamPhotoCamera : MonoBehaviour
         if (WebCamTexture.devices.Length > 0)
         {
             WebCamDevice selectedDevice = SelectCameraDevice();
-            webCamTexture = new WebCamTexture(selectedDevice.name, 1440, 3088, 30);
+            webCamTexture = new WebCamTexture(selectedDevice.name, Screen.width, Screen.height, 30);
             CameraScreen.texture = webCamTexture;
             webCamTexture.Play();
             // StartCoroutine(AdjustAspectRatio());

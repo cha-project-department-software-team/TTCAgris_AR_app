@@ -279,7 +279,7 @@ public class UpdateFieldDeviceSettingView : MonoBehaviour, IFieldDeviceView
         backButton.onClick.RemoveAllListeners();
         backButton.onClick.AddListener(() => DialogOneButton.SetActive(false));
     }
-    private void OpenSuccessDialog(string title = "Cập nhật thiết bị trường thành công", string message = "Bạn đã cập nhật thiết bị trường thành công: ")
+    private void OpenSuccessDialog(string title = "Cập nhật thiết bị trường thành công", string message = "Bạn đã cập nhật thiết bị trường thành công")
     {
         DialogOneButton.SetActive(true);
 
