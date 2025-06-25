@@ -18,7 +18,7 @@ using UnityEngine.UI;
 
 public class GlobalVariable : MonoBehaviour
 {
-    public static string baseUrl = "http://40.83.125.206/api";
+    public static string baseUrl = "http://23.102.234.127/api";
     public static List<string> APIRequestType = new List<string>()
     {
 
